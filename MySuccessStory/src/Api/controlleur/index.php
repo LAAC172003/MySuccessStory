@@ -17,7 +17,7 @@ if (isset($_SERVER['HTTP_BEARER'])) {
                 switch ($url[1]) {
                     case 'subjects':
                         if (empty($url[2])) {
-                            $subjects->getSubjects($db, "SELECT idSubject,s.name,c.name as 'category' from subject s inner join category c on s.idCategory=c.idCategory");
+                            $subjects->getSubjects($db, "SELECT * FROM `articles` ");
                             http_response_code(201);
                         }
                         break;

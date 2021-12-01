@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MySuccessStory\Controleur;
 
 class ControleurSujets
@@ -12,7 +11,7 @@ class ControleurSujets
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://mysuccessstoryapi/src/Api/controlleur/subjects',
+                CURLOPT_URL => 'github/MySuccessStory/MySuccessStory/src/Api/controlleur/subjects',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,

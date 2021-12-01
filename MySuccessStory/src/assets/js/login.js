@@ -16,11 +16,11 @@ $(document).ready(function() {
     $("#ConnectionButton").click(handleAuthClick);
 
     // Initialise le particle système
-    /*Particles.init({
-      selector: ".background",
-      connectParticles: true,
-      color: "#56C26B",
-    });*/
+    Particles.init({
+        selector: ".background",
+        connectParticles: true,
+        color: "#56C26B",
+    });
 });
 
 // si connecté alors on peut envoyer les infos,

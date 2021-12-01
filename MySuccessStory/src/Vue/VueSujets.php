@@ -17,13 +17,14 @@
             <th>Categorie</th>
             <?php
             for ($i = 0; $i < count($subjects); $i++) {
-                $subject = $subjects[$i];
+                $subject = $subjects[$i];   
+                
             ?>
-                <tr>
+                <!-- <tr>
                     <td><?= $subject->idSubject ?></td>
                     <td><?= $subject->name ?></td>
                     <td><?= $subject->category ?></td>
-                </tr>
+                </tr> -->
             <?php
             }
             ?>
