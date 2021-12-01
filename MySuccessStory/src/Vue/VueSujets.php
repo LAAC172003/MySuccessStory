@@ -10,7 +10,7 @@
 
 <body>
     <center>
-    <h1>Liste de tous les sujets</h1>
+        <h1>Liste de tous les sujets</h1>
         <table class="table">
             <th>Id Sujet</th>
             <th>Sujet</th>
@@ -18,12 +18,11 @@
             <?php
             for ($i = 0; $i < count($subjects); $i++) {
                 $subject = $subjects[$i];
-                // var_dump($subject);
             ?>
                 <tr>
-                    <td><?= $subject['idSubject'] ?></td>
-                    <td><?= $subject['name'] ?></td>
-                    <td><?= $subject['category'] ?></td>
+                    <td><?= $subject->idSubject ?></td>
+                    <td><?= $subject->name ?></td>
+                    <td><?= $subject->category ?></td>
                 </tr>
             <?php
             }

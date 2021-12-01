@@ -8,7 +8,7 @@ class ControleurNotes
 {
     public function notes()
     {
-        require_once '../src/Modele/identifiants.php';
+        require_once '../src/Api/identifiants.php';
         require '../src/Vue/VueNotes.php';
     }
 }

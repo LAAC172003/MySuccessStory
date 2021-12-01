@@ -1,12 +1,9 @@
 <?php
-
-namespace MySuccessStory\Modele;
-
+// namespace MySuccessStory\Api\Model;
+// use mysqli;
 include "identifiants.php";
 
-use mysqli;
-
-class SqlConnetionClass
+class SqlConnectionClass
 {
 
 	protected $connection;

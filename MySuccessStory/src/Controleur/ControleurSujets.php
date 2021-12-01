@@ -3,15 +3,37 @@
 
 namespace MySuccessStory\Controleur;
 
-use MySuccessStory\Modele\SqlConnetionClass;
-use MySuccessStory\Modele\Subjects;
-
 class ControleurSujets
 {
     public function subjects()
     {
-        $db = new SqlConnetionClass(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $subjects = Subjects::getSubjects($db,"SELECT idSubject,s.name,c.name as 'category' from subject s inner join category c on s.idCategory=c.idCategory");
-        require '../src/Vue/VueSujets.php';
+        require_once '../src/Api/Model/functions.php';
+        if (refreshCookie()) {
+            $curl = curl_init();
+            $bearer = $_COOKIE['BearerCookie'];
+            //faire gestion des erreurs
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://mysuccessstoryapi/src/Api/controlleur/subjects',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    "Bearer: $bearer",
+                    'Authorization: Basic'
+                ),
+            ));
+            $subjects = json_decode(curl_exec($curl));
+        }
+        if (isset($subjects->message)) {
+            echo $subjects->message;
+        } elseif ($subjects == null) {
+            echo "Invalid token";
+        } else {
+            require '../src/Vue/VueSujets.php';
+        }
     }
 }
