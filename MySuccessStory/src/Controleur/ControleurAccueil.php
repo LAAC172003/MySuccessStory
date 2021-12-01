@@ -1,14 +1,13 @@
 <?php
 
 namespace MySuccessStory\Controleur;
-
-use MySuccessStory\Modele\Fonctions;
-
+// use MySuccessStory\Modele\Notes;
+// use MySuccessStory\Modele\SqlConnetionClass;
 class ControleurAccueil
 {
     public function accueil()
     {
-        $test = Fonctions::test();
+        require_once '../src/Modele/Sujets.php';
 
         require '../src/Vue/VueAccueil.php';
     }
