@@ -1,17 +1,15 @@
 <?php
 
 use MySuccessStory\Api\Model\Subjects;
-// use MySuccessStory\Api\Model\SqlConnectionClass;
 
 require_once '../Model/SqlConnectionClass.php';
-require_once '../Model/Notes.php';
 require_once '../Model/Sujets.php';
 require_once '../Model/functions.php';
 
 $subjects = new Subjects();
 $db = new SqlConnectionClass(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if (isset($_SERVER['HTTP_BEARER'])) {
-    $authHeader = $_SERVER['HTTP_BEARER']; // "jwtTest"; //
+    $authHeader = $_SERVER['HTTP_BEARER'];
     if (is_jwt_valid($authHeader)) {
         try {
             if (!empty($_GET['demande'])) {
@@ -38,6 +36,9 @@ if (isset($_SERVER['HTTP_BEARER'])) {
             ];
             echo json_encode($erreur, JSON_UNESCAPED_UNICODE);
         }
+    } else {
+        http_response_code(400);
+        echo "Invalid Token";
     }
 } else {
     http_response_code(401);

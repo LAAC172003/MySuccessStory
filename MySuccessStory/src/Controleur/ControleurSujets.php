@@ -11,7 +11,6 @@ class ControleurSujets
         if (refreshCookie()) {
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
-            //faire gestion des erreurs
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'http://mysuccessstoryapi/src/Api/controlleur/subjects',
                 CURLOPT_RETURNTRANSFER => true,

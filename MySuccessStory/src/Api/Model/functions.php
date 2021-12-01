@@ -1,11 +1,11 @@
 <?php
-const TIME = 5000;
+const TIME = 3600;
 function refreshCookie()
 {
     if (isset($_COOKIE['BearerCookie'])) {
         return true;
     } else {
-        setcookie("BearerCookie", generate_jwt(), time() + TIME); //(86400 * 7));
+        setcookie("BearerCookie", generate_jwt(), time() + TIME);
         header("Refresh:0 ");
         return false;
     }

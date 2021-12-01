@@ -1,6 +1,4 @@
 <?php
-// namespace MySuccessStory\Api\Model;
-// use mysqli;
 include "identifiants.php";
 
 class SqlConnectionClass
