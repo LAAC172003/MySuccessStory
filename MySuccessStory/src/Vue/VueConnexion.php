@@ -11,12 +11,14 @@
 <body>
     <h1>Login</h1>
     <form method="post" action="">
-        <div class="text-center">
-            <a id="ConnectionButton" class="btn" href="#" role="button"><span>Se connecter avec Eduge</span></a>
-        </div>
+        <label>Email :
+            <input name="email" type="text"></input>
+        </label>
+
+        <label>Mot de passe :
+            <input name="password" type="password"></input>
+        </label>
     </form>
-    <script src="../assets/js/login.js"></script>
-    <script src="../assets/js/eelauth.js"></script>
 </body>
 
 </html>

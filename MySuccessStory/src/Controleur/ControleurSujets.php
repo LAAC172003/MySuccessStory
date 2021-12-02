@@ -11,7 +11,7 @@ class ControleurSujets
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'github/MySuccessStory/MySuccessStory/src/Api/controlleur/subjects',
+                CURLOPT_URL => 'http://mysuccessstoryapi/src/Api/controlleur/',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -25,6 +25,7 @@ class ControleurSujets
                 ),
             ));
             $subjects = json_decode(curl_exec($curl));
+        var_dump($subjects,$_COOKIE);
         }
         if (isset($subjects->message)) {
             echo $subjects->message;

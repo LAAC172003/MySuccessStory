@@ -17,8 +17,17 @@ if (isset($_SERVER['HTTP_BEARER'])) {
                 switch ($url[1]) {
                     case 'subjects':
                         if (empty($url[2])) {
-                            $subjects->getSubjects($db, "SELECT * FROM `articles` ");
+                            $subjects->getSubjects($db, "SELECT idSubject,s.name,c.name as 'category' from subject s inner join category c on s.idCategory=c.idCategory");
                             http_response_code(201);
+                        }
+                        break;
+                    case 'user':
+                        if (!empty($url[2])) {
+                            $mail = $url[2];
+                            $user->getUserByEmail($db, "SELECT email FROM user WHERE email = $mail");
+                        } else {
+                            http_response_code(400);
+                            throw new Exception("la demande n'est pas valide, vérifiez l'url");
                         }
                         break;
                     default:
