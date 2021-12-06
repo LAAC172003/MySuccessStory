@@ -3,13 +3,14 @@
 
 //Controller class
 use Pecee\SimpleRouter\SimpleRouter;
-use MySuccessStory\ControllerClasses\ControllerHome;
-use MySuccessStory\ControllerClasses\ControllerSubjects;
+use MySuccessStory\controllerClasses\ControllerHome;
+use MySuccessStory\controllerClasses\ControllerSubjects;
 
 ///API///
-use MySuccessStory\api\ControllerApi;
+use MySuccessStory\api\controller\index;
 
-SimpleRouter::get('/api', [ControllerApi::class, 'indexApi']);
+SimpleRouter::get('/api/{data?}', [index::class, 'indexApi']);
+// SimpleRouter::get('/test/show/{name?}', [TestController::class, 'show']);
 ///FIN API///
 
 //Controllers functions

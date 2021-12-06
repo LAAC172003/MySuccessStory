@@ -1,27 +1,22 @@
 <?php
 
-// appel du namespace
+namespace MySuccessStory\api\controller;
 
-namespace MySuccessStory\api;
-
-use MySuccessStory\API\Model\Subject;
-use MySuccessStory\API\Model\SqlConnectionClass;
+use MySuccessStory\api\model\Subject;
+use MySuccessStory\api\model\SqlConnectionClass;
 use Exception;
 
-require_once '../model/SqlConnectionClass.php';
-require_once '../model/Subject.php';
-require_once '../model/functions.php';
+require_once "../src/api/model/functions.php";
 
-class ControllerApi
+class index
 {
-    public static function indexApi()
+    public static function indexApi($data)
     {
         // class subjects
         $subjects = new Subject();
 
         // class db
         $db = new SqlConnectionClass(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
         // si l'HTTP_BEARER existe
         if (isset($_SERVER['HTTP_BEARER'])) {
 
@@ -31,41 +26,19 @@ class ControllerApi
             // si le token jwt est valide
             if (is_jwt_valid($authHeader)) {
                 try {
-
                     // si la demande n'est pas vide
-                    if (!empty($_GET['demande'])) {
+                    if (!empty($data)) {
 
                         // sépare la chaîne de caractères en un tableau de chaînes de caractères
-                        $url = explode("/", filter_var($_GET['demande'], FILTER_SANITIZE_URL));
-
-                        switch ($url[1]) {
+                        switch ($data) {
                             case 'subjects':
+                                // on récupère un tableau avec les subjects
+                                $subjects->getSubjects($db, "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory=c.idCategory");
 
-                                // si il n'y a pas de valeur après API/subjects/
-                                if (empty($url[2])) {
-
-                                    // on récupère un tableau avec les subjects
-                                    $subjects->getSubjects(
-                                        $db,
-                                        "SELECT idSubject,s.name,c.name AS 'category' FROM subject s
-                                INNER JOIN category c ON s.idCategory=c.idCategory"
-                                    );
-
-                                    // on définit le code d'état de réponse HTTP (la requête a réussi et une ressource a été créée)
-                                    http_response_code(201);
-                                }
+                                // on définit le code d'état de réponse HTTP (la requête a réussi et une ressource a été créée)
+                                http_response_code(201);
                                 break;
-                                // case 'user':
-                                //     if (!empty($url[2])) {
-                                //         $mail = $url[2];
-                                //         $user->getUserByEmail($db, "SELECT email FROM user WHERE email = $mail");
-                                //     } else {
-                                //         http_response_code(400);
-                                //         throw new Exception("la demande n'est pas valide, vérifiez l'url");
-                                //     }
-                                //     break;
                             default:
-
                                 // on définit le code d'état de réponse HTTP (syntaxe invalide)
                                 http_response_code(400);
                                 throw new Exception("la demande n'est pas valide, vérifiez l'url");

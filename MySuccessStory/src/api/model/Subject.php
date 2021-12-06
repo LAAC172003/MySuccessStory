@@ -1,6 +1,6 @@
 <?php
 
-namespace MySuccessStory\API\Model;
+namespace MySuccessStory\api\model;
 
 class Subject
 {
