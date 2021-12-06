@@ -1,17 +1,17 @@
 <?php
 
-namespace MySuccessStory\Controleur;
+namespace MySuccessStory\ControllerClasses;
 
-class ControleurSujets
+class ControllerSubjects
 {
     public function subjects()
     {
-        require_once '../src/Api/Model/functions.php';
+        require_once '../Src/API/Model/functions.php';
         if (refreshCookie()) {
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://mysuccessstoryapi/src/Api/controlleur/',
+                CURLOPT_URL => 'http://mysuccessstoryapi/Src/API/controller/subjects',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -25,14 +25,14 @@ class ControleurSujets
                 ),
             ));
             $subjects = json_decode(curl_exec($curl));
-        var_dump($subjects,$_COOKIE);
+            var_dump($subjects, $_COOKIE);
         }
         if (isset($subjects->message)) {
             echo $subjects->message;
         } elseif ($subjects == null) {
             echo "Invalid token";
         } else {
-            require '../src/Vue/VueSujets.php';
+            require '../Src/View/ViewSubjects.php';
         }
     }
 }
