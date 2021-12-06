@@ -6,6 +6,6 @@ class ControllerHome
 {
     public function home()
     {
-        require '../Src/View/ViewHome.php';
+        require '../src/view/viewHome.php';
     }
 }

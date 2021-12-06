@@ -2,7 +2,7 @@
 const TIME = 3600;
 function refreshCookie()
 {
-    //si le cookie existe return true sinon creer un cookie avec le token jwt + un timer de TIME et en plus de ça s'il existe pas plus on refresh la page
+    // crée un nouveau token et recharge la page s'il n'existe pas
     if (isset($_COOKIE['BearerCookie'])) {
         return true;
     } else {

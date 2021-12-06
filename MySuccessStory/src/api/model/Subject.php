@@ -1,8 +1,8 @@
 <?php
 
-namespace MySuccessStory\api\model;
+namespace MySuccessStory\API\Model;
 
-class Subjects
+class Subject
 {
     public static function getSubjects($db, $sql)
     {
@@ -10,7 +10,5 @@ class Subjects
         $GLOBALS["subjects"] = $getSubjects->fetchAll();
         $db->close();
         echo json_encode($GLOBALS["subjects"], JSON_UNESCAPED_UNICODE);
-        
-        // return $result;
     }
 }

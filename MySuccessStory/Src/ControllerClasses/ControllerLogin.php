@@ -6,7 +6,6 @@ class ControllerLogin
 {
     public function connexion()
     {
-        
-        require '../Src/View/ViewLogin.php';
+        require '../src/view/viewLogin.php';
     }
 }

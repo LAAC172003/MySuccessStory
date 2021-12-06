@@ -1,8 +1,8 @@
 <?php
 
-namespace MySuccessStory\Api\Model;
+namespace MySuccessStory\API\Model;
 
-class Subjects
+class User
 {
     public static function getUserByEmail($db, $sql)
     {
@@ -12,7 +12,7 @@ class Subjects
             $db->close();
             echo json_encode($GLOBALS["user"], JSON_UNESCAPED_UNICODE);
         } else {
-            echo "Vous n'avaz pas renseigné le bon email !";
+            echo "Vous n'avez pas renseigné le bon email !";
         }
     }
 }

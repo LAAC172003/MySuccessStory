@@ -6,7 +6,6 @@ class ControllerRegister
 {
     public function register()
     {
-
-        require '../Src/View/ViewRegister.php';
+        require '../src/view/viewRegister.php';
     }
 }

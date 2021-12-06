@@ -114,8 +114,7 @@ abstract class Route implements IRoute
     protected function parseParameters($route, $url, $parameterRegex = null): ?array
     {
         $regex = (strpos($route, $this->paramModifiers[0]) === false) ? null :
-            sprintf
-            (
+            sprintf(
                 static::PARAMETERS_REGEX_FORMAT,
                 $this->paramModifiers[0],
                 $this->paramOptionalSymbol,
@@ -614,5 +613,4 @@ abstract class Route implements IRoute
     {
         return $this->filterEmptyParams;
     }
-
 }

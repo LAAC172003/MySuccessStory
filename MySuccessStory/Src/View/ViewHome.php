@@ -10,7 +10,8 @@
 
 <body>
   <p>Accueil</p>
-  <p>Accuei2l</p>
+  <!-- http://successstory.cfpti.ch -->
+  <a href="../api/Controller/index.php">api</a>
 </body>
 
 </html>

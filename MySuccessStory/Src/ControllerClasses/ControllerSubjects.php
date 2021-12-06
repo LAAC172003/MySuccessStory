@@ -6,12 +6,12 @@ class ControllerSubjects
 {
     public function subjects()
     {
-        require_once '../Src/API/Model/functions.php';
+        require_once '../src/api/model/functions.php';
         if (refreshCookie()) {
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://mysuccessstoryapi/Src/API/controller/subjects',
+                CURLOPT_URL => 'http://mysuccessstoryapi/src/api/controller/subjects',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -32,7 +32,7 @@ class ControllerSubjects
         } elseif ($subjects == null) {
             echo "Invalid token";
         } else {
-            require '../Src/View/ViewSubjects.php';
+            require '../src/view/viewSubjects.php';
         }
     }
 }
