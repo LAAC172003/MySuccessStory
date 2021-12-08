@@ -8,16 +8,19 @@ use Exception;
 
 require_once "../src/api/model/functions.php";
 
-class index
+class Index
 {
-    public static function indexApi($data)
+    public static function homeApi()
+    {
+        echo "Welcome to the api";
+    }
+    public static function api($data)
     {
         // class subjects
         $subjects = new Subject();
-
         // class db
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        // si l'HTTP_BEARER existe
+        // si l'HTTP_BEARER existe 
         if (isset($_SERVER['HTTP_BEARER'])) {
             $authHeader = $_SERVER['HTTP_BEARER'];
             // si le token jwt est valide
@@ -57,9 +60,5 @@ class index
             http_response_code(401);
             echo "Error : No Authentification token";
         }
-    }
-    public static function homeApi()
-    {
-        echo "Welcome to the api";
     }
 }

@@ -9,8 +9,8 @@ use MySuccessStory\Controllers\ControllerSubjects;
 ///API///
 use MySuccessStory\api\controller\index;
 
-SimpleRouter::get('/api', [index::class, 'homeApi']);
-SimpleRouter::get('/api/{data?}', [index::class, 'indexApi']);
+SimpleRouter::get('/api', [Index::class, 'homeApi']);
+SimpleRouter::get('/api/{data?}', [Index::class, 'api']);
 // SimpleRouter::get('/test/show/{name?}', [TestController::class, 'show']);
 ///FIN API///
 
