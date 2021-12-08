@@ -5,7 +5,7 @@ namespace MySuccessStory\api\model;
 use mysqli;
 
 include "identifiers.php";
-class SqlConnectionClass
+class SqlConnection
 {
 
 	protected $connection;

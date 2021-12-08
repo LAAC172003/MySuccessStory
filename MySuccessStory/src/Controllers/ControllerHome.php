@@ -1,6 +1,6 @@
 <?php
 
-namespace MySuccessStory\ControllerClasses;
+namespace MySuccessStory\Controllers;
 
 class ControllerHome
 {
