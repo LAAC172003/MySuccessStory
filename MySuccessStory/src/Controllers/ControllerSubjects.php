@@ -2,12 +2,14 @@
 
 namespace MySuccessStory\Controllers;
 
+use MySuccessStory\api\model\Functions;
+
 class ControllerSubjects
 {
     public function subjects()
     {
-        require_once '../src/api/model/functions.php';
-        if (refreshCookie()) {
+        $functions = new Functions();
+        if ($functions->refreshCookie()) {
             $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
             curl_setopt_array($curl, array(
