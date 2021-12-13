@@ -12,12 +12,13 @@
     <h1>Login</h1>
     <form method="post" action="">
         <label>Email :
-            <input name="email" type="text"></input>
+            <input name="email" type="text" required></input>
         </label>
 
         <label>Mot de passe :
-            <input name="password" type="password"></input>
-        </label>
+            <input name="pwd" type="password" required></input>
+        </label><br>
+        <input type="submit" name="loginValidate">
     </form>
 </body>
 

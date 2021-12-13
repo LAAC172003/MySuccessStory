@@ -1,46 +1,50 @@
 <?php
 
-namespace MySuccessStory\api\model;
-
+namespace MySuccessStory\Api\Model;
+//class who contains all the global methods on the website
 class Functions
 {
-    //CONSTANTES
+    //CONST
+    public $DAYS_WEEK = 7;
+    public $DAYS_MONTH = 30;
+
+    //an hour in seconds
     public $TIME = 3600;
 
-    //Encode en base 64
-    public function base64url_encode($str)
+    //encode the url in base64  
+    public function urlEncode($str)
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
-
+    //refresh the cookie when it's expired
     public function refreshCookie()
     {
-        // crée un nouveau token et recharge la page s'il n'existe pas
         if (isset($_COOKIE['BearerCookie'])) {
             return true;
         } else {
-            setcookie("BearerCookie", $this->generate_jwt(), time() + $this->TIME);
+            setcookie("BearerCookie", $this->jwtGenerator(), time() + $this->TIME);
+            // setcookie("BearerCookie", $this->jwtGenerator(), time() + $this->TIME * $this->DAYS_MONTH);
             header("Refresh:0 ");
             return false;
         }
     }
-    ///génération de token
-    public function generate_jwt($secret = 'secret')
+    ///generate a jwt token
+    public function jwtGenerator($secret = 'secret')
     {
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
-        $payload = array('sub' => '1587426934', 'name' => 'Lucas Costa', 'admin' => true, 'exp' => (time() + $this->TIME));
+        $payload = array('sub' => '1587426934', 'name' => 'nameHere', 'admin' => true, 'exp' => (time() + $this->TIME));
 
-        $headers_encoded = $this->base64url_encode(json_encode($headers));
-        $payload_encoded = $this->base64url_encode(json_encode($payload));
-        $signature = hash_hmac('SHA256', "$headers_encoded.$payload_encoded", $secret, true);
-        $signature_encoded = $this->base64url_encode($signature);
+        $encodedHeaders = $this->urlEncode(json_encode($headers));
+        $encodedPayload = $this->urlEncode(json_encode($payload));
+        $signature = hash_hmac('SHA256', "$encodedHeaders.$encodedPayload", $secret, true);
+        $encodedSignature = $this->urlEncode($signature);
 
-        $jwt = "$headers_encoded.$payload_encoded.$signature_encoded";
+        $jwt = "$encodedHeaders.$encodedPayload.$encodedSignature";
 
         return $jwt;
     }
-
-    public function is_jwt_valid($jwt, $secret = 'secret')
+    //check if the token is valid
+    public function isJwtValid($jwt, $secret = 'secret')
     {
         if ($jwt == "jwtTest") {
             return true;
@@ -54,22 +58,21 @@ class Functions
 
         // check the expiration time - note this will cause an error if there is no 'exp' claim in the jwt
         $expiration = json_decode($payload)->exp;
-        $is_token_expired = ($expiration - time()) < 0;
+        $isTokenExpired = ($expiration - time()) < 0;
 
         // build a signature based on the header and payload using the secret
-        $base64_url_header = $this->base64url_encode($header);
-        $base64_url_payload = $this->base64url_encode($payload);
-        $signature = hash_hmac('SHA256', $base64_url_header . "." . $base64_url_payload, $secret, true);
-        $base64_url_signature = $this->base64url_encode($signature);
+        $base64UrlHeader = $this->urlEncode($header);
+        $base64UrlPayload = $this->urlEncode($payload);
+        $signature = hash_hmac('SHA256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true);
+        $base64UrlSignature = $this->urlEncode($signature);
 
         // verify it matches the signature provided in the jwt
-        $is_signature_valid = ($base64_url_signature === $signature_provided);
+        $isSignatureValid = ($base64UrlSignature === $signature_provided);
 
-        if ($is_token_expired || !$is_signature_valid) {
+        if ($isTokenExpired || !$isSignatureValid) {
             return FALSE;
         } else {
             return TRUE;
         }
     }
-    
 }

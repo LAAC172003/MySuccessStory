@@ -39,10 +39,6 @@ BlocDeCode()
 }
 ```
 
-Phrase avec note de pied de page [^1]
-
-[^1]: Note de pied de page
-
 ### Titre avec id personnalisé {#id}
 
 Terme

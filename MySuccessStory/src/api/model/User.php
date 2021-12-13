@@ -1,13 +1,14 @@
 <?php
 
-namespace MySuccessStory\api\model;
-
+namespace MySuccessStory\Api\Model;
+//class who contains all the functions that are related to the user
 class User
 {
-    public static function getUserByEmail($db, $sql)
+    //return a user using its email (index.php(api))
+    public static function user($db, $sql)
     {
-        $getSubjects = $db->query("$sql");
-        $GLOBALS["user"] = $getSubjects->fetchAll();
+        $user = $db->query("$sql");
+        $GLOBALS["user"] = $user->fetchAll();
         if (count($GLOBALS['user']) > 0) {
             $db->close();
             echo json_encode($GLOBALS["user"], JSON_UNESCAPED_UNICODE);
@@ -15,16 +16,14 @@ class User
             echo "Vous n'avez pas renseigné le bon email !";
         }
     }
+    //create a new user
     public function createNewAccount($email, $pwd, $firstName, $lastName)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $compte = $db->query('INSERT INTO user (email,password,firstName,lastName) VALUES (?,?,?,?)', $email, $pwd, $firstName, $lastName);
+        $compte = $db->query('INSERT INTO user (email,password,firstName,lastName) VALUES (?,?,?,?)', $email . "@eduge.ch", $pwd, $firstName, $lastName);
     }
-    public function emailUsers($db, $sql)
-    {
-        $getSubjects = $db->query("$sql");
-        $GLOBALS["user"] = $getSubjects->fetchAll();
-        $db->close();
-        echo json_encode($GLOBALS["user"], JSON_UNESCAPED_UNICODE);
-    }
+    //return all the emails in the database (index.php(api))
+   
+    //return the user logged (index.php(api))
+    
 }

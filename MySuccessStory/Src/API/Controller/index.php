@@ -2,58 +2,83 @@
 
 namespace MySuccessStory\api\controller;
 
-use MySuccessStory\api\model\Subject;
-use MySuccessStory\api\model\User;
-use MySuccessStory\api\model\SqlConnection;
-use MySuccessStory\api\model\Functions;
+use MySuccessStory\Api\Model\Subject;
+use MySuccessStory\Api\Model\User;
+use MySuccessStory\Api\Model\Note;
+use MySuccessStory\Api\Model\SqlConnection;
+use MySuccessStory\Api\Model\Functions;
 use Exception;
 
-// require_once "../src/api/model/functions.php";
-
+//class who contains all the api methods
 class Index
 {
     public function apiHome()
     {
         echo "Welcome to the api";
     }
-    ///
-    public function apiFunctions($data = "rien", $email = "")
+    ///api functions
+    public function apiFunctions($data = "", $prenom = "", $nom = "")
     {
-        //initialisation des classes    
-        $functionsUsers = new User();
+        //initialize classes
         $functionsSubjects = new Subject();
+        $functionsUsers = new User();
+        $functionNotes = new Note();
+
         $functions = new Functions();
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-        // si l'HTTP_BEARER existe 
         if (isset($_SERVER['HTTP_BEARER'])) {
             $authHeader = $_SERVER['HTTP_BEARER'];
-            // si le token jwt est valide
-            if ($functions->is_jwt_valid($authHeader)) {
+
+            //check if the bearer token is valid
+            if ($functions->isJwtValid($authHeader)) {
                 try {
-                    // si la demande n'est pas vide
                     if (!empty($data)) {
                         switch ($data) {
                             case 'subjects':
-                                // on récupère un tableau avec les subjects
                                 $functionsSubjects->getSubjects($db, "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory=c.idCategory");
-                                // on définit le code d'état de réponse HTTP (la requête a réussi et une ressource a été créée)
+                                //201 Created
                                 http_response_code(201);
                                 break;
-                            case 'emailUsers':
-                                //encoder l'email dans l'url ? 
-                                //urlencode($variable)
-                                //urldecode($variable)
-                                if (!empty($email)) {
-                                    $functionsUsers->getUserByEmail($db, "SELECT email from user where email = '$email'");
+                            case 'user':
+                                if (!empty($prenom) && !empty($nom)) {
+                                    $functionsUsers->user($db, "SELECT email from user where email = '$prenom.$nom@eduge.ch'");
                                     http_response_code(201);
                                 } else {
-                                    $functionsUsers->emailUsers($db, "SELECT email FROM user");
+                                    $functionsUsers->user($db, "SELECT email FROM user");
                                     http_response_code(201);
                                 }
                                 break;
+                            case 'login':
+                                ////
+                                //revoir propreté code !
+                                ////
+
+                                $email = "$prenom.$nom@eduge.ch";
+
+                                $functionsUsers->user($db,  "SELECT
+                                email,
+                                `password`
+                            FROM
+                                `user`
+                            WHERE
+                                email = '$email' AND `password` =(
+                                SELECT
+                                    `password`
+                                FROM
+                                    `user`
+                                WHERE
+                                    email = '$email'
+                            )");
+
+                                http_response_code(201);
+                                break;
+                            case 'notes':
+                                $functionNotes->getNotes($db, "SELECT * from note join user on note.idUser = user.idUser join period on note.idPeriod = period.idPeriod join subject on note.idSubject = subject.idSubject");
+                                http_response_code(201);
+                                break;
                             default:
-                                // on définit le code d'état de réponse HTTP (syntaxe invalide)
+                                //400 Bad Request
                                 http_response_code(400);
                                 throw new Exception("la demande n'est pas valide, vérifiez l'url");
                         }
@@ -73,7 +98,7 @@ class Index
                 echo "Invalid Token";
             }
         } else {
-            // on définit le code d'état de réponse HTTP (accès non autorisé)
+            // 401 Unauthorized
             http_response_code(401);
             echo "Error : No Authentification token";
         }

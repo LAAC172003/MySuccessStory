@@ -1,10 +1,12 @@
 <?php
 
-namespace MySuccessStory\api\model;
+namespace MySuccessStory\Api\Model;
 
 use mysqli;
 
 include "identifiers.php";
+
+//class who contains the sql connection and its methods
 class SqlConnection
 {
 
@@ -13,7 +15,7 @@ class SqlConnection
 	protected $show_errors = TRUE;
 	protected $query_closed = TRUE;
 	public $query_count = 0;
-
+	//connection to the database
 	public function __construct($dbhost = 'localhost', $dbuser = 'root', $dbpass = '', $dbname = '', $charset = 'utf8')
 	{
 		$this->connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
@@ -22,7 +24,7 @@ class SqlConnection
 		}
 		$this->connection->set_charset($charset);
 	}
-
+	//function query the database
 	public function query($query)
 	{
 		if (!$this->query_closed) {
@@ -60,7 +62,7 @@ class SqlConnection
 		return $this;
 	}
 
-
+	//function fetch all the data 
 	public function fetchAll($callback = null)
 	{
 		$params = array();
@@ -87,7 +89,7 @@ class SqlConnection
 		$this->query_closed = TRUE;
 		return $result;
 	}
-
+	//fetch an array of data
 	public function fetchArray()
 	{
 		$params = array();
@@ -107,35 +109,35 @@ class SqlConnection
 		$this->query_closed = TRUE;
 		return $result;
 	}
-
+	//close the connetion to the database
 	public function close()
 	{
 		return $this->connection->close();
 	}
-
+	//function get the number of rows
 	public function numRows()
 	{
 		$this->query->store_result();
 		return $this->query->num_rows;
 	}
-
+	//return the affected rows
 	public function affectedRows()
 	{
 		return $this->query->affected_rows;
 	}
-
+	//return the last id inserted in the database
 	public function lastInsertID()
 	{
 		return $this->connection->insert_id;
 	}
-
+	//return an error 
 	public function error($error)
 	{
 		if ($this->show_errors) {
 			exit($error);
 		}
 	}
-
+	//return the type
 	private function _gettype($var)
 	{
 		if (is_string($var)) return 's';

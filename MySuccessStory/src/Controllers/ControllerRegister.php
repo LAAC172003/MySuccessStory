@@ -2,16 +2,21 @@
 
 namespace MySuccessStory\Controllers;
 
-use MySuccessStory\api\model\Functions;
-use MySuccessStory\api\model\User;
+use MySuccessStory\Api\Model\Functions;
+use MySuccessStory\Api\Model\User;
 
 class ControllerRegister
 {
     public function register()
     {
+        //if a user is logged
+        if (isset($_COOKIE['email'])) {
+            header("Location:http://mysuccessstory/");
+        }
+        //variables
         $functions = new Functions();
         $users = new User();
-        // require_once '../src/api/model/functions.php';
+
         @$pwd = $_POST["pwd"];
         @$pwd2 = $_POST["pwd2"];
         @$validate = $_POST["validate"];
@@ -20,6 +25,7 @@ class ControllerRegister
         @$lastName = $_POST["lastName"];
         @$error = "";
 
+        //check if all the fields are fill with informations
         if (isset($validate)) {
             if (empty($firstName))  echo $erreur = "prenom laissé vide!";
             elseif (empty($lastName))  echo $erreur = "nom laissé vide!";
@@ -27,11 +33,15 @@ class ControllerRegister
             elseif (empty($pwd)) echo $erreur = "Mot de passe laissé vide!";
             elseif ($pwd != $pwd2) echo $erreur = "Mots de passe non identiques!";
             else {
+                //collect the first part (firstname) and the second part (lastname)
+                $emailParts = explode(".", $email);
+
+                //collect the data in json
                 if ($functions->refreshCookie()) {
                     $curl = curl_init();
                     $bearer = $_COOKIE['BearerCookie'];
                     curl_setopt_array($curl, array(
-                        CURLOPT_URL => "http://mysuccessstory/api/emailUsers/$email",
+                        CURLOPT_URL => "http://mysuccessstory/api/user/$emailParts[0]/$emailParts[1]",
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => '',
                         CURLOPT_MAXREDIRS => 10,
@@ -47,6 +57,7 @@ class ControllerRegister
                     $compte = json_decode(curl_exec($curl));
                     var_dump($compte, $_COOKIE);
 
+                    //check if the account already exists
                     if ($compte != null) {
                         echo $error = "Login existe déjà!";
                     } else {

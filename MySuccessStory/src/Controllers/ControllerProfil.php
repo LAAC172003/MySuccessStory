@@ -4,18 +4,21 @@ namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
 
-class ControllerSubjects
+class ControllerProfil
 {
-    public function subjects()
+    public function profil()
     {
-        //collect the data in json
-
         $functions = new Functions();
+        // if (isset($_COOKIE['email'])) {
+        // } else {
+
+        // }
+
         if ($functions->refreshCookie()) {
-            $curl = curl_init();
             $bearer = $_COOKIE['BearerCookie'];
+            $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://mysuccessstory/api/subjects',
+                CURLOPT_URL => 'http://mysuccessstory/api/notes',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -28,17 +31,11 @@ class ControllerSubjects
                     'Authorization: Basic'
                 ),
             ));
-            $subjects = json_decode(curl_exec($curl));
-            var_dump($subjects, $_COOKIE);
+            $notes = json_decode(curl_exec($curl));
         }
 
-        //error messages 
-        if (isset($subjects->message)) {
-            echo $subjects->message;
-        } elseif ($subjects == null) {
-            echo "Invalid token";
-        } else {
-            require '../src/view/viewSubjects.php';
-        }
+
+
+        require '../src/view/viewProfil.php';
     }
 }

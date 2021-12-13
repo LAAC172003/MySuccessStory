@@ -1,9 +1,10 @@
 <?php
 
-namespace MySuccessStory\api\model;
+namespace MySuccessStory\Api\Model;
 
 class Subject
 {
+    //return all the subjects
     public static function getSubjects($db, $sql)
     {
         $getSubjects = $db->query("$sql");

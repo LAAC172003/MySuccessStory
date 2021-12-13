@@ -15,8 +15,8 @@
         <label>Nom: <input type="text" name="lastName" /></label> <br>
         <label>Mot de passe: <input type="password" name="pwd" /></label> <br>
         <label>Confirmation du mot de passe: <input type="password" name="pwd2" /></label> <br>
-        <label>Adresse e-mail: <input type="text" name="email" /></label><br>
-        <input type="submit" name="validate"/>
+        <label>Adresse e-mail: <input type="text" name="email" /></label>@eduge.ch<br>
+        <input type="submit" name="validate" />
     </form>
 </body>
 
