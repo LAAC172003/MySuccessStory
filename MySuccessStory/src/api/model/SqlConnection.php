@@ -1,5 +1,5 @@
 <?php
-
+//https://codeshack.io/super-fast-php-mysql-database-class/
 namespace MySuccessStory\Api\Model;
 
 use mysqli;
@@ -12,8 +12,8 @@ class SqlConnection
 
 	protected $connection;
 	protected $query;
-	protected $show_errors = TRUE;
-	protected $query_closed = TRUE;
+	protected $show_errors = true;
+	protected $query_closed = true;
 	public $query_count = 0;
 	//connection to the database
 	public function __construct($dbhost = 'localhost', $dbuser = 'root', $dbpass = '', $dbname = '', $charset = 'utf8')
@@ -32,18 +32,17 @@ class SqlConnection
 		}
 		if ($this->query = $this->connection->prepare($query)) {
 			if (func_num_args() > 1) {
-				$x = func_get_args();
-				$args = array_slice($x, 1);
+				$args = array_slice(func_get_args(), 1);
 				$types = '';
 				$args_ref = array();
-				foreach ($args as $k => &$arg) {
-					if (is_array($args[$k])) {
-						foreach ($args[$k] as $j => &$a) {
-							$types .= $this->_gettype($args[$k][$j]);
+				foreach ($args as $key => &$arg) {
+					if (is_array($args[$key])) {
+						foreach ($args[$key] as $j => &$a) {
+							$types .= $this->_gettype($args[$key][$j]);
 							$args_ref[] = &$a;
 						}
 					} else {
-						$types .= $this->_gettype($args[$k]);
+						$types .= $this->_gettype($args[$key]);
 						$args_ref[] = &$arg;
 					}
 				}
@@ -54,7 +53,7 @@ class SqlConnection
 			if ($this->query->errno) {
 				$this->error('Unable to process MySQL query (check your params) - ' . $this->query->error);
 			}
-			$this->query_closed = FALSE;
+			$this->query_closed = false;
 			$this->query_count++;
 		} else {
 			$this->error('Unable to prepare MySQL statement (check your syntax) - ' . $this->connection->error);
@@ -86,7 +85,7 @@ class SqlConnection
 			}
 		}
 		$this->query->close();
-		$this->query_closed = TRUE;
+		$this->query_closed = true;
 		return $result;
 	}
 	//fetch an array of data
@@ -106,7 +105,7 @@ class SqlConnection
 			}
 		}
 		$this->query->close();
-		$this->query_closed = TRUE;
+		$this->query_closed = true;
 		return $result;
 	}
 	//close the connetion to the database

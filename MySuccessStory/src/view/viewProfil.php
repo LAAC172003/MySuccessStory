@@ -11,23 +11,31 @@
 <body>
     <h1>Profil</h1>
     <br>
-        <table class="table">
-            <th>Id note</th>
-            <th>note</th>
-            <th>Sujet</th>
-            <?php
-            for ($i = 0; $i < count($notes); $i++) {
-                $notes = $note[$i];
-            ?>
-                <tr>
-                    <!-- <td><?= $subject->idSubject ?></td> -->
-                    <!-- <td><?= $subject->name ?></td> -->
-                    <!-- <td><?= $subject->category ?></td> -->
-                </tr>
-            <?php
-            }
-            ?>
-        </table>
+    <table class="table">
+        <th>Numéro</th>
+        <th>note</th>
+        <th>sujet</th>
+        <th>année</th>
+        <th>semestre</th>
+        <?php
+
+        for ($i = 0; $i < count($notes); $i++) {
+            $note = $notes[$i];
+        ?>
+            <tr>
+                <td><?= $i + 1 ?></td>
+                <td><?= $note->note ?></td>
+                <td><?= $note->subject ?></td>
+                <td><?= $note->year ?></td>
+                <td><?= $note->semester ?></td>
+                <td><a href="http://mysuccessstory/add">Ajouter</a></td>
+                <td><a href="http://mysuccessstory/edit">Modifier</a></td>
+                <td><a href="http://mysuccessstory/delete">Supprimer</a></td>
+            </tr>
+        <?php
+        }
+        ?>
+    </table>
 </body>
 
 </html>

@@ -47,11 +47,11 @@ class ControllerLogin
                 } else {
                     for ($i = 0; $i < count($login); $i++) {
                         $user = $login[$i];
-                        if ($user->password != $pwd) {
+                        if ($user->password != hash("sha256", $pwd . $user->salt)) {
                             echo "mauvais mdp";
                         } else {
                             setcookie("email", $email, time() + 3600);
-                            setcookie("password", $pwd, time() + 3600);
+                            setcookie("password", hash("sha256", $pwd . $user->salt), time() + 3600);
                             header("Location:http://mysuccessstory/");
                         }
                     }

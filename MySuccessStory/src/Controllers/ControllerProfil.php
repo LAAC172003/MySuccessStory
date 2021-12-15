@@ -9,16 +9,16 @@ class ControllerProfil
     public function profil()
     {
         $functions = new Functions();
-        // if (isset($_COOKIE['email'])) {
-        // } else {
-
-        // }
-
+        if (!isset($_COOKIE['email'])) {
+            header('Location:http://mysuccessstory/');
+        }
+        
         if ($functions->refreshCookie()) {
             $bearer = $_COOKIE['BearerCookie'];
+            $emailParts = explode(".", $_COOKIE['email']);
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://mysuccessstory/api/notes',
+                CURLOPT_URL => "http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -32,6 +32,7 @@ class ControllerProfil
                 ),
             ));
             $notes = json_decode(curl_exec($curl));
+            var_dump($notes);
         }
 
 

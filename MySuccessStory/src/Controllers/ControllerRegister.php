@@ -24,6 +24,7 @@ class ControllerRegister
         @$firstName = $_POST["firstName"];
         @$lastName = $_POST["lastName"];
         @$error = "";
+        $salt = rand(1, 100000);
 
         //check if all the fields are fill with informations
         if (isset($validate)) {
@@ -61,13 +62,14 @@ class ControllerRegister
                     if ($compte != null) {
                         echo $error = "Login existe déjà!";
                     } else {
-                        $users->CreateNewAccount($email, $pwd, $firstName, $lastName);
+                        echo getType(hash("sha256", $pwd, $salt));
+                        $users->CreateNewAccount($email, hash("sha256", $pwd . $salt), $salt, $firstName, $lastName);
                         header("Location:http://mysuccessstory/login");
                     }
                 }
             }
         }
-        var_dump($_POST, $error);
+        // var_dump($_POST, $error);
         require '../src/view/viewRegister.php';
     }
 }

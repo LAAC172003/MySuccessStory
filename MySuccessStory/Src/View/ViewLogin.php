@@ -12,7 +12,7 @@
     <h1>Login</h1>
     <form method="post" action="">
         <label>Email :
-            <input name="email" type="text" required></input>
+            <input name="email" type="text" required></input>@eduge.ch
         </label>
 
         <label>Mot de passe :

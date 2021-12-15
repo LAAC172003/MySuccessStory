@@ -16,7 +16,16 @@ class Index
     {
         echo "Welcome to the api";
     }
-    ///api functions
+
+    /** 
+     * description .........................................
+     * 
+     * @param   string 
+     * @param   string 
+     * @param   string 
+     * 
+     * @return 
+     */
     public function apiFunctions($data = "", $prenom = "", $nom = "")
     {
         //initialize classes
@@ -26,7 +35,7 @@ class Index
 
         $functions = new Functions();
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
+        
         if (isset($_SERVER['HTTP_BEARER'])) {
             $authHeader = $_SERVER['HTTP_BEARER'];
 
@@ -53,28 +62,28 @@ class Index
                                 ////
                                 //revoir propreté code !
                                 ////
-
                                 $email = "$prenom.$nom@eduge.ch";
-
-                                $functionsUsers->user($db,  "SELECT
-                                email,
-                                `password`
-                            FROM
-                                `user`
-                            WHERE
-                                email = '$email' AND `password` =(
-                                SELECT
-                                    `password`
-                                FROM
-                                    `user`
-                                WHERE
-                                    email = '$email'
-                            )");
-
+                                $functionsUsers->user(
+                                    $db,
+                                    "SELECT email, `password`,`salt`
+                                    FROM `user`
+                                    WHERE email = '$email' AND `password` = (                           
+                                        SELECT `password`
+                                        FROM `user`
+                                        WHERE email = '$email'
+                                    )
+                                ");
                                 http_response_code(201);
                                 break;
                             case 'notes':
-                                $functionNotes->getNotes($db, "SELECT * from note join user on note.idUser = user.idUser join period on note.idPeriod = period.idPeriod join subject on note.idSubject = subject.idSubject");
+                                $functionNotes->notes(
+                                    $db,
+                                    "SELECT note, period.year, period.semester, subject.name AS subject, user.firstname, user.lastName
+                                    FROM note
+                                    JOIN period ON note.idPeriod = period.idPeriod
+                                    JOIN `subject` ON subject.idSubject = note.idSubject
+                                    JOIN user ON note.idUser = user.iduser WHERE user.email = '$prenom.$nom@eduge.ch'
+                                ");
                                 http_response_code(201);
                                 break;
                             default:
@@ -103,10 +112,13 @@ class Index
             echo "Error : No Authentification token";
         }
     }
+
     public function __call($method, $arguments)
     {
+
         //ne marche pas
         if ($method == 'api') {
+
             if (count($arguments) == 0) {
                 return call_user_func_array($this->apiHome, array('apiHome'), $arguments);
             } else if (count($arguments) == 1) {

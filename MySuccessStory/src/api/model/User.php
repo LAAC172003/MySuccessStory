@@ -17,13 +17,20 @@ class User
         }
     }
     //create a new user
-    public function createNewAccount($email, $pwd, $firstName, $lastName)
+    public function createNewAccount($email, $pwd, $salt, $firstName, $lastName)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $compte = $db->query('INSERT INTO user (email,password,firstName,lastName) VALUES (?,?,?,?)', $email . "@eduge.ch", $pwd, $firstName, $lastName);
+        $compte = $db->query('INSERT INTO user (email,password,salt,firstName,lastName) VALUES (?,?,?,?,?)', $email . "@eduge.ch", $pwd, $salt, $firstName, $lastName);
     }
-    //return all the emails in the database (index.php(api))
-   
-    //return the user logged (index.php(api))
-    
+
+
+    /* $sql = "UPDATE utilisateurs SET mdp = :mdp, salt = :salt WHERE idUtilisateur = :idUtilisateur";
+            $update = $pdo->prepare($sql);
+
+            $salt = bin2hex(random_bytes(10));
+            $mdp = hash("sha256", $mdp . $salt);
+
+            $update->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $update->bindParam(':mdp', $mdp, PDO::PARAM_STR);
+            $update->bindParam(':salt', $salt, PDO::PARAM_STR); */
 }

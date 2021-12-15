@@ -1,7 +1,10 @@
 <?php
 
 namespace MySuccessStory\Api\Model;
-//class who contains all the global methods on the website
+
+/**
+ * class who contains all the global methods on the website
+ */
 class Functions
 {
     //CONST
@@ -11,12 +14,17 @@ class Functions
     //an hour in seconds
     public $TIME = 3600;
 
-    //encode the url in base64  
+    /**
+     * encode the url in base64
+     */
     public function urlEncode($str)
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
-    //refresh the cookie when it's expired
+
+    /**
+     * refresh the cookie when it's expired
+     */
     public function refreshCookie()
     {
         if (isset($_COOKIE['BearerCookie'])) {
@@ -28,7 +36,10 @@ class Functions
             return false;
         }
     }
-    ///generate a jwt token
+
+    /**
+     * generate a jwt token
+     */
     public function jwtGenerator($secret = 'secret')
     {
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
@@ -43,7 +54,10 @@ class Functions
 
         return $jwt;
     }
-    //check if the token is valid
+
+    /**
+     * check if the token is valid
+     */
     public function isJwtValid($jwt, $secret = 'secret')
     {
         if ($jwt == "jwtTest") {
