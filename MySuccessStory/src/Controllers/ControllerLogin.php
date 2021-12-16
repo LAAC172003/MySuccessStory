@@ -6,6 +6,11 @@ use MySuccessStory\Api\Model\Functions;
 
 class ControllerLogin
 {
+    /**
+     * method to login in the website
+     *
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function login()
     {
         //if a user is logged
@@ -14,34 +19,19 @@ class ControllerLogin
         }
         $functions = new Functions();
         //Login 
+
         if (isset($_POST['loginValidate'])) {
             $email = $_POST['email'];
             $pwd = $_POST['pwd'];
             if ($functions->refreshCookie()) {
-                $curl = curl_init();
-
-                $bearer = $_COOKIE['BearerCookie'];
                 //collect the first part (firstname) and the second part (lastname)
                 $emailParts = explode(".", $email);
+                $login = $functions->curl("http://mysuccessstory/api/login/$emailParts[0]/$emailParts[1]");
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "http://mysuccessstory/api/login/$emailParts[0]/$emailParts[1]",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'GET',
-                    CURLOPT_HTTPHEADER => array(
-                        "Bearer: $bearer",
-                        'Authorization: Basic'
-                    ),
-                ));
-                $login = json_decode(curl_exec($curl));
                 ////////////////////////////////////////////////////////////////
                 ////////////SECURISER!!!!!!/////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////
+                var_dump($login);
                 if ($login == null) {
                     echo "mauvais identifiants";
                 } else {

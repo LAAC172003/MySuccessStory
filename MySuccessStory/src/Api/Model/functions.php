@@ -7,15 +7,21 @@ namespace MySuccessStory\Api\Model;
  */
 class Functions
 {
-    //CONST
+    #region Constants
     public $DAYS_WEEK = 7;
     public $DAYS_MONTH = 30;
+    #endregion
 
-    //an hour in seconds
+    /**
+     * an hour in seconds
+     */
     public $TIME = 3600;
 
     /**
      * encode the url in base64
+     * @param string $str
+     * @return string return the encoded code in base64
+     * @link author https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function urlEncode($str)
     {
@@ -24,6 +30,9 @@ class Functions
 
     /**
      * refresh the cookie when it's expired
+     * @return bool true if the cookie exists ; else creates a new one and refresh the page
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
      */
     public function refreshCookie()
     {
@@ -38,7 +47,10 @@ class Functions
     }
 
     /**
-     * generate a jwt token
+     * generates a token
+     * @param string $secret
+     * @return string returns the jwt token
+     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function jwtGenerator($secret = 'secret')
     {
@@ -57,6 +69,10 @@ class Functions
 
     /**
      * check if the token is valid
+     * @param string $jwt
+     * @param string $secret
+     * @return boolean returns true if it's valid and false when it's not
+     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function isJwtValid($jwt, $secret = 'secret')
     {
@@ -88,5 +104,32 @@ class Functions
         } else {
             return TRUE;
         }
+    }
+    /**
+     * Undocumented function
+     *
+     * @param [type] $url
+     * @return void
+     * @author Flavio <email@email.com>
+     */
+    function curl($url)
+    {
+        $bearer = $_COOKIE['BearerCookie'];
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "$url",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                "Bearer: $bearer",
+                'Authorization: Basic'
+            ),
+        ));
+        return json_decode(curl_exec($curl));
     }
 }

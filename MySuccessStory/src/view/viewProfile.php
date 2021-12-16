@@ -15,6 +15,7 @@
         <th>Numéro</th>
         <th>note</th>
         <th>sujet</th>
+        <th>description</th>
         <th>année</th>
         <th>semestre</th>
         <?php
@@ -26,6 +27,7 @@
                 <td><?= $i + 1 ?></td>
                 <td><?= $note->note ?></td>
                 <td><?= $note->subject ?></td>
+                <td><?= $note->description ?></td>
                 <td><?= $note->year ?></td>
                 <td><?= $note->semester ?></td>
                 <td><a href="http://mysuccessstory/add">Ajouter</a></td>

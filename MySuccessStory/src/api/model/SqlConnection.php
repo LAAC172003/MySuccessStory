@@ -6,7 +6,11 @@ use mysqli;
 
 include "identifiers.php";
 
-//class who contains the sql connection and its methods
+/**
+ * class who contains the sql connection and its methods 
+ * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+ */
+
 class SqlConnection
 {
 

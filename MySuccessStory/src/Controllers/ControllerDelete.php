@@ -4,9 +4,12 @@ namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
 
-class ControllerDeleteNote
+class ControllerDelete
 {
     public function deleteNote()
+    {
+    }
+    public function deleteProfile()
     {
     }
 }

@@ -9,7 +9,9 @@ use MySuccessStory\Api\Model\SqlConnection;
 use MySuccessStory\Api\Model\Functions;
 use Exception;
 
-//class who contains all the api methods
+/**
+ * contain all the api methods
+ */
 class Index
 {
     public function apiHome()
@@ -17,14 +19,13 @@ class Index
         echo "Welcome to the api";
     }
 
-    /** 
-     * description .........................................
-     * 
-     * @param   string 
-     * @param   string 
-     * @param   string 
-     * 
-     * @return 
+    /**
+     * method who contains the api functions
+     *
+     * @param string $data
+     * @param string $prenom
+     * @param string $nom
+     * @return json return informations in an array in json
      */
     public function apiFunctions($data = "", $prenom = "", $nom = "")
     {
@@ -35,7 +36,7 @@ class Index
 
         $functions = new Functions();
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        
+
         if (isset($_SERVER['HTTP_BEARER'])) {
             $authHeader = $_SERVER['HTTP_BEARER'];
 
@@ -45,16 +46,16 @@ class Index
                     if (!empty($data)) {
                         switch ($data) {
                             case 'subjects':
-                                $functionsSubjects->getSubjects($db, "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory=c.idCategory");
+                                $response_json = $functionsSubjects->getSubjects($db, "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory=c.idCategory");
                                 //201 Created
                                 http_response_code(201);
                                 break;
                             case 'user':
                                 if (!empty($prenom) && !empty($nom)) {
-                                    $functionsUsers->user($db, "SELECT email from user where email = '$prenom.$nom@eduge.ch'");
+                                    $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$prenom.$nom@eduge.ch'");
                                     http_response_code(201);
                                 } else {
-                                    $functionsUsers->user($db, "SELECT email FROM user");
+                                    $response_json = $functionsUsers->user($db, "SELECT email FROM user");
                                     http_response_code(201);
                                 }
                                 break;
@@ -63,7 +64,7 @@ class Index
                                 //revoir propreté code !
                                 ////
                                 $email = "$prenom.$nom@eduge.ch";
-                                $functionsUsers->user(
+                                $response_json = $functionsUsers->user(
                                     $db,
                                     "SELECT email, `password`,`salt`
                                     FROM `user`
@@ -72,25 +73,29 @@ class Index
                                         FROM `user`
                                         WHERE email = '$email'
                                     )
-                                ");
+                                "
+                                );
                                 http_response_code(201);
                                 break;
                             case 'notes':
-                                $functionNotes->notes(
+                                $response_json = $functionNotes->notes(
                                     $db,
-                                    "SELECT note, period.year, period.semester, subject.name AS subject, user.firstname, user.lastName
+                                    "SELECT note, period.year, period.semester, subject.name AS subject,subject.description, user.firstname, user.lastName
                                     FROM note
                                     JOIN period ON note.idPeriod = period.idPeriod
                                     JOIN `subject` ON subject.idSubject = note.idSubject
                                     JOIN user ON note.idUser = user.iduser WHERE user.email = '$prenom.$nom@eduge.ch'
-                                ");
+                                "
+                                );
                                 http_response_code(201);
                                 break;
+
                             default:
                                 //400 Bad Request
                                 http_response_code(400);
                                 throw new Exception("la demande n'est pas valide, vérifiez l'url");
                         }
+                        return $response_json;
                     } else {
                         http_response_code(400);
                         throw new Exception("Problème de récupérations de données");
@@ -115,8 +120,7 @@ class Index
 
     public function __call($method, $arguments)
     {
-
-        //ne marche pas
+        // ne marche pas
         if ($method == 'api') {
 
             if (count($arguments) == 0) {

@@ -4,9 +4,16 @@ namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
 use MySuccessStory\Api\Model\User;
-
+/**
+ * class who contains the methods to register
+ */
 class ControllerRegister
 {
+    /**
+     * method to register in the website
+     *
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function register()
     {
         //if a user is logged
