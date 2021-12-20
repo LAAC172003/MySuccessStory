@@ -45,3 +45,4 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 - [Apache](https://httpd.apache.org) - ver. 2.4.46
 - [phpMyAdmin](https://www.phpmyadmin.net) - ver. 5.0.2
 - [MySQL](https://www.mysql.com) - ver. 5.7.31
+- [Postman](https://www.postman.com) - ver.9.5.0
