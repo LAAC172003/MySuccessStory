@@ -7,10 +7,10 @@ use MySuccessStory\Api\Model\Functions;
 class ControllerAdd
 {
     /**
-     * Undocumented function
+     * Add a note on the data base
      *
      * @return void
-     * @author Flavio <email@email.com>
+     * @author flavio.srsrd@eduge.ch
      */
     public function addNote()
     {
@@ -20,19 +20,37 @@ class ControllerAdd
         if ($functions->refreshCookie()) {
             // $emailParts = explode(".", $_COOKIE['email']);
 
+        }
+
+        /**
+        * Show subjects on the form html
+        *
+        * @return 
+        * @author flavio.srsrd@eduge.ch
+        */
+        function showSubject()
+        {
+            // Cookie
+            $functions = new Functions();
+
             // Get subjects from the database
             $subjects = $functions->curl("http://mysuccessstory/api/subjects");
 
-            function showSubjects($subjects)
-            {
-                
-            }
+        }
+
+        /**
+        * Show period on the form html
+        *
+        * @return 
+        * @author flavio.srsrd@eduge.ch
+        */
+        function showPeriod()
+        {
+            // Cookie
+            $functions = new Functions();
 
             // Get periods from the database
             $period = $functions->curl("http://mysuccessstory/api/period");
-
-            // var_dump($notes, $period, $subjects);
-            
         }
         require '../src/view/viewAddNote.php';
     }

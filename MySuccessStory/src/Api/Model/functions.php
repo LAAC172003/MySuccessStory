@@ -132,4 +132,43 @@ class Functions
         ));
         return json_decode(curl_exec($curl));
     }
+    /**
+     * Select a CG note
+     *
+     * @param string $subject
+     * @param string $firstname
+     * @param string $lastname
+     * @return string query 
+     */
+    function selectQueryCG($subject, $firstname, $lastname)
+    {
+        return "SELECT
+        `note`
+    FROM
+        `note`
+    JOIN `subject` ON note.idSubject = `subject`.idSubject
+    WHERE
+        idCategory =(
+        SELECT
+            `idCategory`
+        FROM
+            category
+        WHERE
+            `name` = 'cg'
+    ) AND idUser =(
+        SELECT
+            idUser
+        FROM
+            `user`
+        WHERE
+            `user`.email = '$firstname.$lastname@eduge.ch'
+    ) AND subject.idSubject =(
+        SELECT
+            idSubject
+        FROM
+            `subject`
+        WHERE
+            `name` = '$subject'
+    )";
+    }
 }
