@@ -25,7 +25,7 @@ L'API du projet envoie des données brutes en JSON qui sont récupérées par le
 ![Schéma Site Web](./doc/image/schema.png)
 
 ### 3. Base de données
-Les utilisateurs ont les informations de leurs profils stockées dans la table *User*. Chaque utilisateur peut posséder des notes stockées dans la table *Note*. Chaque note est liée à une certaine matière stockée dans la table *Subject* qui fait partie d'une catégorie de la table *Category*. Les notes sont aussi liée à la période dans laquelle elle a été obtenue dans la table *Period*.
+Les utilisateurs ont les informations de leurs profils stockées dans la table *User*. Chaque utilisateur peut posséder des notes stockées dans la table *Note*. Chaque note est liée à une certaine matière stockée dans la table *Subject* qui fait partie d'une catégorie de la table *Category*. Les notes sont aussi liée à l' année dans laquelle elle a été obtenue dans la table *Year*.
 
 ![Schéma Base de données](./doc/image/database.png)
 

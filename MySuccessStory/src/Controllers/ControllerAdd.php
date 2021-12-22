@@ -36,7 +36,7 @@ class ControllerAdd
                 else
                 {
                     echo "marche pas";
-                    $_POST["note"] = null;
+                    $_POST["note"] = "";
                 }
             }
         }
