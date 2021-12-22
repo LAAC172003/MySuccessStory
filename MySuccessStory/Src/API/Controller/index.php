@@ -91,23 +91,13 @@ class Index
                             case 'notes':
                                 $response_json = $functionNotes->notes(
                                     $db,
-                                    "SELECT
-                                    note,
-                                    period.year,
-                                    period.semester,
-                                    `subject`.name AS `subject`,
-                                    `subject`.description,
-                                    `user`.firstname,
-                                    `user`.lastName
-                                FROM
-                                    note
-                                JOIN period ON note.idPeriod = period.idPeriod
-                                JOIN `subject` ON `subject`.idSubject = note.idSubject
-                                JOIN `user` ON note.idUser = `user`.iduser
-                                WHERE
-                                    `user`.email = '$firstname.$lastname@eduge.ch'
-                                "
-                                );
+                                    "SELECT `idNote`,`note`, `year`.`year`, `semester`, `subject`.`name` AS 'subject', `subject`.`description`, `user`.`firstname`, `user`.`lastName`
+                                    FROM `note`
+                                    JOIN `year` ON `note`.`idYear` = `year`.`idYear`
+                                    JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
+                                    JOIN `user` ON `note`.`idUser` = `user`.`iduser`
+                                    WHERE `user`.`idUser` = '$firstname.$lastname@eduge.ch'
+                                ");
                                 http_response_code(201);
                                 break;
                             case 'getPhysics':

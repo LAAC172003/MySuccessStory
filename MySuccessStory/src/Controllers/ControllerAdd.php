@@ -31,7 +31,7 @@ class ControllerAdd
             {
                 if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
                 {
-                    echo $note;
+                    Note::addNote($note, 15, 8, 1, "Quatrième Année");
                 }
                 else
                 {

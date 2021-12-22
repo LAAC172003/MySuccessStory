@@ -17,7 +17,7 @@ class Note
      * 
      * @author Flavio Soares Rodrigues / Almeida Costa Lucas
      */
-    public function addNote($note, $idUser, $idSubject, $semester, $year)
+    public static function addNote($note, $idUser, $idSubject, $semester, $year)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         $add = $db->query(
@@ -25,7 +25,8 @@ class Note
                 `note`,
                 `idUser`,
                 `idSubject`,
-                `idPeriod`
+                `idYear`,
+                `semester`
             ) 
             VALUES
             (   
@@ -40,11 +41,8 @@ class Note
                     FROM    `subject`
                     WHERE   `idSubject` = $idSubject
                 ),
-                (
-                    SELECT  `idPeriod`
-                    FROM    `period`
-                    WHERE   `semester` = $semester AND `year` = $year
-                )
+                $semester,
+                $year
             )
         "
         );

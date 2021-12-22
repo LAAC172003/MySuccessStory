@@ -18,7 +18,7 @@ class ControllerSubjects
         $functions = new Functions();
         if ($functions->refreshCookie()) {
             $subjects = $functions->curl("http://mysuccessstory/api/subjects");
-            var_dump($subjects, $_COOKIE);
+            //var_dump($subjects, $_COOKIE);
         }
 
         //error messages 
