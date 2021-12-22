@@ -7,10 +7,18 @@
 */
 function showSubject($subjects)
 {
+    $option = "";
+
     foreach ($subjects as $subject)
     {
-        echo "<option value=\"$subject->idSubject\">". $subject->name ."</option>";
-    }   
+        $option .= "<option value=\"$subject->idSubject\">". $subject->name ."</option>";
+    }
+    return $option;
+}
+
+function jhg()
+{
+
 }
 ?>
 
@@ -39,10 +47,7 @@ function showSubject($subjects)
             <div>
                 <label name="subjects" for="subjects">nom de la matière</label>
                 <select id="subjects" name="subjects">
-                    <?php
-                        // show all the subjects
-                        showSubject($subjects);
-                    ?>
+                    <?= showSubject($subjects); ?>
                 </select>
             </div>
 

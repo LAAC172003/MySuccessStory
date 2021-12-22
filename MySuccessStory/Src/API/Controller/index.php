@@ -3,7 +3,7 @@
 namespace MySuccessStory\api\controller;
 
 use MySuccessStory\Api\Model\Subject;
-use MySuccessStory\Api\Model\Period;
+use MySuccessStory\Api\Model\Year;
 use MySuccessStory\Api\Model\User;
 use MySuccessStory\Api\Model\Note;
 use MySuccessStory\Api\Model\SqlConnection;
@@ -32,7 +32,7 @@ class Index
     {
         //initialize classes
         $functionsSubjects = new Subject();
-        $functionsPeriods = new Period();
+        $functionsYears = new Year();
         $functionsUsers = new User();
         $functionNotes = new Note();
 
@@ -53,8 +53,8 @@ class Index
                                 http_response_code(201);
                                 break;
 
-                            case 'periods':
-                                $response_json = $functionsPeriods->getPeriods($db, "SELECT idPeriod, year, semester FROM period");
+                            case 'year':
+                                $response_json = $functionsYears->getYears($db, "SELECT idYear, year, FROM year");
                                 //201 Created
                                 http_response_code(201);
                                 break;
