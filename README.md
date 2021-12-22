@@ -29,8 +29,6 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 
 ![Schéma Base de données](./doc/image/database.png)
 
-### 4. Règles de nommage
-
 ### 5. Liens
 - [Site Web](https://successstory.cfpti.ch)
 - [Mandat](https://docs.google.com/document/d/16Rj2KkcCFHPPHjjAMmvoyeppWsdiO9JN/edit?usp=sharing&ouid=106752474556925767372&rtpof=true&sd=true)
