@@ -24,11 +24,11 @@ class Index
      * method who contains the api functions
      *
      * @param string $data
-     * @param string $prenom
-     * @param string $nom
+     * @param string $firstname
+     * @param string $lastname
      * @return json return informations in an array in json
      */
-    public function apiFunctions($data = "", $prenom = "", $nom = "")
+    public function apiFunctions($data = "", $firstname = "", $lastname = "")
     {
         //initialize classes
         $functionsSubjects = new Subject();
@@ -60,8 +60,8 @@ class Index
                                 break;
 
                             case 'user':
-                                if (!empty($prenom) && !empty($nom)) {
-                                    $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$prenom.$nom@eduge.ch'");
+                                if (!empty($firstname) && !empty($lastname)) {
+                                    $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$firstname.$lastname@eduge.ch'");
                                     http_response_code(201);
                                 } else {
                                     $response_json = $functionsUsers->user($db, "SELECT email FROM user");
@@ -73,7 +73,7 @@ class Index
                                 ////
                                 //revoir propreté code !
                                 ////
-                                $email = "$prenom.$nom@eduge.ch";
+                                $email = "$firstname.$lastname@eduge.ch";
                                 $response_json = $functionsUsers->user(
                                     $db,
                                     "SELECT email, `password`,`salt`
@@ -91,16 +91,86 @@ class Index
                             case 'notes':
                                 $response_json = $functionNotes->notes(
                                     $db,
-                                    "SELECT note, period.year, period.semester, subject.name AS subject,subject.description, user.firstname, user.lastName
-                                    FROM note
-                                    JOIN period ON note.idPeriod = period.idPeriod
-                                    JOIN `subject` ON subject.idSubject = note.idSubject
-                                    JOIN user ON note.idUser = user.iduser WHERE user.email = '$prenom.$nom@eduge.ch'
+                                    "SELECT
+                                    note,
+                                    period.year,
+                                    period.semester,
+                                    `subject`.name AS `subject`,
+                                    `subject`.description,
+                                    `user`.firstname,
+                                    `user`.lastName
+                                FROM
+                                    note
+                                JOIN period ON note.idPeriod = period.idPeriod
+                                JOIN `subject` ON `subject`.idSubject = note.idSubject
+                                JOIN `user` ON note.idUser = `user`.iduser
+                                WHERE
+                                    `user`.email = '$firstname.$lastname@eduge.ch'
                                 "
                                 );
                                 http_response_code(201);
                                 break;
-
+                            case 'getPhysics':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functions->selectQueryCG("Physique", $firstname, $lastname)
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getMaths':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functions->selectQueryCG("Mathématique", $firstname, $lastname)
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getEconomy':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functions->selectQueryCG("Economie", $firstname, $lastname)
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getEnglish':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functions->selectQueryCG("Anglais", $firstname, $lastname)
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getPhysicalEducation':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functions->selectQueryCG("Education Physique", $firstname, $lastname)
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getCIENotes':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    "SELECT
+                                    note
+                                FROM
+                                    note
+                                JOIN `subject` ON note.idSubject = `subject`.idSubject
+                                WHERE
+                                    `subject`.isCIE = TRUE AND user.email = '$firstname.$lastname@eduge.ch'"
+                                );
+                                http_response_code(201);
+                                break;
+                            case 'getCINotes':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    "SELECT
+                                        note
+                                    FROM
+                                        note
+                                    JOIN `subject` ON note.idSubject = `subject`.idSubject
+                                    WHERE
+                                        `subject`.isCIE = false AND user.email = '$firstname.$lastname@eduge.ch'"
+                                );
+                                http_response_code(201);
+                                break;
                             default:
                                 //400 Bad Request
                                 http_response_code(400);

@@ -10,6 +10,7 @@ use MySuccessStory\Controllers\ControllerProfile;
 use MySuccessStory\Controllers\ControllerEdit;
 use MySuccessStory\Controllers\ControllerDelete;
 use MySuccessStory\Controllers\ControllerAdd;
+use MySuccessStory\Controllers\ControllerSimulation;
 
 #region API
 use MySuccessStory\api\controller\index;
@@ -40,3 +41,4 @@ SimpleRouter::form('/addNote', [ControllerAdd::class, 'addNote']);
 SimpleRouter::form('/editProfile', [ControllerEdit::class, 'editProfile']);
 SimpleRouter::form('/deleteProfile', [ControllerDelete::class, 'deleteProfile']);
 #endregion
+SimpleRouter::form('/simulation', [ControllerSimulation::class, 'simulation']);

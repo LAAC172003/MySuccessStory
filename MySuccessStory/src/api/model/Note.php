@@ -86,7 +86,7 @@ class Note
     /**
      * delete an element of the note by a the id
      *
-     * @param [int] $id
+     * @param int $id
      * @return bool return true if the query is successful return false if it's not
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
@@ -118,13 +118,19 @@ class Note
      * @return float returns the result of the average of all the notes
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function passMark($notes)
+    public function passMark(array $notes)
     {
-        $result = 0;
-        for ($i = 0; $i < count($notes); $i++) {
-            $result += $notes[$i];
+        if ($notes[0] == null) {
+            $result = 4;
+        } else {
+            $result = 0.0;
+            for ($i = 0; $i < count($notes[0]); $i++) {
+                $result += $notes[0][$i]->note;
+            }
+            return ($result / count($notes[0]));
+            // var_dump(($result / count($notes[0])));
+
         }
-        return $result / 8;
     }
 
     /**
@@ -139,7 +145,7 @@ class Note
      */
     public function noteCBE($english, $economy, $maths, $physics)
     {
-        $result = ($english + $economy + $maths + $physics) / 4;
+        $result = (round($english * 2) / 2 + round($economy * 2) / 2 + round($maths * 2) / 2 + round($physics * 2) / 2) / 4;
         return round($result * 2) / 2;
     }
     /**
