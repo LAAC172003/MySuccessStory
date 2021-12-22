@@ -3,6 +3,7 @@
 namespace MySuccessStory\api\controller;
 
 use MySuccessStory\Api\Model\Subject;
+use MySuccessStory\Api\Model\Period;
 use MySuccessStory\Api\Model\User;
 use MySuccessStory\Api\Model\Note;
 use MySuccessStory\Api\Model\SqlConnection;
@@ -31,6 +32,7 @@ class Index
     {
         //initialize classes
         $functionsSubjects = new Subject();
+        $functionsPeriods = new Period();
         $functionsUsers = new User();
         $functionNotes = new Note();
 
@@ -50,6 +52,13 @@ class Index
                                 //201 Created
                                 http_response_code(201);
                                 break;
+
+                            case 'periods':
+                                $response_json = $functionsPeriods->getPeriods($db, "SELECT idPeriod, year, semester FROM period");
+                                //201 Created
+                                http_response_code(201);
+                                break;
+
                             case 'user':
                                 if (!empty($prenom) && !empty($nom)) {
                                     $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$prenom.$nom@eduge.ch'");
@@ -59,6 +68,7 @@ class Index
                                     http_response_code(201);
                                 }
                                 break;
+
                             case 'login':
                                 ////
                                 //revoir propreté code !
@@ -77,6 +87,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'notes':
                                 $response_json = $functionNotes->notes(
                                     $db,

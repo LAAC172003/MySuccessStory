@@ -105,12 +105,13 @@ class Functions
             return TRUE;
         }
     }
+    
     /**
-     * Undocumented function
+     * 
      *
-     * @param [type] $url
+     * @param string $url contain an URL
      * @return void
-     * @author Flavio <email@email.com>
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.com>
      */
     function curl($url)
     {

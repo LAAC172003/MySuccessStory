@@ -1,3 +1,19 @@
+<?php
+/**
+* get the subject name and show it in a dropdown list
+*
+* @param array[object] $subjects  an array of objects
+* @author flavio.srsrd@eduge.ch
+*/
+function showSubject($subjects)
+{
+    foreach ($subjects as $subject)
+    {
+        echo "<option value=\"$subject->idSubject\">". $subject->name ."</option>";
+    }   
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,48 +33,59 @@
         <form method="post">
             <div>
                 <label name="note" for="note">votre note </label>
-                <input type="number" name="note">
+                <input id="note" type="number" min="1" max="6" step="0.5" name="note" value="<?=$note?>" onchange="verifyNote()">
             </div>
 
             <div>
-                <label name="subjects" for="subjects">nom de la matière </label>
+                <label name="subjects" for="subjects">nom de la matière</label>
                 <select id="subjects" name="subjects">
                     <?php
-                        // FAIRE LA BOUCLE POUR AFFICHER LES SUBJECTS
+                        // show all the subjects
+                        showSubject($subjects);
                     ?>
                 </select>
             </div>
 
             <div>
-                <label name="year" for="year"> année </label>
+                <label name="year" for="year">année</label>
                 <select id="year" name="year">
-                    <?php
-                        // FAIRE LA BOUCLE POUR AFFICHER LES ANNÉES
-                    ?>
+                    <option value="1">Première Année</option>
+                    <option value="2">Deuxième Année</option>
+                    <option value="3">Troisième Année</option>
+                    <option value="4">Quatrième Année</option>
                 </select>
             </div>
 
             <div>
-                <label name="semester" for="semester"> semestre </label>
+                <label name="semester" for="semester">semestre</label>
                 <select id="semester" name="semester">
-                    <?php
-                        // FAIRE LA BOUCLE POUR AFFICHER LES SEMESTRES
-                    ?>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
                 </select>
             </div>
 
             <div>
-                <input type="submit" name="add" value="Ajouter">
-                <input type="submit" name="cancel" value="Annuler">
+                <input type="submit" name="submit" value="Ajouter">
+                <input type="submit" name="submit" value="Annuler">
             </div>
-            
         </form>
     </main>
 
     <footer>
-
+        <p>footer du site</p>
     </footer>
-    
+
+    <script>
+        function verifyNote()
+        {
+            let note = document.getElementById("note");
+
+            if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
+            {
+                
+            }
+        }
+    </script>
 </body>
 
 </html>
