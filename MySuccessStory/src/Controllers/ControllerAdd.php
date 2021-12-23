@@ -2,6 +2,7 @@
 
 namespace MySuccessStory\Controllers;
 use MySuccessStory\Api\Model\Functions;
+use MySuccessStory\Api\Model\Note;
 
 class ControllerAdd
 {
