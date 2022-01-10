@@ -11,15 +11,11 @@ function showSubject($subjects)
 
     foreach ($subjects as $subject)
     {
-        $option .= "<option value=\"$subject->idSubject\">". $subject->name ."</option>";
+        $option .= "<option value=\"$subject->idSubject\">" . $subject->name . "</option>";
     }
     return $option;
 }
 
-function jhg()
-{
-
-}
 ?>
 
 <!DOCTYPE html>

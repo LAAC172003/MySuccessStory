@@ -13,38 +13,17 @@ class Note
      * @param int   $idUser
      * @param int   $idSubject
      * @param int   $semester
-     * @param int   $year
+     * @param int   $idYear
      * 
      * @author Flavio Soares Rodrigues / Almeida Costa Lucas
      */
-    public static function addNote($note, $idUser, $idSubject, $semester, $year)
+    public static function addNote($note, $semester, $idUser, $idSubject, $idYear)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $add = $db->query(
-            "INSERT INTO `note`(
-                `note`,
-                `idUser`,
-                `idSubject`,
-                `idYear`,
-                `semester`
-            ) 
-            VALUES
-            (   
-                $note,
-                (
-                    SELECT  `idUser`
-                    FROM    `user`
-                    WHERE   `idUser` = $idUser
-                ),
-                (
-                    SELECT  `idSubject`
-                    FROM    `subject`
-                    WHERE   `idSubject` = $idSubject
-                ),
-                $semester,
-                $year
-            )
-        "
+        $db->query
+        (
+            "INSERT INTO `note` (`note`, `semester`, `idUser`, `idSubject`, `idYear`)
+            VALUES ($note, $semester, $idUser, $idSubject, $idYear)"
         );
     }
     /**
