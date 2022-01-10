@@ -15,9 +15,7 @@ function showSubject($subjects)
     }
     return $option;
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,18 +73,6 @@ function showSubject($subjects)
     <footer>
         <p>footer du site</p>
     </footer>
-
-    <script>
-        function verifyNote()
-        {
-            let note = document.getElementById("note");
-
-            if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
-            {
-                
-            }
-        }
-    </script>
 </body>
 
 </html>
