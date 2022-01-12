@@ -18,11 +18,11 @@
         <label>Mot de passe: <input type="password" name="pwd" /></label> <br>
         <label>Confirmation du mot de passe: <input type="password" name="pwd2" /></label> <br>
         <label>Adresse e-mail: <input type="text" name="email" /></label>@eduge.ch<br>
-        <label>Annéee d'entrée: <input type="date" name="entryYear" /></label><br>
-        <label>Annéee de sortie: <input type="date" name="exitYear" /></label><br>
-        <p>Date: <input type="text" id="datepicker" /></p> <br>
+        <!-- <label>Annéee d'entrée: <input type="date" name="entryYear" /></label><br>
+        <label>Annéee de sortie: <input type="date" name="exitYear" /></label><br> -->
+        <!-- <p>Date: <input type="text" id="datepicker" /></p> <br> -->
 
-        <script>
+        <!-- <script>
             $(function() {
                 $('#datepicker').datepicker({
                     changeYear: true,
@@ -39,7 +39,7 @@
                 });
 
             });
-        </script>
+        </script> -->
 
 
         <br>

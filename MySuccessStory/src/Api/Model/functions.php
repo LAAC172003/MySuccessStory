@@ -8,14 +8,14 @@ namespace MySuccessStory\Api\Model;
 class Functions
 {
     #region Constants
-    public $DAYS_WEEK = 7;
-    public $DAYS_MONTH = 30;
+    public const DAYS_WEEK = 7;
+    public const DAYS_MONTH = 30;
     #endregion
 
     /**
      * an hour in seconds
      */
-    public $TIME = 3600;
+    private const TIME = 3600;
 
     /**
      * encode the url in base64
@@ -29,33 +29,33 @@ class Functions
     }
 
     /**
-     * refresh the cookie when it's expired
-     * @return bool true if the cookie exists ; else creates a new one and refresh the page
+     * refresh the cookie when it's expired, creates a new one and refresh the page
+     * @return bool true if the cookie don't have to be recreated
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+     * @author Folly Jordan <ekoue-jordan.fllsd@eduge.ch>
      */
     public function refreshCookie()
     {
         if (isset($_COOKIE['BearerCookie'])) {
             return true;
         } else {
-            setcookie("BearerCookie", $this->jwtGenerator(), time() + $this->TIME);
+            setcookie("BearerCookie", $this->jwtGenerator(), time() + 3600);
             // setcookie("BearerCookie", $this->jwtGenerator(), time() + $this->TIME * $this->DAYS_MONTH);
-            header("Refresh:0 ");
+            header("Refresh:0");
             return false;
         }
     }
 
     /**
      * generates a token
-     * @param string $secret
-     * @return string returns the jwt token
+     * @param string $secret key of the hash value
+     * @return string the jwt token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function jwtGenerator($secret = 'secret')
     {
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
-        $payload = array('sub' => '1587426934', 'name' => 'nameHere', 'admin' => true, 'exp' => (time() + $this->TIME));
+        $payload = array('sub' => '1587426934', 'name' => 'nameHere', 'admin' => true, 'exp' => time() + 3600);
 
         $encodedHeaders = $this->urlEncode(json_encode($headers));
         $encodedPayload = $this->urlEncode(json_encode($payload));
@@ -71,7 +71,7 @@ class Functions
      * check if the token is valid
      * @param string $jwt
      * @param string $secret
-     * @return boolean returns true if it's valid and false when it's not
+     * @return boolean if the token is valid - "jwtTest" is always a valid token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function isJwtValid($jwt, $secret = 'secret')
@@ -100,9 +100,9 @@ class Functions
         $isSignatureValid = ($base64UrlSignature === $signature_provided);
 
         if ($isTokenExpired || !$isSignatureValid) {
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -133,12 +133,13 @@ class Functions
         ));
         return json_decode(curl_exec($curl));
     }
+
     /**
      * Select a CG note
      *
-     * @param string $subject
-     * @param string $firstname
-     * @param string $lastname
+     * @param string $subject 
+     * @param string $firstname beginning of the email
+     * @param string $lastname ending of the email
      * @return string query 
      */
     function selectQueryCG($subject, $firstname, $lastname)
@@ -147,7 +148,7 @@ class Functions
         `note`
     FROM
         `note`
-    JOIN `subject` ON note.idSubject = `subject`.idSubject
+    JOIN `subject` ON `note`.idSubject = `subject`.idSubject
     WHERE
         idCategory =(
         SELECT

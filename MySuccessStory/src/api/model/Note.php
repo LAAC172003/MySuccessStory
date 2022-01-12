@@ -15,7 +15,7 @@ class Note
      * @param int   $semester
      * @param int   $idYear
      * 
-     * @author Flavio Soares Rodrigues / Almeida Costa Lucas
+     * @author Almeida Costa Lucas
      */
     public static function addNote($note, $idUser, $subject, $semester, $year)
     {
@@ -59,17 +59,6 @@ class Note
         "
         );
     }
-    // public static function addNote($note, $semester, $idUser, $idSubject, $idYear)
-    // {
-    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    //     $db->query
-    //     (
-    //         "INSERT INTO `note` (`note`, `semester`, `idUser`, `idSubject`, `idYear`)
-    //         VALUES ($note, $semester, $idUser, $idSubject, $idYear)"
-    //     );
-    //     return $add;
-    // }
-
     /**
      * Return an array of notes in json
      *
@@ -88,19 +77,19 @@ class Note
 
 
     /**
-     * update an element of the note by a the id
+     * update function
      *
-     * @param [type] $element
-     * @param [type] $value
-     * @param [type] $id
-     * @return bool return true if the query is successful return false if it's not
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @param int $note
+     * @param string $semester
+     * @param int $idSubject
+     * @param int $idNote
+     * @return sql query
      */
-    public function update($element, $value, $id)
+    public function update($note, $semester, $idSubject, $idNote)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        return $update = $db->query("UPDATE `note` SET $element = $value WHERE idNote = $id");
-        //UPDATE utilisateurs SET nomFamille = :nomFamille, prenom = :prenom WHERE idUtilisateur = :idUtilisateur
+        return $update = $db->query("UPDATE `note` SET `note`=$note,`semester`=$semester, `idSubject` =$idSubject WHERE idNote = $idNote");
+        // header("Location:http://mysuccessstory/");
     }
 
 

@@ -22,39 +22,25 @@ class ControllerLogin
 
         if (isset($_POST['loginValidate'])) {
             $email = $_POST['email'];
+
             $pwd = $_POST['pwd'];
             if ($functions->refreshCookie()) {
                 //collect the first part (firstname) and the second part (lastname)
                 $emailParts = explode(".", $email);
-                // $login = $functions->curl("http://mysuccessstory/api/login/$emailParts[0]/$emailParts[1]");
-
-                $bearer = $_COOKIE['BearerCookie'];
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "http://mysuccessstory/api/login/$emailParts[0]/$emailParts[1]",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'GET',
-                    CURLOPT_HTTPHEADER => array(
-                        "Bearer: $bearer",
-                        'Authorization: Basic'
-                    ),
-                ));
-                $login = json_decode(curl_exec($curl));
+                $login = $functions->curl("http://mysuccessstory/api/login/$emailParts[0]/$emailParts[1]");
+                // var_dump($emailParts);
+                // var_dump($login);
 
                 ////////////////////////////////////////////////////////////////
                 ////////////SECURISER!!!!!!/////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////
-                var_dump($login);
+
                 if ($login == null) {
                     echo "mauvais identifiants";
                 } else {
                     for ($i = 0; $i < count($login); $i++) {
                         $user = $login[$i];
+                        var_dump($user);
                         if ($user->password != hash("sha256", $pwd . $user->salt)) {
                             echo "mauvais mdp";
                         } else {

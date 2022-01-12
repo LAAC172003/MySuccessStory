@@ -26,9 +26,9 @@ class Index
     /**
      * method who contains the api functions
      *
-     * @param string $data
-     * @param string $firstname
-     * @param string $lastname
+     * @param string $data element to query
+     * @param string $firstname beginning of the email
+     * @param string $lastname ending of the email
      * @return json return informations in an array in json
      */
     public function apiFunctions($data = "", $firstname = "", $lastname = "")
@@ -55,7 +55,6 @@ class Index
                                 //201 Created
                                 http_response_code(201);
                                 break;
-
                             case 'year':
                                 $response_json = $functionsYears->getYears($db, "SELECT idYear, year FROM year");
                                 //201 Created
@@ -84,14 +83,13 @@ class Index
                                 $email = "$firstname.$lastname@eduge.ch";
                                 $response_json = $functionsUsers->user(
                                     $db,
-                                    "SELECT email, `password`,`salt`
+                                    "SELECT email, `password`, `salt`
                                     FROM `user`
-                                    WHERE email = '$email' AND `password` = (                           
+                                    WHERE email = '$email' AND `password` = (
                                         SELECT `password`
                                         FROM `user`
                                         WHERE email = '$email'
-                                    )
-                                "
+                                    )"
                                 );
                                 http_response_code(201);
                                 break;
@@ -171,7 +169,7 @@ class Index
                                 http_response_code(201);
                                 break;
                             default:
-                                //400 Bad Request
+                                // 400 Bad Request
                                 http_response_code(400);
                                 throw new Exception("la demande n'est pas valide, vérifiez l'url");
                         }

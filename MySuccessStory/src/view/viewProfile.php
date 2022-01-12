@@ -30,9 +30,9 @@
                 <td><?= $note->description ?></td>
                 <td><?= $note->year ?></td>
                 <td><?= $note->semester ?></td>
-                <td><a href="http://mysuccessstory/add">Ajouter</a></td>
-                <td><a href="http://mysuccessstory/edit">Modifier</a></td>
-                <td><a href="http://mysuccessstory/delete">Supprimer</a></td>
+                <td><a href="http://mysuccessstory/addNote">Ajouter</a></td>
+                <td><a href="http://mysuccessstory/editNote">Modifier</a></td>
+                <td><a href="http://mysuccessstory/deleteNote">Supprimer</a></td>
             </tr>
         <?php
         }

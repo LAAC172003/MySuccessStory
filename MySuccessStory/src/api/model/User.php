@@ -17,10 +17,10 @@ class User
         }
     }
     //create a new user
-    public function createNewAccount($email, $pwd, $salt, $firstName, $lastName)
+    public function createNewAccount($email, $pwd, $salt, $firstName, $lastName, $entryYear = 2000, $exitYear = 2001)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        $compte = $db->query('INSERT INTO user (email,password,salt,firstName,lastName) VALUES (?,?,?,?,?)', $email . "@eduge.ch", $pwd, $salt, $firstName, $lastName);
+        $compte = $db->query('INSERT INTO user (email,password,salt,firstName,lastName,entryYear, exitYear) VALUES (?,?,?,?,?,?,?)', $email . "@eduge.ch", $pwd, $salt, $firstName, $lastName, $entryYear, $exitYear);
     }
 
 
