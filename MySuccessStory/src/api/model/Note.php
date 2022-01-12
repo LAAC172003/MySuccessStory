@@ -13,7 +13,7 @@ class Note
      * @param int   $idUser
      * @param int   $idSubject
      * @param int   $semester
-     * @param int   $year
+     * @param int   $idYear
      * 
      * @author Flavio Soares Rodrigues / Almeida Costa Lucas
      */
@@ -58,8 +58,18 @@ class Note
             )
         "
         );
-        return $add;
     }
+    // public static function addNote($note, $semester, $idUser, $idSubject, $idYear)
+    // {
+    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    //     $db->query
+    //     (
+    //         "INSERT INTO `note` (`note`, `semester`, `idUser`, `idSubject`, `idYear`)
+    //         VALUES ($note, $semester, $idUser, $idSubject, $idYear)"
+    //     );
+    //     return $add;
+    // }
+
     /**
      * Return an array of notes in json
      *
@@ -92,7 +102,7 @@ class Note
         return $update = $db->query("UPDATE `note` SET $element = $value WHERE idNote = $id");
         //UPDATE utilisateurs SET nomFamille = :nomFamille, prenom = :prenom WHERE idUtilisateur = :idUtilisateur
     }
- 
+
 
     /**
      * delete an element of the note by a the id
