@@ -105,12 +105,12 @@ class Functions
             return TRUE;
         }
     }
-    
+
     /**
-     * 
+     * Send a cURL request to the API
      *
-     * @param string $url contain an URL
-     * @return void
+     * @param string $url URL of the API
+     * @return mixed result of the request
      * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.com>
      */
     function curl($url)

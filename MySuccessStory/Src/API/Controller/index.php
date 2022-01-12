@@ -15,6 +15,9 @@ use Exception;
  */
 class Index
 {
+    /**
+     * start message
+     */
     public function apiHome()
     {
         echo "Welcome to the api";
@@ -54,7 +57,7 @@ class Index
                                 break;
 
                             case 'year':
-                                $response_json = $functionsYears->getYears($db, "SELECT idYear, year, FROM year");
+                                $response_json = $functionsYears->getYears($db, "SELECT idYear, year FROM year");
                                 //201 Created
                                 http_response_code(201);
                                 break;
@@ -67,6 +70,11 @@ class Index
                                     $response_json = $functionsUsers->user($db, "SELECT email FROM user");
                                     http_response_code(201);
                                 }
+                                break;
+                            case 'userID':
+                                $response_json = $functionsUsers->user($db, "SELECT idUser from user where email = '$firstname.$lastname@eduge.ch'");
+
+                                http_response_code(201);
                                 break;
 
                             case 'login':
@@ -96,8 +104,9 @@ class Index
                                     JOIN `year` ON `note`.`idYear` = `year`.`idYear`
                                     JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
                                     JOIN `user` ON `note`.`idUser` = `user`.`iduser`
-                                    WHERE `user`.`idUser` = '$firstname.$lastname@eduge.ch'
-                                ");
+                                    WHERE `user`.`email` = '$firstname.$lastname@eduge.ch'
+                                "
+                                );
                                 http_response_code(201);
                                 break;
                             case 'getPhysics':
@@ -189,9 +198,11 @@ class Index
         }
     }
 
+    /**
+     * doesn't work
+     */
     public function __call($method, $arguments)
     {
-        // ne marche pas
         if ($method == 'api') {
 
             if (count($arguments) == 0) {

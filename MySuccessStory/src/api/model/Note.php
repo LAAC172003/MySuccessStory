@@ -17,42 +17,55 @@ class Note
      * 
      * @author Flavio Soares Rodrigues / Almeida Costa Lucas
      */
-    public static function addNote($note, $idUser, $idSubject, $semester, $year)
+    public static function addNote($note, $idUser, $subject, $semester, $year)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         $add = $db->query(
             "INSERT INTO `note`(
                 `note`,
+                `semester`,
                 `idUser`,
                 `idSubject`,
-                `idYear`,
-                `semester`
-            ) 
-            VALUES
-            (   
+                `idYear`
+            )
+            VALUES(
                 $note,
-                (
-                    SELECT  `idUser`
-                    FROM    `user`
-                    WHERE   `idUser` = $idUser
-                ),
-                (
-                    SELECT  `idSubject`
-                    FROM    `subject`
-                    WHERE   `idSubject` = $idSubject
-                ),
                 $semester,
-                $year
+                (
+                SELECT
+                    `idUser`
+                FROM
+                    `user`
+                WHERE
+                    `idUser` = $idUser
+            ),
+            (
+                SELECT
+                    `idSubject`
+                FROM
+                    `subject`
+                WHERE
+                    `name` = '$subject'
+            ),
+            (
+                SELECT
+                    idYear
+                FROM
+                    `year`
+                WHERE
+                    `year` = '$year'
+            )
             )
         "
         );
+        return $add;
     }
     /**
      * Return an array of notes in json
      *
      * @param class $db
      * @param string $sql
-     * @return array return an array of notes in json
+     * @return string array of notes in json
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
     public static function notes($db, $sql)
@@ -79,7 +92,7 @@ class Note
         return $update = $db->query("UPDATE `note` SET $element = $value WHERE idNote = $id");
         //UPDATE utilisateurs SET nomFamille = :nomFamille, prenom = :prenom WHERE idUtilisateur = :idUtilisateur
     }
-
+ 
 
     /**
      * delete an element of the note by a the id
@@ -119,15 +132,31 @@ class Note
     public function passMark(array $notes)
     {
         if ($notes[0] == null) {
-            $result = 4;
+            return $result = 4;
         } else {
             $result = 0.0;
             for ($i = 0; $i < count($notes[0]); $i++) {
                 $result += $notes[0][$i]->note;
             }
-            return ($result / count($notes[0]));
+            return ($result / count($notes));
             // var_dump(($result / count($notes[0])));
+            var_dump($notes);
+        }
+    }
 
+    /**
+     * calculates an average
+     *
+     * @param array $notes
+     * @return float result 
+     */
+    public function calculate(array $notes)
+    {
+        if ($notes[0] == null) {
+            return $result = 4;
+        } else {
+            $result =  $notes[0] / 5;
+            return round($result * 2) / 2;
         }
     }
 
@@ -143,6 +172,7 @@ class Note
      */
     public function noteCBE($english, $economy, $maths, $physics)
     {
+
         $result = (round($english * 2) / 2 + round($economy * 2) / 2 + round($maths * 2) / 2 + round($physics * 2) / 2) / 4;
         return round($result * 2) / 2;
     }
