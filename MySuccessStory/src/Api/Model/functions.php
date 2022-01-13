@@ -15,7 +15,7 @@ class Functions
     /**
      * an hour in seconds
      */
-    private const TIME = 3600;
+    public const TIME = 3600;
 
     /**
      * encode the url in base64
@@ -47,13 +47,14 @@ class Functions
     }
 
     /**
-     * generates a token
+     * generates a JSON Web Tokens
      * @param string $secret key of the hash value
      * @return string the jwt token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      */
     public function jwtGenerator($secret = 'secret')
     {
+        
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
         $payload = array('sub' => '1587426934', 'name' => 'nameHere', 'admin' => true, 'exp' => time() + 3600);
 

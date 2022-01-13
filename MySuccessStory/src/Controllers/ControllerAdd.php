@@ -15,7 +15,7 @@ class ControllerAdd
      */
     public function addNote()
     {
-        // Cookie
+        // Cookie 
         $functions = new Functions();
         $functionsNotes = new Note();
 

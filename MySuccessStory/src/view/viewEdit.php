@@ -21,7 +21,7 @@
                 <?php
                 foreach ($subjects as $subject) {
                     if ($subject->name == $notes[0]->subject) {
-                        echo "<option value=$subject->name  selected>$subject->name</option>";
+                        echo "<option value=$subject->name selected>$subject->name</option>";
                     } else {
                         echo "<option value=$subject->name>$subject->name</option>";
                     }

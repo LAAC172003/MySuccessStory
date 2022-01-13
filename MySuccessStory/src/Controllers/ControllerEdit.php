@@ -16,7 +16,7 @@ class ControllerEdit
         // $functionsNotes = new Note();
         $emailParts = explode(".", $_COOKIE['email']);
         $semesters = [1, 2];
-        
+
         if ($functions->refreshCookie()) {
             $subjects = $functions->curl("http://mysuccessstory/api/subjects");
             $years = $functions->curl("http://mysuccessstory/api/year");
@@ -26,8 +26,5 @@ class ControllerEdit
         // var_dump($years);
         var_dump($notes[0]);
         require '../src/view/viewEdit.php';
-    }
-    public function editProfile()
-    {
     }
 }

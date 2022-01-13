@@ -38,7 +38,7 @@ class Index
         $functionsYears = new Year();
         $functionsUsers = new User();
         $functionNotes = new Note();
-
+        $email = "$firstname.$lastname@eduge.ch";
         $functions = new Functions();
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -63,7 +63,7 @@ class Index
 
                             case 'user':
                                 if (!empty($firstname) && !empty($lastname)) {
-                                    $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$firstname.$lastname@eduge.ch'");
+                                    $response_json = $functionsUsers->user($db, "SELECT email from user where email = '$email'");
                                     http_response_code(201);
                                 } else {
                                     $response_json = $functionsUsers->user($db, "SELECT email FROM user");
@@ -71,7 +71,7 @@ class Index
                                 }
                                 break;
                             case 'userID':
-                                $response_json = $functionsUsers->user($db, "SELECT idUser from user where email = '$firstname.$lastname@eduge.ch'");
+                                $response_json = $functionsUsers->user($db, "SELECT idUser from user where email = '$email'");
 
                                 http_response_code(201);
                                 break;
@@ -80,7 +80,7 @@ class Index
                                 ////
                                 //revoir propreté code !
                                 ////
-                                $email = "$firstname.$lastname@eduge.ch";
+                             
                                 $response_json = $functionsUsers->user(
                                     $db,
                                     "SELECT email, `password`, `salt`
@@ -102,7 +102,7 @@ class Index
                                     JOIN `year` ON `note`.`idYear` = `year`.`idYear`
                                     JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
                                     JOIN `user` ON `note`.`idUser` = `user`.`iduser`
-                                    WHERE `user`.`email` = '$firstname.$lastname@eduge.ch'
+                                    WHERE `user`.`email` = '$email'
                                 "
                                 );
                                 http_response_code(201);
@@ -151,7 +151,7 @@ class Index
                                     note
                                 JOIN `subject` ON note.idSubject = `subject`.idSubject
                                 WHERE
-                                    `subject`.isCIE = TRUE AND user.email = '$firstname.$lastname@eduge.ch'"
+                                    `subject`.isCIE = TRUE AND user.email = '$email'"
                                 );
                                 http_response_code(201);
                                 break;
@@ -164,7 +164,7 @@ class Index
                                         note
                                     JOIN `subject` ON note.idSubject = `subject`.idSubject
                                     WHERE
-                                        `subject`.isCIE = false AND user.email = '$firstname.$lastname@eduge.ch'"
+                                        `subject`.isCIE = false AND user.email = '$email'"
                                 );
                                 http_response_code(201);
                                 break;
@@ -199,6 +199,7 @@ class Index
     /**
      * doesn't work
      */
+
     public function __call($method, $arguments)
     {
         if ($method == 'api') {

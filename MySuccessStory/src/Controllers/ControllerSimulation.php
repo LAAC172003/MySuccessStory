@@ -7,6 +7,12 @@ use MySuccessStory\Api\Model\Note;
 
 class ControllerSimulation
 {
+    /**
+     * simulation to know if the student has graduated or not
+     *
+     * @return string message to let him know if he has graduated
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function simulation()
     {
         $functions = new Functions();
