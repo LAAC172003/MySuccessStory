@@ -43,7 +43,7 @@ class ControllerSimulation
 
             //CBE
 
-            var_dump($resultEnglish, $resultEconomy, $resultMaths, $resultPhysics);
+            // var_dump($resultEnglish, $resultEconomy, $resultMaths, $resultPhysics);
 
             $resultCBE =  $functionsNotes->noteCBE($resultEnglish, $resultEconomy, $resultMaths, $resultPhysics);
 
@@ -54,7 +54,7 @@ class ControllerSimulation
             $notesCG[] = $resultEnglish + $resultEconomy + $resultMaths + $resultPhysics + $resultPhysicalEducation;
             $resultCG = $functionsNotes->calculate($notesCG);
 
-            var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
+            // var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
 
             //resultat CFC
             $resultatCFC = $functionsNotes->passMarkCFC($resultTPI, $resultCBE, $resultCI, $resultCG);
