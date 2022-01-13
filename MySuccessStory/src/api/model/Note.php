@@ -8,13 +8,13 @@ class Note
 {
     /**
      * Insert a new note on the database with 5 params
-     * 
+     *
      * @param float $note number from 1 to 6 rounded to the half
      * @param int   $idUser
      * @param int   $idSubject
      * @param int   $semester
      * @param int   $idYear
-     * 
+     *
      * @author Almeida Costa Lucas
      */
     public static function addNote($note, $idUser, $subject, $semester, $year)
@@ -118,7 +118,7 @@ class Note
      */
     public function passMarkCFC($tpi, $cbe, $ci, $cg)
     {
-        return $result = 0.3 * $tpi + 0.2 * $cbe + 0.3 * $ci + 0.2 * $cg;
+        return 0.3 * $tpi + 0.2 * $cbe + 0.3 * $ci + 0.2 * $cg;
     }
 
     /**
@@ -130,16 +130,20 @@ class Note
      */
     public function passMark(array $notes)
     {
-        if ($notes[0] == null) {
+        if ($notes[0] == null)
+        {
             return $result = 4;
-        } else {
+        }
+        else
+        {
             $result = 0.0;
-            for ($i = 0; $i < count($notes[0]); $i++) {
+
+            for ($i = 0; $i < count($notes[0]); $i++)
+            {
                 $result += $notes[0][$i]->note;
             }
-            return ($result / count($notes));
-            // var_dump(($result / count($notes[0])));
-            var_dump($notes);
+
+            return ($result / count($notes[0]));
         }
     }
 
@@ -147,7 +151,7 @@ class Note
      * calculates an average
      *
      * @param array $notes
-     * @return float result 
+     * @return float result
      */
     public function calculate(array $notes)
     {
@@ -160,13 +164,13 @@ class Note
     }
 
     /**
-     * calculates the average of the 4 subjects to success the CBE 
+     * calculates the average of the 4 subjects to success the CBE
      *
      * @param float $english
      * @param float $economy
      * @param float $maths
      * @param float $physics
-     * @return float returns the rounded result 
+     * @return float returns the rounded result
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
     public function noteCBE($english, $economy, $maths, $physics)

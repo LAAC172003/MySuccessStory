@@ -39,9 +39,11 @@ class ControllerSimulation
             $resultPhysicalEducation = $functionsNotes->passMark($notesPhysicalEducation);
 
             //TPI
-            $resultTPI = 5.7;
+            $resultTPI = 2;
 
             //CBE
+
+            var_dump($resultEnglish, $resultEconomy, $resultMaths, $resultPhysics);
 
             $resultCBE =  $functionsNotes->noteCBE($resultEnglish, $resultEconomy, $resultMaths, $resultPhysics);
 
@@ -51,6 +53,8 @@ class ControllerSimulation
             //CG
             $notesCG[] = $resultEnglish + $resultEconomy + $resultMaths + $resultPhysics + $resultPhysicalEducation;
             $resultCG = $functionsNotes->calculate($notesCG);
+
+            var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
 
             //resultat CFC
             $resultatCFC = $functionsNotes->passMarkCFC($resultTPI, $resultCBE, $resultCI, $resultCG);
