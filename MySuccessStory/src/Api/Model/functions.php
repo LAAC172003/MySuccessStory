@@ -60,6 +60,7 @@ class Functions
 
         $encodedHeaders = $this->urlEncode(json_encode($headers));
         $encodedPayload = $this->urlEncode(json_encode($payload));
+
         $signature = hash_hmac('SHA256', "$encodedHeaders.$encodedPayload", $secret, true);
         $encodedSignature = $this->urlEncode($signature);
 
@@ -138,10 +139,10 @@ class Functions
     /**
      * Select a CG note
      *
-     * @param string $subject 
+     * @param string $subject
      * @param string $firstname beginning of the email
      * @param string $lastname ending of the email
-     * @return string query 
+     * @return string query
      */
     function selectQueryCG($subject, $firstname, $lastname)
     {

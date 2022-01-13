@@ -11,7 +11,8 @@ class ControllerAdd
      * Add a note on the data base
      *
      * @return void
-     * @author Almeida Costa Lucas lucas.almdc@eduge.ch / flavio.srsrd@eduge.ch
+     * @author Almeida Costa Lucas lucas.almdc@eduge.ch
+     * @author Soares Flavio flavio.srsrd@eduge.ch
      */
     public function addNote()
     {
