@@ -60,11 +60,32 @@ class ControllerSimulation
             $notesCG[] = $resultEnglish + $resultEconomy + $resultMaths + $resultPhysics + $resultPhysicalEducation;
             $resultCG = $functionsNotes->calculate($notesCG);
 
-            // var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
+
+
+            if (false) {
+            $premiereAnneeCg = filter_input(INPUT_POST, 'premiereAnneeCg', FILTER_VALIDATE_INT);
+            $deuxiemeAnneeCg = filter_input(INPUT_POST, 'deuxiemeAnneeCg', FILTER_VALIDATE_INT);
+            $troisiemeAnneeCg = filter_input(INPUT_POST, 'troisiemeAnneeCg', FILTER_VALIDATE_INT);
+            $quatriemeAnneeCg = filter_input(INPUT_POST, 'quatriemeAnneeCg', FILTER_VALIDATE_INT);
+            $moyennesCg[] = $premiereAnneeCg + $deuxiemeAnneeCg + $troisiemeAnneeCg + $quatriemeAnneeCg;
+            $resultCG = $functionsNotes->AverageSimulation($moyennesCg);
+            
+            $premiereAnneeCfc = filter_input(INPUT_POST, 'premiereAnneeCfc', FILTER_VALIDATE_INT);
+            $deuxiemeAnneeCfc = filter_input(INPUT_POST, 'deuxiemeAnneeCfc', FILTER_VALIDATE_INT);
+            $troisiemeAnneeCfc = filter_input(INPUT_POST, 'troisiemeAnneeCfc', FILTER_VALIDATE_INT);
+            $quatriemeAnneeCfc = filter_input(INPUT_POST, 'quatriemeAnneeCfc', FILTER_VALIDATE_INT);
+            $moyennesCfc[] = $premiereAnneeCfc + $deuxiemeAnneeCfc + $troisiemeAnneeCfc + $quatriemeAnneeCfc;
+            $resultCG = $functionsNotes->AverageSimulation($moyennesCfc);
+
+            }
+            // A FAIRE : s'il y a des valeures dans les input alors faire les moyennes avec ces valeures sinon récupérer dans la base de données les notes
 
             //resultat CFC
+            // var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
+            // var_dump($moyennesCg);
+            // var_dump($notesCG);
             $resultatCFC = $functionsNotes->passMarkCFC($resultTPI, $resultCBE, $resultCI, $resultCG);
-            return "Ton resultat final est de " . round($resultatCFC, 1);
+            echo "Ton resultat final est de " . round($resultatCFC, 1);
         }
         require '../src/view/viewSimulation.php';
     }

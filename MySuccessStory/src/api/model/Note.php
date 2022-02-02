@@ -84,6 +84,7 @@ class Note
      * @param int $idSubject
      * @param int $idNote
      * @return sql query
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
     public function update($note, $semester, $idSubject, $idNote)
     {
@@ -152,6 +153,7 @@ class Note
      *
      * @param array $notes
      * @return float result
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
     public function calculate(array $notes)
     {
@@ -159,6 +161,16 @@ class Note
             return $result = 4;
         } else {
             $result =  $notes[0] / 5;
+            // var_dump($notes);
+            return round($result * 2) / 2;
+        }
+    }
+    public function AverageSimulation(array $notes)
+    {
+        if ($notes[0] == null) {
+            return $result = 4;
+        } else {
+            $result =  $notes[0] / 4;
             return round($result * 2) / 2;
         }
     }
