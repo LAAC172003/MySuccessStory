@@ -1,3 +1,4 @@
+<?= var_dump($notes[0]->note) ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +17,7 @@
             <input type="text" name="note" value="<?= $notes[0]->note ?>" required>
             <br>
             <label>Sujet : </label>
-            <!-- <input type="text" name="subject" value="<?= $notes[0]->subject ?>" required> -->
+            <!-- <input type="text" name="subject" value="<?= $notes[0]->subject ?>" required> ------------------>
             <select name="subject" id="subject">
                 <?php
                 foreach ($subjects as $subject) {

@@ -88,7 +88,7 @@ class Note
     public function update($note, $semester, $idSubject, $idNote)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        return $update = $db->query("UPDATE `note` SET `note`=$note,`semester`=$semester, `idSubject` =$idSubject WHERE idNote = $idNote");
+        return $update = $db->query("UPDATE `note` SET `idNote`= $idNote, `note` = $note, `semester`= $semester, `idSubject` = $idSubject WHERE idNote = $idNote");
         // header("Location:http://mysuccessstory/");
     }
 
