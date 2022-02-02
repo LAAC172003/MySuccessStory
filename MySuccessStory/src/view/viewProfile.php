@@ -11,6 +11,19 @@
 <body>
     <h1>Profil</h1>
     <br>
+    <form method="GET">
+        <label>Trier par :
+            <select name="Order">
+                <!-- <option value="<?php  ?>"><?php  ?></option> -->
+                <option value="note">note</option>
+                <option value="subject">sujet</option>
+                <!-- <option value="">moyenne</option> -->
+            </select>
+        </label>
+
+        <input type="submit" value="submit">
+    </form>
+
     <table class="table">
         <th>Numéro</th>
         <th>note</th>
