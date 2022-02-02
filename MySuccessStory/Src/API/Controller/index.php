@@ -150,6 +150,7 @@ class Index
                                 FROM
                                     note
                                 JOIN `subject` ON note.idSubject = `subject`.idSubject
+                                JOIN user ON note.idUser = user.idUser 
                                 WHERE
                                     `subject`.isCIE = TRUE AND user.email = '$email'"
                                 );
@@ -163,6 +164,7 @@ class Index
                                     FROM
                                         note
                                     JOIN `subject` ON note.idSubject = `subject`.idSubject
+                                    JOIN user ON note.idUser = user.idUser 
                                     WHERE
                                         `subject`.isCIE = false AND user.email = '$email'"
                                 );
