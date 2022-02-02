@@ -1,4 +1,6 @@
-<?= var_dump($notes[0]->note) ?>
+<?php
+    var_dump($notes[0]->note);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,67 +15,75 @@
     <fieldset>
         <legend>Modifier le note</legend>
         <form action="" method="POST" enctype="multipart/form-data">
+
             <label>Note : </label>
             <input type="text" name="note" value="<?= $notes[0]->note ?>" required>
             <br>
-            <label>Sujet : </label>
-            <!-- <input type="text" name="subject" value="<?= $notes[0]->subject ?>" required> ------------------>
+
+            <label>Matière : </label>
             <select name="subject" id="subject">
                 <?php
-                foreach ($subjects as $subject) {
-                    if ($subject->name == $notes[0]->subject) {
-                        echo "<option value=$subject->name selected>$subject->name</option>";
-                    } else {
-                        echo "<option value=$subject->name>$subject->name</option>";
+
+                    // Split the two-dimensional array "subjects" in one dimensional array "subject"
+                    foreach ($subjects as $subject)
+                    {
+                        // Check if the subject name is equal to subject name of notes
+                        if ($subject->name == $notes[0]->subject)
+                        {
+                            echo "<option value=$subject->idSubject selected>$subject->name</option>";
+                        }
+                        else
+                        {
+                            echo "<option value=$subject->idSubject>$subject->name</option>";
+                        }
                     }
-                }
                 ?>
             </select>
             <br>
-            <text>Description : </text>
-            <!--
-                Changer la description
 
-                si on change le sujet changer aussi la description
-            -->
-
-            <textarea name="description" required> <?= $notes[0]->description ?> </textarea>
-            <br>
             <label>Année : </label>
-            <!-- <input type="text" name="year" value="<?= $notes[0]->year ?>" required> -->
             <select name="year" id="year">
                 <?php
-                for ($i = 0; $i < count($years); $i++) {
-                    $year = $years[$i];
-                    if ($year->year == $notes[0]->year) {
-                        echo " <option value='$year->year' selected>$year->year</option>";
-                    } else {
-                        echo " <option value='$year->year'>$year->year</option>";
+
+                    // Split the two-dimensional array "subjects" in one dimensional array "subject"
+                    foreach ($years as $year)
+                    {
+                        // Check if the subject name is equal to subject name of notes
+                        if ($year->year == $notes[0]->year)
+                        {
+                            echo " <option value='$year->idYear' selected>$year->year</option>";
+                        }
+                        else
+                        {
+                            echo " <option value='$year->idYear'>$year->year</option>";
+                        }
                     }
-                }
                 ?>
             </select>
             <br>
+
             <label>Semestre : </label>
-            <!-- <input type="number" name="semester" value="<?= $notes[0]->semester ?>" required> -->
             <select id="semester" name="semester">
                 <?php
-                foreach ($semesters as $semester) {
-                    if ($semester == $notes[0]->semester) {
-                        echo "<option value=$semester selected>$semester</option>";
-                    } else {
-                        echo "<option value=$semester>$semester</option>";
+                    foreach ($semesters as $semester)
+                    {
+                        if ($semester == $notes[0]->semester)
+                        {
+                            echo "<option value=$semester selected>$semester</option>";
+                        } 
+                        else
+                        {
+                            echo "<option value=$semester>$semester</option>";
+                        }
                     }
-                }
                 ?>
             </select>
             <br>
 
             <input type="reset" class="btn btn-outline-primary" name="delete" value="Effacer">
             <input type="submit" class="btn btn-primary" name="validate" value="Valider">
+
         </form>
-        <br>
-        <!-- <a href="voirAnnonce.php?idVehicule=<?php echo $idVehicule; ?>"><button class="btn btn-info">Retour</button></a> -->
     </fieldset>
 </body>
 

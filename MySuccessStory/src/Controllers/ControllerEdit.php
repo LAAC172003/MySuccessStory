@@ -1,8 +1,8 @@
 <?php
-
 namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
+use MySuccessStory\Api\Model\Note;
 
 class ControllerEdit
 {
@@ -33,28 +33,21 @@ class ControllerEdit
             $years = $functions->curl("http://mysuccessstory/api/year");
             $idUsers = $functions->curl("http://mysuccessstory/api/userID/$emailParts[0]/$emailParts[1]");
             $notes = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]");
+
+            $submit = filter_input(INPUT_POST, 'validate', FILTER_SANITIZE_STRING);
+            $note = filter_input(INPUT_POST, 'note', FILTER_VALIDATE_FLOAT);
+            $idSubject = filter_input(INPUT_POST, 'subject', FILTER_VALIDATE_INT);
+            $idYear = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
+            $semester = filter_input(INPUT_POST, 'semester', FILTER_VALIDATE_INT);
+
+            $idNote = $_GET['idNote'];
+
+            if ($submit == "Valider") {
+                $functionsNotes->update($note, $semester, $idSubject, $idNote, $idYear);
+                header("Location:http://mysuccessstory/profile");
+            }
         }
         var_dump($notes[0]);
         require '../src/view/viewEdit.php';
     }
 }
-            $note = filter_input(INPUT_POST, 'note', FILTER_VALIDATE_FLOAT);
-            $sub = filter_input(INPUT_POST, 'subjects', FILTER_SANITIZE_STRING);
-            $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_STRING);
-            $semester = filter_input(INPUT_POST, 'semester', FILTER_VALIDATE_INT);
-            $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_STRING);
-
-            if ($submit == "Ajouter") {
-                if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0) {
-                    $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
-                    header("Location:http://mysuccessstory/profile");
-                } else {
-                    return "marche pas";
-                }
-                if ("test") {
-                    # code...
-                }
-            }
-        }
-        require '../src/view/viewAddNote.php';
-    }
