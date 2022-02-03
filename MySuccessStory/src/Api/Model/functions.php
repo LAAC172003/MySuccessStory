@@ -54,7 +54,7 @@ class Functions
      */
     public function jwtGenerator($secret = 'secret')
     {
-        
+
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
         $payload = array('sub' => '1587426934', 'name' => 'nameHere', 'admin' => true, 'exp' => time() + 3600);
 

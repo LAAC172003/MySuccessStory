@@ -17,7 +17,7 @@ use MySuccessStory\Controllers\ControllerSimulation;
 use MySuccessStory\api\controller\index;
 
 // SimpleRouter::get('/api', [Index::class, 'api']);
-SimpleRouter::get('/api/{data?}/{prenom?}/{nom?}', [Index::class, 'apiFunctions']);
+SimpleRouter::get('/api/{data?}/{prenom?}/{nom?}/{order?}/{asc?}', [Index::class, 'apiFunctions']);
 // SimpleRouter::get('/api/{data?}/{prenom?}/{nom?}', [Index::class, 'apiFunctions']);
 #endregion
 

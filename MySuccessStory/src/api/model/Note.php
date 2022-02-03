@@ -23,7 +23,7 @@ class Note
     }
 
     // /**
-    //  * Return in json an array with all data of one note by id 
+    //  * Return in json an array with all data of one note by id
     //  *
     //  * @param class $db
     //  * @param string $sql
