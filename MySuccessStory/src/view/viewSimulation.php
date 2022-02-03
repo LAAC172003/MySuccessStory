@@ -22,11 +22,12 @@
 </head>
 
 <body>
+    <h1>Page Année</h1>
     <form method="post" action="">
         <table>
             <thead>
                 <tr>
-                    <th colspan="3">CG</th>
+                    <th colspan="4">CG</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,7 +38,8 @@
                 ?>
                         <tr>
                             <td><?= $subject->name ?></td>
-                            <td><input type="number" name="note<?= $subject->name ?>" /></td>
+                            <td><input type="number" name="noteSemestre1<?= $subject->name ?>" /></td>
+                            <td><input type="number" name="noteSemestre2<?= $subject->name ?>" /></td>
                             <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
                         </tr>
                 <?php
@@ -51,7 +53,7 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan="3">CFC</th>
+                    <th colspan="4">CFC</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +64,8 @@
                 ?>
                         <tr>
                             <td><?= $subject->name ?></td>
-                            <td><input type="number" name="note<?= $subject->name ?>" /></td>
+                            <td><input type="number" name="noteSemestre1<?= $subject->name ?>" /></td>
+                            <td><input type="number" name="noteSemestre2<?= $subject->name ?>" /></td>
                             <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
                         </tr>
                 <?php
