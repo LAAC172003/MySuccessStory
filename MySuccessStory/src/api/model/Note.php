@@ -21,6 +21,11 @@ class Note
         $db->close();
         return json_encode($GLOBALS["notes"], JSON_UNESCAPED_UNICODE);
     }
+    
+    public function getSubjectByCategory($category)
+    {
+        return "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory = c.idCategory WHERE c.name = '$category'";
+    }
 
     // /**
     //  * Return in json an array with all data of one note by id 
@@ -151,16 +156,12 @@ class Note
      */
     public function passMark(array $notes)
     {
-        if ($notes[0] == null)
-        {
+        if ($notes[0] == null) {
             return $result = 4;
-        }
-        else
-        {
+        } else {
             $result = 0.0;
 
-            for ($i = 0; $i < count($notes[0]); $i++)
-            {
+            for ($i = 0; $i < count($notes[0]); $i++) {
                 $result += $notes[0][$i]->note;
             }
 
