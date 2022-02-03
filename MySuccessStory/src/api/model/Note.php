@@ -21,7 +21,7 @@ class Note
         $db->close();
         return json_encode($GLOBALS["notes"], JSON_UNESCAPED_UNICODE);
     }
-    
+
     public function getSubjectByCategory($category)
     {
         return "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory = c.idCategory WHERE c.name = '$category'";
@@ -44,6 +44,18 @@ class Note
         ");
         return $note->fetchAll(json_encode($note, JSON_UNESCAPED_UNICODE))[0];
     }
+
+    // public static function getNoteById($idNote)
+    // {
+    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+    //     $getNote = $db->query(
+    //         "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear` FROM `note` WHERE `idNote` = $idNote"
+    //     );
+    //     $GLOBALS["note"] = $getNote->fetchAll();
+    //     $db->close();
+    //     return json_encode($GLOBALS["note"], JSON_UNESCAPED_UNICODE);
+    // }
 
     /**
      * Insert a new note on the database with 5 params

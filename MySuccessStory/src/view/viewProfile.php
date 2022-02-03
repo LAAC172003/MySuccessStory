@@ -14,18 +14,34 @@
     <form method="GET">
         <label>Trier par :
             <select name="Order">
-                <!-- <option value="<?php  ?>"><?php  ?></option> -->
-                <option value="note">note</option>
-                <option value="subject">sujet</option>
-                <!-- <option value="">moyenne</option> -->
+                <?php
+                    foreach ($notes[0] as $field => $value)
+                    {
+
+                ?>
+
+                <option value="<?= $field ?>" <?php if (isset($_GET["Order"])) { if ($_GET["Order"] == $field) { echo "selected"; } } ?>> <?= $field ?> </option>
+
+                <?php
+                    }
+                ?>
             </select>
         </label>
+
+        <br>
+
+        <label>Ordre croissant :
+            <input type="radio" name="isASC" <?php if (isset($_GET["isASC"])) { if ($_GET["isASC"] != "DESC") { echo "checked"; } } else { echo "checked"; } ?> value="ASC">
+        </label>
+        <label>Ordre décroissant :
+        <input type="radio" name="isASC" <?php if (isset($_GET["isASC"])) { if ($_GET["isASC"] == "DESC") { echo "checked"; } } ?> value="DESC">
+        </label>
+        <br>
 
         <input type="submit" value="submit">
     </form>
 
     <table class="table">
-        <th>Numéro</th>
         <th>note</th>
         <th>sujet</th>
         <th>description</th>
@@ -37,7 +53,6 @@
             $note = $notes[$i];
         ?>
             <tr>
-                <td><?= $i + 1 ?></td>
                 <td><?= $note->note ?></td>
                 <td><?= $note->subject ?></td>
                 <td><?= $note->description ?></td>
