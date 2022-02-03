@@ -22,14 +22,29 @@ class Note
         return json_encode($GLOBALS["notes"], JSON_UNESCAPED_UNICODE);
     }
 
-    // /**
-    //  * Return in json an array with all data of one note by id
-    //  *
-    //  * @param class $db
-    //  * @param string $sql
-    //  * @return string array of notes in json
-    //  * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
-    // */
+    public function getSubjectByCategory($category)
+    {
+        return "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory = c.idCategory WHERE c.name = '$category'";
+    }
+
+    /**
+     * Return in json an array with all data of one note
+     *
+     * @param int $idNote
+     * @return string array of notes in json
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
+    */
+    public static function getNoteById($idNote)
+    {
+        $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        $note = $db->query(
+            "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear`
+            FROM `note`
+            WHERE `idNote` = '$idNote'
+        ");
+        return $note->fetchAll(json_encode($note, JSON_UNESCAPED_UNICODE))[0];
+    }
+
     // public static function getNoteById($idNote)
     // {
     //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -151,16 +166,12 @@ class Note
      */
     public function passMark(array $notes)
     {
-        if ($notes[0] == null)
-        {
+        if ($notes[0] == null) {
             return $result = 4;
-        }
-        else
-        {
+        } else {
             $result = 0.0;
 
-            for ($i = 0; $i < count($notes[0]); $i++)
-            {
+            for ($i = 0; $i < count($notes[0]); $i++) {
                 $result += $notes[0][$i]->note;
             }
 

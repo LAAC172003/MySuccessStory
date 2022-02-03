@@ -55,6 +55,7 @@ class Index
                                 //201 Created
                                 http_response_code(201);
                                 break;
+                                
                             case 'year':
                                 $response_json = $functionsYears->getYears($db, "SELECT idYear, year FROM year");
                                 //201 Created
@@ -115,6 +116,7 @@ class Index
                                 $response_json = $functionNotes->notes($db, $sql);
                                 http_response_code(201);
                                 break;
+
                             case 'getPhysics':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -122,6 +124,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getMaths':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -129,6 +132,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getEconomy':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -136,6 +140,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getEnglish':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -143,6 +148,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getPhysicalEducation':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -150,6 +156,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getCIENotes':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -164,6 +171,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getCINotes':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -178,6 +186,18 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+                            case 'getSubjectsByCategoryCG':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functionNotes->getSubjectByCategory("CG")
+                                );
+                                break;
+                                case 'getSubjectsByCategoryCFC':
+                                    $response_json = $functionNotes->notes(
+                                        $db,
+                                        $functionNotes->getSubjectByCategory("CFC")
+                                    );
+                                    break;
                             default:
                                 // 400 Bad Request
                                 http_response_code(400);

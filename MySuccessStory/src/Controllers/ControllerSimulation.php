@@ -26,7 +26,11 @@ class ControllerSimulation
             $physicalEducation = $functions->curl("http://mysuccessstory/api/getPhysicalEducation/$emailParts[0]/$emailParts[1]");
             $CIE = $functions->curl("http://mysuccessstory/api/getCIENotes/$emailParts[0]/$emailParts[1]");
             $CI = $functions->curl("http://mysuccessstory/api/getCINotes/$emailParts[0]/$emailParts[1]");
+            
+            $subjectsByCFC = $functions->curl("http://mysuccessstory/api/getSubjectsByCategoryCFC");
+            $subjectsByCG = $functions->curl("http://mysuccessstory/api/subjects");
 
+            var_dump($subjectsByCG[0]);
             //Informatique
             $CIENotes[] = $CIE;
             $CINotes[] = $CI;
@@ -63,20 +67,19 @@ class ControllerSimulation
 
 
             if (false) {
-            $premiereAnneeCg = filter_input(INPUT_POST, 'premiereAnneeCg', FILTER_VALIDATE_INT);
-            $deuxiemeAnneeCg = filter_input(INPUT_POST, 'deuxiemeAnneeCg', FILTER_VALIDATE_INT);
-            $troisiemeAnneeCg = filter_input(INPUT_POST, 'troisiemeAnneeCg', FILTER_VALIDATE_INT);
-            $quatriemeAnneeCg = filter_input(INPUT_POST, 'quatriemeAnneeCg', FILTER_VALIDATE_INT);
-            $moyennesCg[] = $premiereAnneeCg + $deuxiemeAnneeCg + $troisiemeAnneeCg + $quatriemeAnneeCg;
-            $resultCG = $functionsNotes->AverageSimulation($moyennesCg);
-            
-            $premiereAnneeCfc = filter_input(INPUT_POST, 'premiereAnneeCfc', FILTER_VALIDATE_INT);
-            $deuxiemeAnneeCfc = filter_input(INPUT_POST, 'deuxiemeAnneeCfc', FILTER_VALIDATE_INT);
-            $troisiemeAnneeCfc = filter_input(INPUT_POST, 'troisiemeAnneeCfc', FILTER_VALIDATE_INT);
-            $quatriemeAnneeCfc = filter_input(INPUT_POST, 'quatriemeAnneeCfc', FILTER_VALIDATE_INT);
-            $moyennesCfc[] = $premiereAnneeCfc + $deuxiemeAnneeCfc + $troisiemeAnneeCfc + $quatriemeAnneeCfc;
-            $resultCG = $functionsNotes->AverageSimulation($moyennesCfc);
+                $premiereAnneeCg = filter_input(INPUT_POST, 'premiereAnneeCg', FILTER_VALIDATE_INT);
+                $deuxiemeAnneeCg = filter_input(INPUT_POST, 'deuxiemeAnneeCg', FILTER_VALIDATE_INT);
+                $troisiemeAnneeCg = filter_input(INPUT_POST, 'troisiemeAnneeCg', FILTER_VALIDATE_INT);
+                $quatriemeAnneeCg = filter_input(INPUT_POST, 'quatriemeAnneeCg', FILTER_VALIDATE_INT);
+                $moyennesCg[] = $premiereAnneeCg + $deuxiemeAnneeCg + $troisiemeAnneeCg + $quatriemeAnneeCg;
+                $resultCG = $functionsNotes->AverageSimulation($moyennesCg);
 
+                $premiereAnneeCfc = filter_input(INPUT_POST, 'premiereAnneeCfc', FILTER_VALIDATE_INT);
+                $deuxiemeAnneeCfc = filter_input(INPUT_POST, 'deuxiemeAnneeCfc', FILTER_VALIDATE_INT);
+                $troisiemeAnneeCfc = filter_input(INPUT_POST, 'troisiemeAnneeCfc', FILTER_VALIDATE_INT);
+                $quatriemeAnneeCfc = filter_input(INPUT_POST, 'quatriemeAnneeCfc', FILTER_VALIDATE_INT);
+                $moyennesCfc[] = $premiereAnneeCfc + $deuxiemeAnneeCfc + $troisiemeAnneeCfc + $quatriemeAnneeCfc;
+                $resultCG = $functionsNotes->AverageSimulation($moyennesCfc);
             }
             // A FAIRE : s'il y a des valeures dans les input alors faire les moyennes avec ces valeures sinon récupérer dans la base de données les notes
 

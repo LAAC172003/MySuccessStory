@@ -6,47 +6,73 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulation</title>
+    <style>
+        table,
+        td {
+            border: 1px solid #333;
+            margin-top: 50px;
+        }
+
+        thead,
+        tfoot {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
     <form method="post" action="">
-        <h4>CFC</h4>
-        <label>
-            Moyenne première année :
-            <input type="number" name="premiereAnneeCfc" />
-        </label><br><br>
-        <label>
-            Moyenne deuxième année :
-            <input type="number" name="deuxiemeAnneeCfc" />
-        </label><br><br>
-        <label>
-            Moyenne troisième année :
-            <input type="number" name="troisiemeAnneeCfc" />
-        </label><br><br>
-        <label>
-            Moynne quatrième année :
-            <input type="number" name="quatriemeAnneeCfc" />
-        </label>
-        <br><br>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">CG</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        <h4>Culture générale</h4>
-        <label>
-            Moyenne première année :
-            <input type="number" name="premiereAnneeCg" />
-        </label><br><br>
-        <label>
-            Moyenne deuxième année :
-            <input type="number" name="deuxiemeAnneeCg" />
-        </label><br><br>
-        <label>
-            Moyenne troisème année :
-            <input type="number" name="troisiemeAnneeCg" />
-        </label><br><br>
-        <label>
-            Moyenne quatrième année :
-            <input type="number" name="quatriemeAnneeCg" />
-        </label>
-        <input type="submit" value="tkt">
+                <?php
+                foreach ($subjectsByCG as $subject) {
+                    if ($subject->category == "CG") {
+                ?>
+                        <tr>
+                            <td><?= $subject->name ?></td>
+                            <td><input type="number" name="note<?= $subject->name ?>" /></td>
+                            <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
+                        </tr>
+                <?php
+                    }
+                }
+
+
+                ?>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">CFC</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+                foreach ($subjectsByCG as $subject) {
+                    if ($subject->category == "CFC") {
+                ?>
+                        <tr>
+                            <td><?= $subject->name ?></td>
+                            <td><input type="number" name="note<?= $subject->name ?>" /></td>
+                            <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
+                        </tr>
+                <?php
+                    }
+                }
+
+
+                ?>
+            </tbody>
+        </table>
     </form>
 </body>
 
