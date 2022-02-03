@@ -209,6 +209,7 @@ class Note
         $result = (round($english * 2) / 2 + round($economy * 2) / 2 + round($maths * 2) / 2 + round($physics * 2) / 2) / 4;
         return round($result * 2) / 2;
     }
+
     /**
      * calculates the note of the ci
      *
