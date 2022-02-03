@@ -49,7 +49,7 @@ class ControllerAdd
                 }
                 else
                 {
-                    return "marche pas";
+                    return "la note n'est pas comprise entre 1 et 6";
                 }
             }
         }

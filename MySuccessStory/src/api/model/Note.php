@@ -27,25 +27,23 @@ class Note
         return "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory = c.idCategory WHERE c.name = '$category'";
     }
 
-    // /**
-    //  * Return in json an array with all data of one note by id 
-    //  *
-    //  * @param class $db
-    //  * @param string $sql
-    //  * @return string array of notes in json
-    //  * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
-    // */
-    // public static function getNoteById($idNote)
-    // {
-    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-    //     $getNote = $db->query(
-    //         "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear` FROM `note` WHERE `idNote` = $idNote"
-    //     );
-    //     $GLOBALS["note"] = $getNote->fetchAll();
-    //     $db->close();
-    //     return json_encode($GLOBALS["note"], JSON_UNESCAPED_UNICODE);
-    // }
+    /**
+     * Return in json an array with all data of one note
+     *
+     * @param int $idNote
+     * @return string array of notes in json
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
+    */
+    public static function getNoteById($idNote)
+    {
+        $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        $note = $db->query(
+            "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear`
+            FROM `note`
+            WHERE `idNote` = '$idNote'
+        ");
+        return $note->fetchAll(json_encode($note, JSON_UNESCAPED_UNICODE))[0];
+    }
 
     /**
      * Insert a new note on the database with 5 params
@@ -212,6 +210,7 @@ class Note
         $result = (round($english * 2) / 2 + round($economy * 2) / 2 + round($maths * 2) / 2 + round($physics * 2) / 2) / 4;
         return round($result * 2) / 2;
     }
+
     /**
      * calculates the note of the ci
      *

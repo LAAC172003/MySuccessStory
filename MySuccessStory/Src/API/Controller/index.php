@@ -31,7 +31,7 @@ class Index
      * @param string $lastname ending of the email
      * @return json return informations in an array in json
      */
-    public function apiFunctions($data = "", $firstname = "", $lastname = "")
+    public function apiFunctions($data = "", $firstname = "", $lastname = "", $orderBy = "note")
     {
         //initialize classes
         $functionsSubjects = new Subject();
@@ -55,6 +55,7 @@ class Index
                                 //201 Created
                                 http_response_code(201);
                                 break;
+                                
                             case 'year':
                                 $response_json = $functionsYears->getYears($db, "SELECT idYear, year FROM year");
                                 //201 Created
@@ -103,6 +104,7 @@ class Index
                                     JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
                                     JOIN `user` ON `note`.`idUser` = `user`.`iduser`
                                     WHERE `user`.`email` = '$email'
+                                    ORDER BY `$orderBy` DESC
                                 "
                                 );
                                 http_response_code(201);
@@ -156,7 +158,7 @@ class Index
                                 FROM
                                     note
                                 JOIN `subject` ON note.idSubject = `subject`.idSubject
-                                JOIN user ON note.idUser = user.idUser 
+                                JOIN user ON note.idUser = user.idUser
                                 WHERE
                                     `subject`.isCIE = TRUE AND user.email = '$email'"
                                 );
@@ -171,7 +173,7 @@ class Index
                                     FROM
                                         note
                                     JOIN `subject` ON note.idSubject = `subject`.idSubject
-                                    JOIN user ON note.idUser = user.idUser 
+                                    JOIN user ON note.idUser = user.idUser
                                     WHERE
                                         `subject`.isCIE = false AND user.email = '$email'"
                                 );
