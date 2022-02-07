@@ -3,6 +3,7 @@
 namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
+use MySuccessStory\Api\Model\Note;
 
 class ControllerProfile
 {
@@ -15,7 +16,13 @@ class ControllerProfile
      */
     public function profile()
     {
+        // Cookie 
         $functions = new Functions();
+
+        // Note object
+        $functionsNotes = new Note();
+
+        // If a user is logged
         if (!isset($_COOKIE['email']))
         {
             header('Location:http://mysuccessstory/');

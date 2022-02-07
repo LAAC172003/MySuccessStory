@@ -112,38 +112,38 @@ class Note
     }
 
     /**
-     * update function
+     * Update the data of one note
      *
      * @param int $note
      * @param string $semester
      * @param int $idSubject
      * @param int $idNote
+     * @param int $idYear
      * @return sql query
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
      */
     public function update($note, $semester, $idSubject, $idNote, $idYear)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         return $update = $db->query("UPDATE `note` SET `idNote`= $idNote, `note` = $note, `semester`= $semester, `idSubject` = $idSubject, `idYear` = $idYear WHERE idNote = $idNote");
-        // header("Location:http://mysuccessstory/");
     }
 
 
     /**
-     * delete an element of the note by a the id
+     * Delete a note by id
      *
-     * @param int $id
+     * @param int $idNote
      * @return bool return true if the query is successful return false if it's not
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
      */
-    public function delete($id)
+    public function deleteNoteById($idNote)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        return $delete = $db->query("DELETE FROM `note` WHERE idNote =  $id");
+        return $delete = $db->query("DELETE FROM `note` WHERE `idNote` = $idNote");
     }
 
     /**
-     * calculates the pass mark to success the CFC
+     * Calculates the pass mark to success the CFC
      *
      * @param float $tpi
      * @param float $cbe

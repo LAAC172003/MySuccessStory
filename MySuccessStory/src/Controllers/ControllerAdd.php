@@ -5,6 +5,11 @@ namespace MySuccessStory\Controllers;
 use MySuccessStory\Api\Model\Functions;
 use MySuccessStory\Api\Model\Note;
 
+/**
+ * method who add a note
+ *
+ * @author Soares Rodrigues Flavio <flavio.srsrd@eduge.ch>
+ */
 class ControllerAdd
 {
     /**
@@ -23,6 +28,7 @@ class ControllerAdd
         if (!isset($_COOKIE['email']))
         {
             header("Location:http://mysuccessstory/");
+            exit();
         }
 
         if ($functions->refreshCookie())
@@ -46,11 +52,21 @@ class ControllerAdd
                 {
                     $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
                     header("Location:http://mysuccessstory/profile");
+                    exit();
+                }
+                else if ($note < 1.0 && $note > 6.0)
+                {
+                    echo ("erreur de saisie : la note n'est pas comprise entre 1 et 6");
                 }
                 else
                 {
-                    return "la note n'est pas comprise entre 1 et 6";
+                    echo ("erreur de saisie : la note doit contenir un chiffre entre 1 et 6");
                 }
+            }
+            else if($submit == "Annuler")
+            {
+                header("Location:http://mysuccessstory/profile");
+                exit();
             }
         }
         require '../src/view/viewAddNote.php';

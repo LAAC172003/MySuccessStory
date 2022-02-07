@@ -41,30 +41,39 @@
         <input type="submit" value="submit">
     </form>
 
+    <p>
+        <a href="http://mysuccessstory/addNote">Ajouter une note</a>
+    </p>
+    
     <table class="table">
         <th>note</th>
         <th>sujet</th>
         <th>description</th>
         <th>année</th>
         <th>semestre</th>
-        <?php
 
-        for ($i = 0; $i < count($notes); $i++) {
-            $note = $notes[$i];
-        ?>
-            <tr>
-                <td><?= $note->note ?></td>
-                <td><?= $note->subject ?></td>
-                <td><?= $note->description ?></td>
-                <td><?= $note->year ?></td>
-                <td><?= $note->semester ?></td>
-                <td><a href="http://mysuccessstory/addNote">Ajouter</a></td>
-                <td><a href="http://mysuccessstory/editNote?idNote=<?= $note->idNote ?>">Modifier</a></td>
-                <td><a href="http://mysuccessstory/deleteNote?idNote=<?= $note->idNote ?>">Supprimer</a></td>
-            </tr>
         <?php
-        }
+            $numero = 0;
+            foreach ($notes as $note)
+            {
+                $numero += 1;
         ?>
+                <tr>
+                    <td><?=$numero?></td>
+                    <td><?=$note->note?></td>
+                    <td><?=$note->subject?></td>
+                    <td><?=$note->description?></td>
+                    <td><?=$note->year?></td>
+                    <td><?=$note->semester?></td>
+                    <td>
+                        <a href="http://mysuccessstory/editNote?idNote=<?= $note->idNote ?>">Modifier</a>
+                    </td>
+                    <td>
+                        <a href="http://mysuccessstory/deleteNote?idNote=<?=$note->idNote ?>">Supprimer</a>
+                    </td>
+                </tr>
+        <?php } ?>
+
     </table>
 </body>
 

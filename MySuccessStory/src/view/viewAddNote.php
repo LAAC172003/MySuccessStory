@@ -17,7 +17,7 @@
         <form method="post">
             <div>
                 <label name="note" for="note">votre note </label>
-                <input id="note" type="number" min="1" max="6" step="0.5" name="note" value="<?= $note ?>" onchange="verifyNote()">
+                <input id="note" type="number" name="note" value="<?=$note?>" min="1" max="6" step="0.5">
             </div>
 
             <div>
@@ -59,20 +59,6 @@
             </div>
         </form>
     </main>
-
-    <footer>
-        <p>footer du site</p>
-    </footer>
-
-    <script>
-        function verifyNote() {
-            let note = document.getElementById("note");
-
-            if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0) {
-
-            }
-        }
-    </script>
 </body>
 
 </html>
