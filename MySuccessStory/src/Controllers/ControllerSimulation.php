@@ -15,6 +15,10 @@ class ControllerSimulation
      */
     public function simulation()
     {
+        if (!isset($_COOKIE['email']))
+        {
+            header('Location:http://mysuccessstory/');
+        }
         $functions = new Functions();
         $functionsNotes = new Note();
         $emailParts = explode(".", $_COOKIE['email']);

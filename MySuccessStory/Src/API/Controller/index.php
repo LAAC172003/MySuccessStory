@@ -73,7 +73,6 @@ class Index
                                 break;
                             case 'userID':
                                 $response_json = $functionsUsers->user($db, "SELECT idUser from user where email = '$email'");
-
                                 http_response_code(201);
                                 break;
 

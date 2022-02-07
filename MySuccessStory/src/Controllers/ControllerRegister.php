@@ -70,7 +70,8 @@ class ControllerRegister
                         echo $error = "Login existe déjà!";
                     } else {
                         echo getType(hash("sha256", $pwd, $salt));
-                        $users->CreateNewAccount($email, hash("sha256", $pwd . $salt), $salt, $firstName, $lastName);
+                        $pwdHash = password_hash($pwd, CRYPT_SHA256);
+                        $users->CreateNewAccount($email, $pwdHash, $salt, $firstName, $lastName);
                         header("Location:http://mysuccessstory/login");
                     }
                 }
