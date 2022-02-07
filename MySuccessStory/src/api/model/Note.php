@@ -22,6 +22,11 @@ class Note
         return json_encode($GLOBALS["notes"], JSON_UNESCAPED_UNICODE);
     }
 
+    public function getSubjectByCategory($category)
+    {
+        return "SELECT idSubject,s.name,c.name AS 'category' FROM subject s INNER JOIN category c ON s.idCategory = c.idCategory WHERE c.name = '$category'";
+    }
+
     /**
      * Return in json an array with all data of one note
      *
@@ -39,6 +44,18 @@ class Note
         ");
         return $note->fetchAll(json_encode($note, JSON_UNESCAPED_UNICODE))[0];
     }
+
+    // public static function getNoteById($idNote)
+    // {
+    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+    //     $getNote = $db->query(
+    //         "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear` FROM `note` WHERE `idNote` = $idNote"
+    //     );
+    //     $GLOBALS["note"] = $getNote->fetchAll();
+    //     $db->close();
+    //     return json_encode($GLOBALS["note"], JSON_UNESCAPED_UNICODE);
+    // }
 
     /**
      * Insert a new note on the database with 5 params
@@ -149,16 +166,12 @@ class Note
      */
     public function passMark(array $notes)
     {
-        if ($notes[0] == null)
-        {
+        if ($notes[0] == null) {
             return $result = 4;
-        }
-        else
-        {
+        } else {
             $result = 0.0;
 
-            for ($i = 0; $i < count($notes[0]); $i++)
-            {
+            for ($i = 0; $i < count($notes[0]); $i++) {
                 $result += $notes[0][$i]->note;
             }
 

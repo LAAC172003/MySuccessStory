@@ -31,7 +31,7 @@ class Index
      * @param string $lastname ending of the email
      * @return json return informations in an array in json
      */
-    public function apiFunctions($data = "", $firstname = "", $lastname = "", $orderBy = "note")
+    public function apiFunctions($data = "", $firstname = "", $lastname = "", $orderBy = "idNote", $isASC = true)
     {
         //initialize classes
         $functionsSubjects = new Subject();
@@ -96,17 +96,24 @@ class Index
                                 break;
 
                             case 'notes':
-                                $response_json = $functionNotes->notes(
-                                    $db,
-                                    "SELECT `idNote`,`note`, `year`.`year`, `semester`, `subject`.`name` AS 'subject', `subject`.`description`, `user`.`firstname`, `user`.`lastName`
-                                    FROM `note`
-                                    JOIN `year` ON `note`.`idYear` = `year`.`idYear`
-                                    JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
-                                    JOIN `user` ON `note`.`idUser` = `user`.`iduser`
-                                    WHERE `user`.`email` = '$email'
-                                    ORDER BY `$orderBy` DESC
-                                "
-                                );
+                                $sql = "SELECT `idNote`,`note`, `year`.`year`, `semester`, `subject`.`name` AS 'subject', `subject`.`description`, `user`.`firstname`, `user`.`lastName`
+                                        FROM `note`
+                                        JOIN `year` ON `note`.`idYear` = `year`.`idYear`
+                                        JOIN `subject` ON `subject`.`idSubject` = `note`.`idSubject`
+                                        JOIN `user` ON `note`.`idUser` = `user`.`iduser`
+                                        WHERE `user`.`email` = '$email'
+                                        ORDER BY `$orderBy` ";
+
+                                if ($isASC == "ASC" || $isASC == "DESC")
+                                {
+                                    $sql .= $isASC;
+                                }
+                                else
+                                {
+                                    $sql .= "ASC";
+                                }
+
+                                $response_json = $functionNotes->notes($db, $sql);
                                 http_response_code(201);
                                 break;
 
@@ -117,6 +124,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getMaths':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -124,6 +132,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getEconomy':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -131,6 +140,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getEnglish':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -138,6 +148,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getPhysicalEducation':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -145,6 +156,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getCIENotes':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -159,6 +171,7 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+
                             case 'getCINotes':
                                 $response_json = $functionNotes->notes(
                                     $db,
@@ -173,6 +186,18 @@ class Index
                                 );
                                 http_response_code(201);
                                 break;
+                            case 'getSubjectsByCategoryCG':
+                                $response_json = $functionNotes->notes(
+                                    $db,
+                                    $functionNotes->getSubjectByCategory("CG")
+                                );
+                                break;
+                                case 'getSubjectsByCategoryCFC':
+                                    $response_json = $functionNotes->notes(
+                                        $db,
+                                        $functionNotes->getSubjectByCategory("CFC")
+                                    );
+                                    break;
                             default:
                                 // 400 Bad Request
                                 http_response_code(400);
