@@ -3,6 +3,7 @@
 namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
+use MySuccessStory\Api\Model\Note;
 
 class ControllerProfile
 {
@@ -14,7 +15,13 @@ class ControllerProfile
      */
     public function profile()
     {
+        // Cookie 
         $functions = new Functions();
+
+        // Note object
+        $functionsNotes = new Note();
+
+        // If a user is logged
         if (!isset($_COOKIE['email']))
         {
             header('Location:http://mysuccessstory/');
@@ -31,7 +38,6 @@ class ControllerProfile
             }
 
             $notes = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]", $order);
-            var_dump($notes);
         }
         require '../src/view/viewProfile.php';
     }

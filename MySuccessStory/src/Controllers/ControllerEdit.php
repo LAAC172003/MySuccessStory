@@ -19,6 +19,7 @@ class ControllerEdit
         if (!isset($_COOKIE['email']))
         {
             header("Location:http://mysuccessstory/");
+            exit();
         }
 
         // Cookie 
@@ -60,6 +61,7 @@ class ControllerEdit
                     // Update the value on the database
                     $functionsNotes->update($note, $semester, $idSubject, $idNote, $idYear);
                     header("Location:http://mysuccessstory/profile");
+                    exit();
                 }
             }
         }
