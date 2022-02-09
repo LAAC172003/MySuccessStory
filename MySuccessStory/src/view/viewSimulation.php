@@ -33,14 +33,16 @@
             <tbody>
 
                 <?php
-                foreach ($subjectsByCG as $subject) {
-                    if ($subject->category == "CG") {
+                foreach ($subjects as $subject)
+                {
+                    if ($subject->category == "CG")
+                    {
                 ?>
                         <tr>
                             <td><?= $subject->name ?></td>
-                            <td><input type="number" name="noteSemestre1<?= $subject->name ?>" /></td>
-                            <td><input type="number" name="noteSemestre2<?= $subject->name ?>" /></td>
-                            <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
+                            <td><input type="number" name="noteSemester1_<?= $subject->idSubject ?>" /></td>
+                            <td><input type="number" name="noteSemester2_<?= $subject->idSubject ?>" /></td>
+                            <td>moyenne</td>
                         </tr>
                 <?php
                     }
@@ -57,25 +59,43 @@
                 </tr>
             </thead>
             <tbody>
-
                 <?php
-                foreach ($subjectsByCG as $subject) {
-                    if ($subject->category == "CFC") {
+                foreach ($subjects as $subject)
+                {
+                    if ($subject->category == "CFC")
+                    {
                 ?>
                         <tr>
                             <td><?= $subject->name ?></td>
-                            <td><input type="number" name="noteSemestre1<?= $subject->name ?>" /></td>
-                            <td><input type="number" name="noteSemestre2<?= $subject->name ?>" /></td>
-                            <td name="moyenne<?= $subject->name ?>" value="<?= $subject->name?>">moyenne</td>
+                            <?php
+                            for ($i = 1; $i <= 2; $i++)
+                            {
+                            ?>
+                                <td><input type="number" name="noteSemester<?= $i ?>_<?= $subject->idSubject ?>" value="<?php
+                                foreach ($notesDb as $note)
+                                {
+                                    if ($subject->name == $note->subject)
+                                    {
+                                        echo $note->note;
+                                    }
+                                    else
+                                    {
+                                        echo $_POST["noteSemester$i" . "_" . $subject->idSubject];
+                                    }
+                                }
+                                ?>" /></td>
+                            <?php
+                            }
+                            ?>
+                            <td>moyenne</td>
                         </tr>
                 <?php
                     }
                 }
-
-
                 ?>
             </tbody>
         </table>
+        <input type="submit" />
     </form>
 </body>
 

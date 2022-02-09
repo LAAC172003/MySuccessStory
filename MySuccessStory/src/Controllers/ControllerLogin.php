@@ -4,6 +4,7 @@ namespace MySuccessStory\Controllers;
 
 use MySuccessStory\Api\Model\Functions;
 
+
 class ControllerLogin
 {
     /**
@@ -14,15 +15,15 @@ class ControllerLogin
     public function login()
     {
         $functions = new Functions();
-        
+
         //if a user is logged
         if (isset($_COOKIE['email']))
         {
             // Redirect the user to home page
             $functions->redirect("");
         }
-        
-        //Login 
+
+        //Login
         if (isset($_POST['loginValidate'])) {
             $email = $_POST['email'];
 
@@ -47,7 +48,7 @@ class ControllerLogin
                         } else {
                             setcookie("email", $email, time() + 3600);
                             setcookie("password", hash("sha256", $pwd . $user->salt), time() + 3600);
-                            
+
                             // Redirect the user to profile
                             $functions->redirect("");
                         }

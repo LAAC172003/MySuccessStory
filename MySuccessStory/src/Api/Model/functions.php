@@ -8,14 +8,14 @@ namespace MySuccessStory\Api\Model;
 class Functions
 {
     #region Constants
-    public const DAYS_WEEK = 7;
+    /*public const DAYS_WEEK = 7;
     public const DAYS_MONTH = 30;
-    #endregion
+    */#endregion
 
     /**
      * an hour in seconds
      */
-    public const TIME = 3600;
+   // public const TIME = 3600;
 
     /**
      * encode the url in base64
