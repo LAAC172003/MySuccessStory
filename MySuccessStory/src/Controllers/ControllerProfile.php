@@ -22,11 +22,8 @@ class ControllerProfile
         // Note object
         $functionsNotes = new Note();
 
-        // If a user is logged
-        if (!isset($_COOKIE['email']))
-        {
-            header('Location:http://mysuccessstory/');
-        }
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
 
         if ($functions->refreshCookie())
         {

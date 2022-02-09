@@ -15,13 +15,18 @@ class ControllerSimulation
      */
     public function simulation()
     {
-        if (!isset($_COOKIE['email']))
-        {
-            header('Location:http://mysuccessstory/');
-        }
+        // Cookie 
         $functions = new Functions();
+
+        // Note object
         $functionsNotes = new Note();
+
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
+
+        // Split the email in 2
         $emailParts = explode(".", $_COOKIE['email']);
+
         if ($functions->refreshCookie()) {
             $english = $functions->curl("http://mysuccessstory/api/getEnglish/$emailParts[0]/$emailParts[1]");
             $economy = $functions->curl("http://mysuccessstory/api/getEconomy/$emailParts[0]/$emailParts[1]");
@@ -96,4 +101,5 @@ class ControllerSimulation
         }
         require '../src/view/viewSimulation.php';
     }
+    
 }
