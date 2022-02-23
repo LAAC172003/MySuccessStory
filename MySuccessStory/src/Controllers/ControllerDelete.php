@@ -30,12 +30,8 @@ class ControllerDelete
         // Subject object
         $functionsSubjects = new Subject();
 
-        // If a user is logged
-        if (!isset($_COOKIE['email']))
-        {
-            header('Location:http://mysuccessstory/');
-            exit();
-        }
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
 
         if ($functions->refreshCookie())
         {
@@ -54,13 +50,13 @@ class ControllerDelete
                 // Delete the note in database
                 $functionsNotes->deleteNoteById($idNote);
 
-                header("Location:http://mysuccessstory/profile");
-                exit();
+                // Redirect the user to profile
+                $functions->redirect("profile");
             }
             else if ($submit == "Cancel")
             {
-                header("Location:http://mysuccessstory/profile");
-                exit();
+                // Redirect the user to profile
+                $functions->redirect("profile");
             }
         }
         require '../src/view/viewDeleteNote.php';

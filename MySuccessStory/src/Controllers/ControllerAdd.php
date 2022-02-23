@@ -23,13 +23,12 @@ class ControllerAdd
     {
         // Cookie 
         $functions = new Functions();
+
+        // Note object
         $functionsNotes = new Note();
 
-        if (!isset($_COOKIE['email']))
-        {
-            header("Location:http://mysuccessstory/");
-            exit();
-        }
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
 
         if ($functions->refreshCookie())
         {
@@ -51,8 +50,9 @@ class ControllerAdd
                 if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
                 {
                     $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
-                    header("Location:http://mysuccessstory/profile");
-                    exit();
+
+                    // Redirect the user to profile
+                    $functions->redirect("profile");
                 }
                 else if ($note < 1.0 && $note > 6.0)
                 {
@@ -65,8 +65,7 @@ class ControllerAdd
             }
             else if($submit == "Annuler")
             {
-                header("Location:http://mysuccessstory/profile");
-                exit();
+                $functions->redirect("profile");
             }
         }
         require '../src/view/viewAddNote.php';

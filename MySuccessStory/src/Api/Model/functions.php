@@ -8,14 +8,14 @@ namespace MySuccessStory\Api\Model;
 class Functions
 {
     #region Constants
-    public const DAYS_WEEK = 7;
+    /*public const DAYS_WEEK = 7;
     public const DAYS_MONTH = 30;
-    #endregion
+    */#endregion
 
     /**
      * an hour in seconds
      */
-    public const TIME = 3600;
+   // public const TIME = 3600;
 
     /**
      * encode the url in base64
@@ -113,7 +113,7 @@ class Functions
      *
      * @param string $url URL of the API
      * @return mixed result of the request
-     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.com>
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
      */
     function curl($url)
     {
@@ -146,33 +146,52 @@ class Functions
      */
     function selectQueryCG($subject, $firstname, $lastname)
     {
-        return "SELECT
-        `note`
-    FROM
-        `note`
-    JOIN `subject` ON `note`.idSubject = `subject`.idSubject
-    WHERE
-        idCategory =(
-        SELECT
-            `idCategory`
-        FROM
-            category
-        WHERE
-            `name` = 'cg'
-    ) AND idUser =(
-        SELECT
-            idUser
-        FROM
-            `user`
-        WHERE
-            `user`.email = '$firstname.$lastname@eduge.ch'
-    ) AND subject.idSubject =(
-        SELECT
-            idSubject
-        FROM
-            `subject`
-        WHERE
-            `name` = '$subject'
-    )";
+        return "SELECT `note`
+            FROM `note`
+            JOIN `subject` ON `note`.idSubject = `subject`.idSubject
+            WHERE
+                idCategory =
+                (
+                    SELECT `idCategory`
+                    FROM category
+                    WHERE `name` = 'cg'
+                )
+                AND idUser =(
+                    SELECT idUser
+                    FROM `user`
+                    WHERE `user`.email = '$firstname.$lastname@eduge.ch'
+                )
+                AND subject.idSubject =(
+                    SELECT idSubject
+                    FROM `subject`
+                    WHERE `name` = '$subject'
+                )
+        ";
+    }
+
+    /**
+     * Redirect to home page if the user isn't logged
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
+    */
+    function redirectIfNotLogged()
+    {
+        // if a user is not logged
+        if (!isset($_COOKIE['email']))
+        {
+            header("Location:http://mysuccessstory/");
+            exit();
+        }
+    }
+
+    /**
+     * Redirect to an other page
+     * @param string $ 
+     * @author Flavio Soares Rodrigues <flavio.srsrd@eduge.ch>
+    */
+    function redirect($url)
+    {
+        header("Location:http://mysuccessstory/$url");
+        exit();
     }
 }
+

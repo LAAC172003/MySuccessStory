@@ -53,25 +53,22 @@
         <th>semestre</th>
 
         <?php
-            $numero = 0;
             foreach ($notes as $note)
             {
-                $numero += 1;
         ?>
-                <tr>
-                    <td><?=$numero?></td>
-                    <td><?=$note->note?></td>
-                    <td><?=$note->subject?></td>
-                    <td><?=$note->description?></td>
-                    <td><?=$note->year?></td>
-                    <td><?=$note->semester?></td>
-                    <td>
-                        <a href="http://mysuccessstory/editNote?idNote=<?= $note->idNote ?>">Modifier</a>
-                    </td>
-                    <td>
-                        <a href="http://mysuccessstory/deleteNote?idNote=<?=$note->idNote ?>">Supprimer</a>
-                    </td>
-                </tr>
+            <tr>
+                <td><?=$note->note?></td>
+                <td><?=$note->subject?></td>
+                <td><?=$note->description?></td>
+                <td><?=$note->year?></td>
+                <td><?=$note->semester?></td>
+                <td>
+                    <a href="http://mysuccessstory/editNote?idNote=<?= $note->idNote ?>">Modifier</a>
+                </td>
+                <td>
+                    <a href="http://mysuccessstory/deleteNote?idNote=<?=$note->idNote ?>">Supprimer</a>
+                </td>
+            </tr>
         <?php } ?>
 
     </table>

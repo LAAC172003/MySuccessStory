@@ -15,14 +15,23 @@ class ControllerSimulation
      */
     public function simulation()
     {
+        session_start();
         if (!isset($_COOKIE['email']))
         {
             header('Location:http://mysuccessstory/');
         }
         $functions = new Functions();
+
+        // Note object
         $functionsNotes = new Note();
+
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
+
+        // Split the email in 2
         $emailParts = explode(".", $_COOKIE['email']);
-        if ($functions->refreshCookie()) {
+        if ($functions->refreshCookie())
+        {
             $english = $functions->curl("http://mysuccessstory/api/getEnglish/$emailParts[0]/$emailParts[1]");
             $economy = $functions->curl("http://mysuccessstory/api/getEconomy/$emailParts[0]/$emailParts[1]");
             $maths = $functions->curl("http://mysuccessstory/api/getMaths/$emailParts[0]/$emailParts[1]");
@@ -30,11 +39,10 @@ class ControllerSimulation
             $physicalEducation = $functions->curl("http://mysuccessstory/api/getPhysicalEducation/$emailParts[0]/$emailParts[1]");
             $CIE = $functions->curl("http://mysuccessstory/api/getCIENotes/$emailParts[0]/$emailParts[1]");
             $CI = $functions->curl("http://mysuccessstory/api/getCINotes/$emailParts[0]/$emailParts[1]");
-            
-            $subjectsByCFC = $functions->curl("http://mysuccessstory/api/getSubjectsByCategoryCFC");
-            $subjectsByCG = $functions->curl("http://mysuccessstory/api/subjects");
+            $notesDb = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]/idNote/ASC");
 
-            var_dump($subjectsByCG[0]);
+            $subjects = $functions->curl("http://mysuccessstory/api/subjects");
+
             //Informatique
             $CIENotes[] = $CIE;
             $CINotes[] = $CI;
@@ -68,32 +76,65 @@ class ControllerSimulation
             $notesCG[] = $resultEnglish + $resultEconomy + $resultMaths + $resultPhysics + $resultPhysicalEducation;
             $resultCG = $functionsNotes->calculate($notesCG);
 
-
-
-            if (false) {
-                $premiereAnneeCg = filter_input(INPUT_POST, 'premiereAnneeCg', FILTER_VALIDATE_INT);
-                $deuxiemeAnneeCg = filter_input(INPUT_POST, 'deuxiemeAnneeCg', FILTER_VALIDATE_INT);
-                $troisiemeAnneeCg = filter_input(INPUT_POST, 'troisiemeAnneeCg', FILTER_VALIDATE_INT);
-                $quatriemeAnneeCg = filter_input(INPUT_POST, 'quatriemeAnneeCg', FILTER_VALIDATE_INT);
-                $moyennesCg[] = $premiereAnneeCg + $deuxiemeAnneeCg + $troisiemeAnneeCg + $quatriemeAnneeCg;
-                $resultCG = $functionsNotes->AverageSimulation($moyennesCg);
-
-                $premiereAnneeCfc = filter_input(INPUT_POST, 'premiereAnneeCfc', FILTER_VALIDATE_INT);
-                $deuxiemeAnneeCfc = filter_input(INPUT_POST, 'deuxiemeAnneeCfc', FILTER_VALIDATE_INT);
-                $troisiemeAnneeCfc = filter_input(INPUT_POST, 'troisiemeAnneeCfc', FILTER_VALIDATE_INT);
-                $quatriemeAnneeCfc = filter_input(INPUT_POST, 'quatriemeAnneeCfc', FILTER_VALIDATE_INT);
-                $moyennesCfc[] = $premiereAnneeCfc + $deuxiemeAnneeCfc + $troisiemeAnneeCfc + $quatriemeAnneeCfc;
-                $resultCG = $functionsNotes->AverageSimulation($moyennesCfc);
+            foreach ($subjects as $subject)
+            {
+                if ($subject->category == "CFC")
+                {
+                    for ($i = 1; $i <= 2; $i++)
+                    {
+                        if (isset($_POST["noteSemester$i" . "_" . $subject->idSubject]))
+                        {
+                            if ($_POST["noteSemester$i" . "_" . $subject->idSubject] != '')
+                            {
+                                $notes[$i - 1][$subject->idSubject] = filter_input(INPUT_POST, "noteSemester$i" . "_" . $subject->idSubject, FILTER_VALIDATE_INT);
+                            }
+                            else
+                            {
+                                $notes[$i - 1][$subject->idSubject] = null;
+                            }
+                        }
+                        else
+                        {
+                            $notes[$i - 1][$subject->idSubject] = null;
+                        }
+                    }
+                }
+                else if ($subject->category == "CG")
+                {
+                    for ($i = 1; $i <= 2; $i++)
+                    {
+                        if (isset($_POST["noteSemester$i" . "_" . $subject->idSubject]))
+                        {
+                            if ($_POST["noteSemester$i" . "_" . $subject->idSubject] != '')
+                            {
+                                $notes[$i - 1][$subject->idSubject] = filter_input(INPUT_POST, "noteSemester$i" . "_" . $subject->idSubject, FILTER_VALIDATE_INT);
+                            }
+                            else
+                            {
+                                $notes[$i - 1][$subject->idSubject] = null;
+                            }
+                        }
+                        else
+                        {
+                            $notes[$i - 1][$subject->idSubject] = null;
+                        }
+                    }
+                }
             }
-            // A FAIRE : s'il y a des valeures dans les input alors faire les moyennes avec ces valeures sinon récupérer dans la base de données les notes
+
+            var_dump($notesDb);
+
+
+            $_SESSION["notesYear"] = $notes;
+            /* var_dump($_POST);
+            var_dump($notes);
+            var_dump($_SESSION);*/
 
             //resultat CFC
-            // var_dump($resultTPI, $resultCBE, $resultCI, $resultCG);
-            // var_dump($moyennesCg);
-            // var_dump($notesCG);
             $resultatCFC = $functionsNotes->passMarkCFC($resultTPI, $resultCBE, $resultCI, $resultCG);
             echo "Ton resultat final est de " . round($resultatCFC, 1);
         }
         require '../src/view/viewSimulation.php';
     }
+
 }

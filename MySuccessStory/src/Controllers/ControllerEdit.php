@@ -15,13 +15,6 @@ class ControllerEdit
     */
     public function editNote()
     {
-        // If a user is logged
-        if (!isset($_COOKIE['email']))
-        {
-            header("Location:http://mysuccessstory/");
-            exit();
-        }
-
         // Cookie 
         $functions = new Functions();
 
@@ -30,6 +23,9 @@ class ControllerEdit
 
         // Split the email in 2
         $emailParts = explode(".", $_COOKIE['email']);
+
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
 
         if ($functions->refreshCookie()) {
 
@@ -60,8 +56,9 @@ class ControllerEdit
                 {
                     // Update the value on the database
                     $functionsNotes->update($note, $semester, $idSubject, $idNote, $idYear);
-                    header("Location:http://mysuccessstory/profile");
-                    exit();
+                    
+                    // Redirect the user to profile
+                    $functions->redirect("profile");
                 }
             }
         }

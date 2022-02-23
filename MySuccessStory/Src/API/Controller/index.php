@@ -55,7 +55,7 @@ class Index
                                 //201 Created
                                 http_response_code(201);
                                 break;
-                                
+
                             case 'year':
                                 $response_json = $functionsYears->getYears($db, "SELECT idYear, year FROM year");
                                 //201 Created
