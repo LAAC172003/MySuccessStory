@@ -83,12 +83,8 @@ class ControllerUser
                     else
                     {
                         echo getType(hash("sha256", $pwd, $salt));
-
-                        // Create a new Account
                         $users->CreateNewAccount($email, hash("sha256", $pwd . $salt), $salt, $firstName, $lastName);
-
-                        // Redirect to the home page if not logged
-                        $functions->redirectIfNotLogged();
+                        header("Location:http://mysuccessstory/login");
                     }
                 }
             }
