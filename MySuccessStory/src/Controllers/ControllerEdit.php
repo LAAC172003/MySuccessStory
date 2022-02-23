@@ -15,7 +15,7 @@ class ControllerEdit
     */
     public function editNote()
     {
-        // Cookie 
+        // Cookie
         $functions = new Functions();
 
         // Note object
@@ -35,7 +35,7 @@ class ControllerEdit
             $subjects = $functions->curl("http://mysuccessstory/api/subjects");
             $years = $functions->curl("http://mysuccessstory/api/year");
             $idUsers = $functions->curl("http://mysuccessstory/api/userID/$emailParts[0]/$emailParts[1]");
-            $notes = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]");
+            $notes = $functions->curl("http://mysuccessstory/api/getNotes/$emailParts[0]/$emailParts[1]");
 
             $semesters = [1, 2];
 
@@ -51,14 +51,14 @@ class ControllerEdit
             // If the button submit is pressed
             if ($submit == "Valider")
             {
-                // If $note value is between 1 and 6 including floating numbers by 0.5 
+                // If $note value is between 1 and 6 including floating numbers by 0.5
                 if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
                 {
                     // Update the value on the database
                     $functionsNotes->update($note, $semester, $idSubject, $idNote, $idYear);
-                    
-                    // Redirect the user to profile
-                    $functions->redirect("profile");
+
+                    // Redirect the user to the list of notes
+                    $functions->redirect("notes");
                 }
             }
         }

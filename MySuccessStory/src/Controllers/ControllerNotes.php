@@ -5,18 +5,18 @@ namespace MySuccessStory\Controllers;
 use MySuccessStory\Api\Model\Functions;
 use MySuccessStory\Api\Model\Note;
 
-class ControllerProfile
+class ControllerNotes
 {
     /**
-     * method who show the profile page
+     * method who show the the list of notes page
      *
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Jordan Folly <jordan.fllsd@eduge.ch>
      *
      */
-    public function profile()
+    public function showNotes()
     {
-        // Cookie 
+        // Cookie
         $functions = new Functions();
 
         // Note object
@@ -41,9 +41,9 @@ class ControllerProfile
                 $isASC = $_GET["isASC"];
             }
 
-            $notes = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]/$order/$isASC");
+            $notes = $functions->curl("http://mysuccessstory/api/getNotes/$emailParts[0]/$emailParts[1]/$order/$isASC");
         }
 
-        require '../src/view/viewProfile.php';
+        require '../src/view/viewNotes.php';
     }
 }

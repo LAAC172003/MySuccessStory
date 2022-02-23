@@ -94,7 +94,7 @@ class Index
                                 http_response_code(201);
                                 break;
 
-                            case 'notes':
+                            case 'getNotes':
                                 $sql = "SELECT `idNote`,`note`, `year`.`year`, `semester`, `subject`.`name` AS 'subject', `subject`.`description`, `user`.`firstname`, `user`.`lastName`
                                         FROM `note`
                                         JOIN `year` ON `note`.`idYear` = `year`.`idYear`

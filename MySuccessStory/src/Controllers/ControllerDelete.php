@@ -21,12 +21,12 @@ class ControllerDelete
     */
     public function deleteNote()
     {
-        // Cookie 
+        // Cookie
         $functions = new Functions();
 
         // Note object
         $functionsNotes = new Note();
-        
+
         // Subject object
         $functionsSubjects = new Subject();
 
@@ -50,13 +50,13 @@ class ControllerDelete
                 // Delete the note in database
                 $functionsNotes->deleteNoteById($idNote);
 
-                // Redirect the user to profile
-                $functions->redirect("profile");
+                // Redirect the user to the list of notes
+                $functions->redirect("notes");
             }
             else if ($submit == "Cancel")
             {
-                // Redirect the user to profile
-                $functions->redirect("profile");
+                // Redirect the user to the list of notes
+                $functions->redirect("notes");
             }
         }
         require '../src/view/viewDeleteNote.php';
