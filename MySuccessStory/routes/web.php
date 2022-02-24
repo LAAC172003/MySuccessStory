@@ -6,7 +6,7 @@ use MySuccessStory\Controllers\ControllerHome;
 use MySuccessStory\Controllers\ControllerSubjects;
 use MySuccessStory\Controllers\ControllerLogin;
 use MySuccessStory\Controllers\ControllerUser;
-use MySuccessStory\Controllers\ControllerProfile;
+use MySuccessStory\Controllers\ControllerNotes;
 use MySuccessStory\Controllers\ControllerEdit;
 use MySuccessStory\Controllers\ControllerDelete;
 use MySuccessStory\Controllers\ControllerAdd;
@@ -26,7 +26,7 @@ SimpleRouter::form('/', [ControllerHome::class, 'home']);
 SimpleRouter::form('/subjects', [ControllerSubjects::class, 'subjects']);
 SimpleRouter::form('/login', [ControllerLogin::class, 'login']);
 SimpleRouter::form('/register', [ControllerUser::class, 'register']);
-SimpleRouter::form('/profile', [ControllerProfile::class, 'profile']);
+SimpleRouter::form('/notes', [ControllerNotes::class, 'showNotes']);
 
 #region Notes
 // delete
@@ -43,4 +43,5 @@ SimpleRouter::form('/myAccount', [ControllerUser::class, 'edit']);
 SimpleRouter::form('/deleteUser', [ControllerUser::class, 'delete']);
 SimpleRouter::form('/myAccount', [ControllerUser::class, 'showUserAccountInformation']);
 #endregion
-SimpleRouter::form('/simulation', [ControllerSimulation::class, 'simulation']);
+SimpleRouter::form('/simulationYear', [ControllerSimulation::class, 'simulationYear']);
+SimpleRouter::form('/simulationSemester', [ControllerSimulation::class, 'simulationSemester']);

@@ -78,8 +78,7 @@
                                     {
                                         echo $note->note;
                                     }
-                                    else
-                                    {
+                                    else if (isset($POST["noteSemester$i" . "_" . $subject->idSubject])) {
                                         echo $_POST["noteSemester$i" . "_" . $subject->idSubject];
                                     }
                                 }

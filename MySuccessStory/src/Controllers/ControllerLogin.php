@@ -49,7 +49,7 @@ class ControllerLogin
                             setcookie("email", $email, time() + 3600);
                             setcookie("password", hash("sha256", $pwd . $user->salt), time() + 3600);
 
-                            // Redirect the user to profile
+                            // Redirect the user to the list of notes
                             $functions->redirect("");
                         }
                     }

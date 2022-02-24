@@ -21,7 +21,9 @@ class ControllerAdd
      */
     public function addNote()
     {
-        // Cookie 
+        session_start();
+
+        // Cookie
         $functions = new Functions();
 
         // Note object
@@ -49,10 +51,36 @@ class ControllerAdd
             {
                 if ($note >= 1.0 && $note <= 6.0 && fmod($note, 0.5) == 0)
                 {
-                    $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
+                    if (isset($_POST["fakeNote"]))
+                    {
+                        if ($_POST["fakeNote"])
+                        {
+                            if (!isset($_SESSION["fakeNotes"]))
+                            {
+                                $_SESSION["fakeNotes"] = array();
+                            }
 
-                    // Redirect the user to profile
-                    $functions->redirect("profile");
+                            $fakeNote = array();
+                            $fakeNote["note"] = $note;
+                            $fakeNote["subject"] = $sub;
+                            $fakeNote["semester"] = $semester;
+                            $fakeNote["year"] = $year;
+                            $fakeNote["fake"] = null;
+
+                            array_push($_SESSION["fakeNotes"], json_decode(json_encode($fakeNote)));
+                        }
+                        else
+                        {
+                            $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
+                        }
+                    }
+                    else
+                    {
+                        $functionsNotes->addNote($note, $idUsers[0]->idUser,  $sub, $semester, $year);
+                    }
+
+                    // Redirect the user to the list of notes
+                    $functions->redirect("notes");
                 }
                 else if ($note < 1.0 && $note > 6.0)
                 {
@@ -60,14 +88,37 @@ class ControllerAdd
                 }
                 else
                 {
-                    echo ("erreur de saisie : la note doit contenir un chiffre entre 1 et 6");
+                    echo ("erreur de saisie : les notes doivent être arrondies à la demie");
                 }
             }
-            else if($submit == "Annuler")
+            else if ($submit == "Annuler")
             {
-                $functions->redirect("profile");
+                $functions->redirect("notes");
             }
         }
         require '../src/view/viewAddNote.php';
+    }
+
+    function AddGetParameter($param)
+    {
+        $key = explode("=", $param)[0];
+        $value = explode("=", $param)[1];
+
+        if (isset($_GET[$key]))
+        {
+            if ($_GET[$key] == $value)
+            {
+                return "";
+            }
+        }
+
+        if ($_SERVER["PATH_INFO"] == $_SERVER["REQUEST_URI"])
+        {
+            return "?$param";
+        }
+        else
+        {
+            return "." . $_SERVER["REQUEST_URI"] . "&$param";
+        }
     }
 }

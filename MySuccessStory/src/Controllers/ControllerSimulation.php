@@ -13,7 +13,7 @@ class ControllerSimulation
      * @return string message to let him know if he has graduated
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function simulation()
+    public function simulationYear()
     {
         session_start();
         if (!isset($_COOKIE['email']))
@@ -39,7 +39,7 @@ class ControllerSimulation
             $physicalEducation = $functions->curl("http://mysuccessstory/api/getPhysicalEducation/$emailParts[0]/$emailParts[1]");
             $CIE = $functions->curl("http://mysuccessstory/api/getCIENotes/$emailParts[0]/$emailParts[1]");
             $CI = $functions->curl("http://mysuccessstory/api/getCINotes/$emailParts[0]/$emailParts[1]");
-            $notesDb = $functions->curl("http://mysuccessstory/api/notes/$emailParts[0]/$emailParts[1]/idNote/ASC");
+            $notesDb = $functions->curl("http://mysuccessstory/api/getNotes/$emailParts[0]/$emailParts[1]/idNote/ASC");
 
             $subjects = $functions->curl("http://mysuccessstory/api/subjects");
 
@@ -124,7 +124,6 @@ class ControllerSimulation
 
             var_dump($notesDb);
 
-
             $_SESSION["notesYear"] = $notes;
             /* var_dump($_POST);
             var_dump($notes);
@@ -134,7 +133,10 @@ class ControllerSimulation
             $resultatCFC = $functionsNotes->passMarkCFC($resultTPI, $resultCBE, $resultCI, $resultCG);
             echo "Ton resultat final est de " . round($resultatCFC, 1);
         }
-        require '../src/view/viewSimulation.php';
+        require '../src/view/viewSimulationYear.php';
     }
-
+    public function simulationSemester()
+    {
+        require '../src/view/viewSimulationSemester.php';
+    }
 }
