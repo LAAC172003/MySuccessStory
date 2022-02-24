@@ -12,12 +12,6 @@
     </header>
 
     <main>
-        <!-- Show id -->
-        <p>
-            ID :
-            <?= $note['idNote'] ?>
-        </p>
-
         <!-- Show note -->
         <p>
             Note :

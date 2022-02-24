@@ -71,10 +71,25 @@ class Index
                                     http_response_code(201);
                                 }
                                 break;
+
                             case 'userID':
                                 $response_json = $functionsUsers->user($db, "SELECT idUser from user where email = '$email'");
                                 http_response_code(201);
                                 break;
+
+                            ////
+                            // Pas trouvé de solution donc code fait endehors de l'api
+                            ////
+                            // case 'getUserInformation':
+                            //     $response_json = $functionsUsers->getUserInformation(
+                            //         $db,
+                            //         "SELECT `idUser`, `email`, `password`, `firstName`, `lastName`, `entryYear`, `exitYear`
+                            //         FROM `user`
+                            //         WHERE `idUser` = '$idUser'
+                                    
+                            //     ");
+                            //     http_response_code(201);
+                            //     break;
 
                             case 'login':
                                 ////

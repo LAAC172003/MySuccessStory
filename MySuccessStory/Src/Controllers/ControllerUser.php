@@ -82,8 +82,6 @@ class ControllerUser
                     }
                     else
                     {
-                        echo getType(hash("sha256", $pwd, $salt));
-
                         // Create a new Account
                         $users->CreateNewAccount($email, hash("sha256", $pwd . $salt), $salt, $firstName, $lastName);
 
@@ -104,10 +102,19 @@ class ControllerUser
     public function showUserAccountInformation()
     {
         $functions = new Functions();
+        $functionsUsers = new User();
 
         // Redirect to the home page if not logged
         $functions->redirectIfNotLogged();
 
+        // Split the email in 2
+        $emailParts = explode(".", $_COOKIE['email']);
+        $idUser = $functions->curl("http://mysuccessstory/api/userID/$emailParts[0]/$emailParts[1]");
+
+        if ($functions->refreshCookie())
+        {
+            $getUserInformation = $functionsUsers->getUserInformation($idUser[0]->idUser);
+        }
         require '../src/view/viewMyAccount.php';
     }
 
@@ -118,7 +125,44 @@ class ControllerUser
     */
     public function edit()
     {
-        
+        $functions = new Functions();
+        $user = new User();
+
+        // Redirect to the home page if not logged
+        $functions->redirectIfNotLogged();
+
+        // Split the email in 2
+        $emailParts = explode(".", $_COOKIE['email']);
+        $idUser = $functions->curl("http://mysuccessstory/api/userID/$emailParts[0]/$emailParts[1]");
+
+        $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_SPECIAL_CHARS);
+        $firstName = filter_input(INPUT_POST, 'firstName', FILTER_SANITIZE_SPECIAL_CHARS);
+        $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_SPECIAL_CHARS);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $entryYear = filter_input(INPUT_POST, 'entryYear', FILTER_VALIDATE_INT);
+        $exitYear = filter_input(INPUT_POST, 'exitYear', FILTER_VALIDATE_INT);
+
+        if ($functions->refreshCookie())
+        {
+            if ($submit == "Modifier")
+            {
+                if ($firstName == "" || $lastName == "" || $entryYear == "" || $exitYear == "")
+                {
+                    echo "VEUILLEZ REMPLIR LES CHAMPS VIDES";
+                }
+                else
+                {
+                    echo "ENVOYER";
+                }
+                var_dump($idUser, $firstName, $lastName, $password, $entryYear, $exitYear);   
+                //$user->updateUser($idUser, $firstName, $lastName, $password, $entryYear, $exitYear);
+            }
+            else if ($submit == "Retour")
+            {
+                $functions->redirect("profile");
+            }
+        }
     }
 
     /**

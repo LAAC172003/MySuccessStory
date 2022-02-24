@@ -21,11 +21,11 @@ class ControllerEdit
         // Note object
         $functionsNotes = new Note();
 
-        // Split the email in 2
-        $emailParts = explode(".", $_COOKIE['email']);
-
         // Redirect to the home page if not logged
         $functions->redirectIfNotLogged();
+
+        // Split the email in 2
+        $emailParts = explode(".", $_COOKIE['email']);
 
         if ($functions->refreshCookie()) {
 
@@ -42,7 +42,7 @@ class ControllerEdit
             // Get all data of a note
             $noteById = $functionsNotes->getNoteById($idNote);
 
-            $submit = filter_input(INPUT_POST, 'validate', FILTER_SANITIZE_STRING);
+            $submit = filter_input(INPUT_POST, 'validate', FILTER_SANITIZE_SPECIAL_CHARS);
             $note = filter_input(INPUT_POST, 'note', FILTER_VALIDATE_FLOAT);
             $idSubject = filter_input(INPUT_POST, 'subject', FILTER_VALIDATE_INT);
             $idYear = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);

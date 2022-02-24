@@ -11,6 +11,9 @@
 <body>
     <h1>Profil</h1>
     <br>
+    <p>
+        <a href="myAccount">Compte</a>
+    </p>
     <form method="GET">
         <label>Trier par :
             <select name="Order">

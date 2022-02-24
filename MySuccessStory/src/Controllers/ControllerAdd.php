@@ -40,10 +40,10 @@ class ControllerAdd
             $idUsers = $functions->curl("http://mysuccessstory/api/userID/$emailParts[0]/$emailParts[1]");
 
             $note = filter_input(INPUT_POST, 'note', FILTER_VALIDATE_FLOAT);
-            $sub = filter_input(INPUT_POST, 'subjects', FILTER_SANITIZE_STRING);
-            $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_STRING);
+            $sub = filter_input(INPUT_POST, 'subjects', FILTER_SANITIZE_SPECIAL_CHARS);
+            $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_SPECIAL_CHARS);
             $semester = filter_input(INPUT_POST, 'semester', FILTER_VALIDATE_INT);
-            $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_STRING);
+            $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_SPECIAL_CHARS);
 
             if ($submit == "Ajouter")
             {

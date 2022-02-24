@@ -81,8 +81,8 @@
 
                 <!-- Submit and Cancel -->
                 <div>
-                    <input type="reset" class="btn btn-outline-primary" name="delete" value="Effacer">
-                    <input type="submit" class="btn btn-primary" name="validate" value="Valider">
+                    <input type="submit" name="validate" value="Valider">   
+                    <input type="reset" name="delete" value="Effacer">
                 </div>
             </form>
         </fieldset>

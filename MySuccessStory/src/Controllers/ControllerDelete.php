@@ -36,7 +36,7 @@ class ControllerDelete
         if ($functions->refreshCookie())
         {
             $idNote = $_GET['idNote'];
-            $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_STRING);
+            $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_SPECIAL_CHARS);
 
             // Get note by idNote in url
             $note = $functionsNotes->getNoteById($idNote);

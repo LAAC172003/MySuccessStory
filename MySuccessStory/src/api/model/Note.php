@@ -45,18 +45,6 @@ class Note
         return $note->fetchAll(json_encode($note, JSON_UNESCAPED_UNICODE))[0];
     }
 
-    // public static function getNoteById($idNote)
-    // {
-    //     $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-    //     $getNote = $db->query(
-    //         "SELECT `idNote`, `note`, `semester`, `idUser`, `idSubject`, `idYear` FROM `note` WHERE `idNote` = $idNote"
-    //     );
-    //     $GLOBALS["note"] = $getNote->fetchAll();
-    //     $db->close();
-    //     return json_encode($GLOBALS["note"], JSON_UNESCAPED_UNICODE);
-    // }
-
     /**
      * Insert a new note on the database with 5 params
      *
@@ -125,7 +113,7 @@ class Note
     public function update($note, $semester, $idSubject, $idNote, $idYear)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        return $update = $db->query("UPDATE `note` SET `idNote`= $idNote, `note` = $note, `semester`= $semester, `idSubject` = $idSubject, `idYear` = $idYear WHERE idNote = $idNote");
+        return $db->query("UPDATE `note` SET `idNote`= $idNote, `note` = $note, `semester`= $semester, `idSubject` = $idSubject, `idYear` = $idYear WHERE idNote = $idNote");
     }
 
 
@@ -139,7 +127,7 @@ class Note
     public function deleteNoteById($idNote)
     {
         $db = new SqlConnection(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        return $delete = $db->query("DELETE FROM `note` WHERE `idNote` = $idNote");
+        return $db->query("DELETE FROM `note` WHERE `idNote` = $idNote");
     }
 
     /**

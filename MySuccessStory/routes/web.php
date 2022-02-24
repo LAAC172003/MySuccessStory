@@ -39,7 +39,7 @@ SimpleRouter::form('/addNote', [ControllerAdd::class, 'addNote']);
 
 #region User
 // edit User
-SimpleRouter::form('/editUser', [ControllerUser::class, 'edit']);
+SimpleRouter::form('/myAccount', [ControllerUser::class, 'edit']);
 SimpleRouter::form('/deleteUser', [ControllerUser::class, 'delete']);
 SimpleRouter::form('/myAccount', [ControllerUser::class, 'showUserAccountInformation']);
 #endregion
