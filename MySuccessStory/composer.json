@@ -1,0 +1,25 @@
+{
+    "name": "cfpt/mss",
+    "description": "Site truc",
+    "autoload": {
+        "psr-4": {
+            "MySuccessStory\\": "src/"
+        }
+    },
+    "authors": [{
+            "name": "Lucas",
+            "email": "lucas.almdc@eduge.ch"
+        },
+        {
+            "name": "Jordan Folly-Sodoga",
+            "email": "ekoue-jordan.fllsd@eduge.ch"
+        },
+        {
+            "name": "Flavio Soares Rodrigues",
+            "email": "flavio.srsrd@eduge.ch"
+        }
+    ],
+    "require": {
+        "pecee/simple-router": "4.3.7.2"
+    }
+}
