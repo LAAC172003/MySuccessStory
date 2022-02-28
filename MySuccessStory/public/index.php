@@ -8,7 +8,7 @@ require '../routes/routes.php';
 use Pecee\SimpleRouter\SimpleRouter;
 
 // Registering the default namespace for controllers
-SimpleRouter::setDefaultNamespace('\MySuccessStory\Controller');
+SimpleRouter::setDefaultNamespace("\MySuccessStory\Controller");
 
 // Launch of the router
 SimpleRouter::start();

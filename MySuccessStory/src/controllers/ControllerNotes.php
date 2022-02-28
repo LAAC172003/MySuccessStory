@@ -1,7 +1,8 @@
 <?php
 
 namespace MySuccessStory\controllers;
-class Notes
+
+class ControllerNotes
 {
 
 }
