@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1fd1fcb0c9aff87786a1ddcfd9b4b02",
+    "content-hash": "13698503422e045e113e6868391012e7",
     "packages": [
         {
             "name": "pecee/simple-router",
@@ -76,7 +76,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-curl": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
 }
