@@ -6,8 +6,9 @@ use MySuccessStory\models\ModelUsers;
 
 class ControllerUsers
 {
-	public static function Token()
-	{
-		return json_encode(ModelUsers::jwtGenerator());
-	}
+    public static function token()
+    {
+       return json_encode(ModelUsers::jwtGenerator());
+    }
+
 }

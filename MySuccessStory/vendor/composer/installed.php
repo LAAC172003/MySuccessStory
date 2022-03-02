@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9ae74c42612db06754f3a3e21677209ee7fe5ca5',
+        'reference' => 'ecc9ae0ff76218c819d8f3c2a324ccd7532e22b6',
         'name' => 'cfpt/mss',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9ae74c42612db06754f3a3e21677209ee7fe5ca5',
+            'reference' => 'ecc9ae0ff76218c819d8f3c2a324ccd7532e22b6',
             'dev_requirement' => false,
         ),
         'pecee/simple-router' => array(

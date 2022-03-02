@@ -21,6 +21,7 @@
     ],
     "require": {
         "pecee/simple-router": "4.3.7.2",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-pdo": "*"
     }
 }
