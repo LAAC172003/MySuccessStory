@@ -14,7 +14,7 @@ SimpleRouter::post('/api/register', [ControllerUsers::class, 'register']);//
 #endregion
 
 #region CRUD Notes
-SimpleRouter::get('/api/notes', [ControllerNotes::class, 'notes']); // read all notes
+// SimpleRouter::get('/api/notes', [ControllerNotes::class, 'read']); // read all notes
 SimpleRouter::get('/api/notes/{subject}', [ControllerNotes::class, 'read']);// read a single note
 SimpleRouter::post('/api/notes', [ControllerNotes::class, 'create']);// create a note
 SimpleRouter::patch('/api/notes/{subject}', [ControllerNotes::class, 'update']);// change the value of a note

@@ -8,7 +8,6 @@ class ControllerUsers
 {
     public static function token()
     {
-       return json_encode(ModelUsers::jwtGenerator());
+        return json_encode(ModelUsers::jwtGenerator());
     }
-
 }
