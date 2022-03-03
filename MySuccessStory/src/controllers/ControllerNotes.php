@@ -7,28 +7,29 @@ use MySuccessStory\models\ModelNotes;
 
 class ControllerNotes
 {
-
+    public ModelNotes $modelNotes;
+    
     public function create()
     {
-        $notes = new ModelNotes();
-        $notes->createNote();
+
+        return json_encode($this->modelNotes->createNote());
     }
 
-    public function read($subject = "")
+    public function read($idNote)
     {
         $notes = new ModelNotes();
-        return $notes->readNote($subject);
+        return json_encode($this->modelNotes->readNote($idNote));
     }
 
-    public function update($subject = "")
+    public function update($idNote)
     {
         $notes = new ModelNotes();
-        return $notes->updateNote($subject);
+        return json_encode($this->modelNotes->updateNote($idNote));
     }
 
-    public function delete($subject = "")
+    public function delete($idNote)
     {
         $notes = new ModelNotes();
-        return $notes->deleteNote($subject);
+        return json_encode($this->modelNotes->deleteNote($idNote));
     }
 }

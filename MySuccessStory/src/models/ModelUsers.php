@@ -4,10 +4,20 @@ namespace MySuccessStory\models;
 
 
 use JetBrains\PhpStorm\ArrayShape;
+use MySuccessStory\db\DataBase;
 
 class ModelUsers
 {
     private const SALT = "secret";
+    public Database $db;
+    public string $tableName;
+
+
+    public function __construct()
+    {
+        $this->db = new DataBase();
+        $this->tableName = "users";
+    }
 
     /**
      * encode the url in base64
@@ -87,6 +97,98 @@ class ModelUsers
             return false;
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Creates an user
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function createUser()
+    {
+        $data = array(
+            'email' => "test@gmail.com",
+            'password' => "pwd",
+            'firstName' => "firstName",
+            'lastName' => "lastName"
+        );
+        try {
+            $this->db->insert("$this->tableName", $data);
+            return [
+                'success' => true,
+                "UserCreated" => $data
+            ];
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
+    }
+
+    /**
+     * Shows an user
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function readUser($idUser)
+    {
+        try {
+            $statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idUser = $idUser");
+            $statement->execute();
+            $statementResult = $statement->fetchObject();
+            if ($statementResult) {
+                return [
+                    'Success' => true,
+                    'User' => $statementResult
+                ];
+            } else {
+                return ['Success' => false];
+            }
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
+
+    }
+
+    /**
+     * updates an user
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function updateUser($idUser)
+    {
+        try {
+            $this->db->update($this->tableName, ['lastName' => ""], "idUser = $idUser");
+            return [
+                'update' => true,
+                'updatedUser' => "{FIELD} = {VALUE} where idNote = $idUser"
+            ];
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
+    }
+
+    /**
+     * deletes an user
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function deleteUser($idUser)
+    {
+        try {
+            return [
+                'Delete' => $this->db->delete($this->tableName, "idUser = $idUser")->execute(),
+                'Deleted user' => "idUser = $idUser"
+            ];
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
         }
     }
 }

@@ -25,16 +25,13 @@ class DataBase
         return $this->pdo->prepare($sql);
     }
 
-    public function insert($tableName, $attributes)
+    public function insert($tableName, $data)
     {
-        $params = array_map(fn($attr) => ":$attr", $attributes);
-        $statement = self::prepare("INSERT INTO $tableName (" . implode(",", $attributes) . ") VALUES (" . implode(",", $params) . ")");
-        foreach ($attributes as $attribute) {
-            $statement->bindValue(":$attribute", $this->{$attribute});
-        }
-        $statement->execute();
-        return true;
+        $fields = array_keys($data);
+        $query = "INSERT INTO `" . $tableName . "` (`" . implode('`,`', $fields) . "`) VALUES('" . implode("','", $data) . "')";
+        return self::prepare($query)->execute();
     }
+
 
     public function update($tableName, $data, $where = '')
     {
@@ -48,17 +45,15 @@ class DataBase
         }
         $query = "UPDATE `" . $tableName . "` SET ";
         $sets = array();
-
         foreach ($data as $column => $value) {
             $sets[] = "`" . $column . "` = '" . $value . "'";
         }
         $query .= implode(', ', $sets);
         $query .= $whereSql;
-        var_dump($query);
-        return $this->prepare($query)->execute();
+        return self::prepare($query)->execute();
     }
 
-    public function delete($tableName, $where="")
+    public function delete($tableName, $where = "")
     {
         $whereSql = '';
 

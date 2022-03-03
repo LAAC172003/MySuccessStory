@@ -20,16 +20,19 @@ class ModelApiValue
 	 *
 	 * @var string
 	 */
-	public $message;
+	public string $message;
+
+    public int | string $errorCode;
 
 	/**
-	 * @param string $value result of the request encoded in json
-	 * @param string $message information or error message
+	 * @param string|null $value result of the request encoded in json
+	 * @param string|null $message information or error message
 	 *
 	 */
-	public function __construct($value = null, $message = null)
+	public function __construct(mixed $value = null, string $message = null, $errorCode = null)
 	{
 		$this->value = $value;
 		$this->message = $message;
+		$this->errorCode = $errorCode;
 	}
 }

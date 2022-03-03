@@ -17,23 +17,79 @@ class ModelNotes
 
     public function createNote()
     {
-        return $this->db->insert("notes", ['note' => 5, 'semester' => 1, 'idUser' => 1, 'idSubject' => 2]);
+        $data = array(
+            'note' => 4,
+            'semester' => 1,
+            'idUser' => 6,
+            'idSubject' => 2
+        );
+        try {
+            $this->db->insert("$this->tableName", $data);
+            return [
+                'Success' => true,
+                "Note created" => $data
+            ];
+            //return new ModelApiValue($data, "La note a bien été ajoutée");
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+            //return new ModelApiValue("", $e->getMessage(), $e->getCode());
+        }
     }
 
-    public function readNote($subject)
+    public function readNote($idNote)
     {
-        $statement = $this->db->prepare("SELECT * FROM $this->tableName JOIN subjects on subjects.idSubject=notes.idSubject WHERE subjects.name = '$subject'");
-        $statement->execute();
-        return json_encode($statement->fetchAll());
+        try {
+            $statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idNote = $idNote");
+            $statement->execute();
+            $statementResult = $statement->fetchObject();
+            if ($statementResult) {
+                return [
+                    'Success' => true,
+                    'Note' => $statementResult
+                ];
+            } else {
+                return ['Success' => false];
+            }
+
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
     }
 
-    public function updateNote($subject)
+    public function updateNote($idNote)
     {
-        return $this->db->update($this->tableName, ['note' => 4]);
+        try {
+            $this->db->update($this->tableName, ['note' => 1], "idNote = $idNote");
+            return [
+                'Update' => true,
+                'Updated note' => '{FIELD} = {VALUE} where idNote = {IDNOTE}'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
     }
 
-    public function deleteNote($subjects ="")
+    public function deleteNote($idNote)
     {
-        return $this->db->delete($this->tableName,["(SELECT name from subjects where name = $subjects)"]);
+        try {
+            return [
+                'Success' => $this->db->delete($this->tableName, "idNote = $idNote")->execute(),
+                'Deleted note' => "idNote = $idNote"
+            ];
+        } catch (\Exception $e) {
+            return [
+                'Error message' => $e->getMessage(),
+                'Error code' => $e->getCode()
+            ];
+        }
     }
 }
