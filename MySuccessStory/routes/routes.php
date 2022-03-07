@@ -11,7 +11,7 @@ SimpleRouter::get('/api/token', [ControllerUsers::class, 'token']); // Create a 
 SimpleRouter::get('/api/test', [ControllerUsers::class, 'test']); // Create a token
 //SimpleRouter::get('/api/login', [ControllerUsers::class, 'token' /* "login" */]); // allow the user to log in to his account
 SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
-SimpleRouter::post('/api/register', [ControllerUsers::class, 'register']);//
+SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']);//
 #endregion
 
 #region CRUD Notes

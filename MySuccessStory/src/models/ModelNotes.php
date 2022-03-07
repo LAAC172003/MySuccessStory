@@ -91,6 +91,18 @@ class ModelNotes
                 'Error code' => $e->getCode()
             ];
         }
+        // $statement = $this->db->prepare("SELECT * FROM $this->tableName JOIN subjects on subjects.idSubject=notes.idSubject WHERE subjects.name = '$subject'");
+        // $statement->execute();
+
+        // return json_encode
+        //     (
+        //         new ApiValue
+        //             (
+        //                 $statement->fetchAll(),
+        //                 $statement->errorInfo[2] ?? null,
+        //                 $statement->errorCode ?? null
+        //             )
+        //     );
     }
 
 
