@@ -13,27 +13,40 @@ class ControllerUsers
         $this->modelUsers = new ModelUsers();
     }
 
-    public static function token()
+    public function test($user,$pwd): string
+    {
+        $user = "test2@gmail.com";
+        $pwd = "pwd";
+       if ($user == "test2@gmail.com" AND $pwd == "pwd"){
+           return "Salut $user";
+       }
+       else{
+           return "Nah";
+       }
+    }
+
+
+    public static function token(): bool|string
     {
         return json_encode(ModelUsers::jwtGenerator());
     }
 
-    public function create()
+    public function create(): bool|string
     {
         return json_encode($this->modelUsers->createUser());
     }
 
-    public function read($idUser = 0)
+    public function read($idUser): bool|string
     {
         return json_encode($this->modelUsers->readUser($idUser));
     }
 
-    public function update($idUser = 0)
+    public function update($idUser): bool|string
     {
         return json_encode($this->modelUsers->updateUser($idUser));
     }
 
-    public function delete($idUser = 0)
+    public function delete($idUser): bool|string
     {
         return json_encode($this->modelUsers->deleteUser($idUser));
     }

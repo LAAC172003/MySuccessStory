@@ -8,7 +8,7 @@ use MySuccessStory\db\DataBase;
 
 class ModelUsers
 {
-    private const SALT = "secret";
+    private const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
     public Database $db;
     public string $tableName;
 
@@ -24,7 +24,6 @@ class ModelUsers
      * @return string[] returns the token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     * @author Beaud Rémy <remy.bd@eduge.ch>
      */
     #[ArrayShape(['Token' => "string", "Valid" => "bool", 'Expiration' => "string"])] public static function jwtGenerator(): array
     {
@@ -53,7 +52,6 @@ class ModelUsers
      * @return string return the encoded code in base64
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     * @author Beaud Rémy <remy.bd@eduge.ch>
      */
     public static function urlEncode($str)
     {
@@ -63,15 +61,15 @@ class ModelUsers
     /**
      * encode the url in base64
      * @param $token
-     * @return boolean true if the token is valid
+     * @return array true if the token is valid
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Beaud Rémy <remy.bd@eduge.ch>
      */
-    public static function isJwtValid($token): bool
+    public static function isJwtValid($token)
     {
         if ($token == "jwtTest") {
-            return true;
+            return ["Success" => true];
         }
 
         // split the jwt
@@ -94,9 +92,16 @@ class ModelUsers
         $isSignatureValid = $base64UrlSignature === $signature_provided;
 
         if ($isTokenExpired || !$isSignatureValid) {
-            return false;
+            return ["Success" => false];
         } else {
-            return true;
+            return [
+                "Success" => true,
+                "Header" => json_decode($header),
+                "Payload" => [
+                    "Email" => json_decode($payload)->email,
+                    "Password" => json_decode($payload)->pwd
+                ]
+            ];
         }
     }
 
