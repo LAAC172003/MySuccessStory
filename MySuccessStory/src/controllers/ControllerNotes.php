@@ -9,6 +9,10 @@ class ControllerNotes
 {
     /**
      * Create a note
+     * @param $note
+     * @param $semester
+     * @param $idUser
+     * @param $idSubject
      * @return string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
