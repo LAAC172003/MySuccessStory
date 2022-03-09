@@ -13,15 +13,14 @@ class ModelNotes
 	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function createNote($note, $semester, $idUser, $idSubject)
+	public static function createNote()
 	{
-		$data = array
-			(
-				'note' => $note,
-				'semester' => $semester,
-				'idUser' => $idUser,
-				'idSubject' => $idSubject
-			);
+		$data = json_decode(file_get_contents('php://input'), true);
+
+		if (!$data)
+		{
+			return new ApiValue(null, "Syntax error : the sent body is not a valid JSON object", "0");
+		}
 
 		try
 		{
