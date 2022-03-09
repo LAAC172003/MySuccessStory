@@ -16,9 +16,9 @@ class ControllerNotes
      * @return string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function create($note, $semester, $idUser, $idSubject): string
+    public static function create()
     {
-        return json_encode(ModelNotes::createNote($note, $semester, $idUser, $idSubject));
+        return json_encode(ModelNotes::createNote());
     }
 
     /**
