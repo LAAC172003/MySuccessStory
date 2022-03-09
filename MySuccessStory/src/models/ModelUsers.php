@@ -22,11 +22,11 @@ class ModelUsers
 
     /**
      * Generates a token
-     * @return string[] returns the token
+     * @return ApiValue returns the token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    #[ArrayShape(['Token' => "string", "Valid" => "bool", 'Expiration' => "string"])] public static function jwtGenerator(): array
+    public static function jwtGenerator()
     {
 
         $headers = array('alg' => 'HS256', 'typ' => 'JWT');
@@ -40,11 +40,21 @@ class ModelUsers
 
         $payloadExp = $payload['exp'] - time();
         $token = "$encodedHeaders.$encodedPayload.$encodedSignature";
-        return [
-            'Token' => $token,
-            "Valid" => self::isJwtValid($token),
-            'Expiration' => "$payloadExp"
-        ];
+
+		if (self::isJwtValid($token))
+		{
+			return new ApiValue
+				(
+					[
+						"Token" => $token,
+						"Expiration" => $payloadExp
+					],
+				);
+		}
+		else
+		{
+			return new ApiValue("", "Invalid token generated", "0");
+		}
     }
 
     /**
@@ -62,16 +72,17 @@ class ModelUsers
     /**
      * Verify if the token is valid
      * @param $token
-     * @return array true if the token is valid
+     * @return array|bool true if the token is valid
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Beaud Rémy <remy.bd@eduge.ch>
      */
-    public static function isJwtValid($token): array
+    public static function isJwtValid($token)
     {
-        if ($token == "jwtTest") {
-            return ["Success" => true];
-        }
+		if ($token == "jwtTest")
+		{
+			return true;
+		}
 
         // split the jwt
         $tokenParts = explode('.', $token);
@@ -92,18 +103,22 @@ class ModelUsers
         // verify it matches the signature provided in the jwt
         $isSignatureValid = $base64UrlSignature === $signature_provided;
 
-        if ($isTokenExpired || !$isSignatureValid) {
-            return ["Success" => false];
-        } else {
-            return [
-                "Success" => true,
-                "Header" => json_decode($header),
-                "Payload" => [
-                    "Email" => json_decode($payload)->email,
-                    "Password" => json_decode($payload)->pwd
-                ]
-            ];
-        }
+		if ($isTokenExpired || !$isSignatureValid)
+		{
+			return false;
+		}
+		else
+		{
+			return
+			[
+				"Header" => json_decode($header),
+				"Payload" =>
+				[
+					"Email" => json_decode($payload)->email,
+					"Password" => json_decode($payload)->pwd
+				]
+			];
+		}
     }
 
     /**
@@ -136,30 +151,30 @@ class ModelUsers
     /**
      * Shows a user
      * @param $idUser
-     * @return array
+     * @return ApiValue
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function readUser($idUser): array
+    public function readUser($idUser)
     {
-        try {
+        try
+		{
             $statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idUser = $idUser");
             $statement->execute();
             $statementResult = $statement->fetchObject();
-            if ($statementResult) {
-                return [
-                    'Success' => true,
-                    'User' => $statementResult
-                ];
-            } else {
-                return ['Success' => false];
-            }
-        } catch (\Exception $e) {
-            return [
-                'Error message' => $e->getMessage(),
-                'Error code' => $e->getCode()
-            ];
-        }
 
+            if ($statementResult)
+			{
+				return new ApiValue($statementResult);
+            }
+			else
+			{
+                return new ApiValue();
+            }
+        }
+		catch (\Exception $e)
+		{
+            return new ApiValue(null, $e->getMessage(), $e->getCode());
+        }
     }
 
     /**

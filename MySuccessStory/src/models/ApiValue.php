@@ -22,8 +22,6 @@ class ApiValue
 	 */
 	public string $message;
 
-    public int | string $errorCode;
-
 	/**
 	 * The received error code if there is one
 	 *
@@ -37,7 +35,7 @@ class ApiValue
 	 * @param string $errorCode the error code thrown by the script if there is one
 	 *
 	 */
-	public function __construct($value = null, $message = null, $errorCode = null)
+	public function __construct($value = null, $message = "", $errorCode = "")
 	{
 		$this->value = $value;
 		$this->message = $message;
