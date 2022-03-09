@@ -14,22 +14,46 @@ class ControllerNotes
         $this->modelNotes = new ModelNotes();
     }
 
-    public function create()
+    /**
+     * Create a note
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function create(): bool|string
     {
-        return json_encode($this->modelNotes->createNote());
+        return json_encode($this->modelNotes->createNote($note));
     }
 
-    public function read($idNote)
+    /**
+     * Read a note
+     * @param $idNote
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function read($idNote): bool|string
     {
         return json_encode($this->modelNotes->readNote($idNote));
     }
 
-    public function update($idNote)
+    /**
+     * Update a note
+     * @param $idNote
+     * @param $note
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function update($idNote,$note): bool|string
     {
-        return json_encode($this->modelNotes->updateNote($idNote));
+        return json_encode($this->modelNotes->updateNote($idNote,$note));
     }
 
-    public function delete($idNote)
+    /**
+     * Delete a note
+     * @param $idNote
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function delete($idNote): bool|string
     {
         return json_encode($this->modelNotes->deleteNote($idNote));
     }

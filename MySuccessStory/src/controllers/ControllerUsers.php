@@ -13,39 +13,59 @@ class ControllerUsers
         $this->modelUsers = new ModelUsers();
     }
 
-    public function test($user,$pwd): string
+    public function test(): string
     {
-        $user = "test2@gmail.com";
-        $pwd = "pwd";
-       if ($user == "test2@gmail.com" AND $pwd == "pwd"){
-           return "Salut $user";
-       }
-       else{
-           return "Nah";
-       }
+        return "test";
     }
 
-
+    /**
+     * Create a token
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public static function token(): bool|string
     {
         return json_encode(ModelUsers::jwtGenerator());
     }
 
+    /**
+     * Create a user
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function create(): bool|string
     {
         return json_encode($this->modelUsers->createUser());
     }
 
+    /**
+     * Read a note
+     * @param $idUser
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function read($idUser): bool|string
     {
         return json_encode($this->modelUsers->readUser($idUser));
     }
 
+    /**
+     * Update a note
+     * @param $idUser
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function update($idUser): bool|string
     {
         return json_encode($this->modelUsers->updateUser($idUser));
     }
 
+    /**
+     * Delete a note
+     * @param $idUser
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public function delete($idUser): bool|string
     {
         return json_encode($this->modelUsers->deleteUser($idUser));

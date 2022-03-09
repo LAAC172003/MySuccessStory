@@ -4,6 +4,7 @@
 use Pecee\SimpleRouter\SimpleRouter;
 use MySuccessStory\Controllers\ControllerUsers;
 use MySuccessStory\controllers\ControllerNotes;
+
 #endregion
 
 #region Connection
@@ -16,15 +17,15 @@ SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']);//
 
 #region CRUD Notes
 // SimpleRouter::get('/api/notes', [ControllerNotes::class, 'read']); // read all notes
-SimpleRouter::get('/api/notes', [ControllerNotes::class, 'create']);// create a note
+SimpleRouter::post('/api/notes', [ControllerNotes::class, 'create']);// create a note
 SimpleRouter::get('/api/notes/{idNote}', [ControllerNotes::class, 'read']);// read a single note
-SimpleRouter::patch('/api/notes/{idNote}', [ControllerNotes::class, 'update']);// change the value of a note
+SimpleRouter::patch('/api/notes/{idNote}/{note}', [ControllerNotes::class, 'update']);// change the value of a note
 SimpleRouter::delete('/api/notes/{idNote}', [ControllerNotes::class, 'delete']);// delete a note
 #endregion
 
 SimpleRouter::post('/api/users', [ControllerUsers::class, 'create']);// create
 SimpleRouter::get('/api/users/{idUser}', [ControllerUsers::class, 'read']);//read
-SimpleRouter::patch('/api/users/{idUser}', [ControllerUsers::class, 'update']);//update
+SimpleRouter::patch('/api/users/{idUser}/', [ControllerUsers::class, 'update']);//update
 SimpleRouter::delete('/api/users/{idUser}', [ControllerUsers::class, 'delete']);//delete
 
 

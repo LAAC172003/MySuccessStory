@@ -8,6 +8,7 @@ use MySuccessStory\db\DataBase;
 
 class ModelUsers
 {
+    //Mettre appart le salt
     private const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
     public Database $db;
     public string $tableName;
@@ -20,7 +21,7 @@ class ModelUsers
     }
 
     /**
-     * encode the url in base64
+     * Generates a token
      * @return string[] returns the token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
@@ -53,20 +54,20 @@ class ModelUsers
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function urlEncode($str)
+    public static function urlEncode(string $str): string
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
     /**
-     * encode the url in base64
+     * Verify if the token is valid
      * @param $token
      * @return array true if the token is valid
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Beaud Rémy <remy.bd@eduge.ch>
      */
-    public static function isJwtValid($token)
+    public static function isJwtValid($token): array
     {
         if ($token == "jwtTest") {
             return ["Success" => true];
@@ -106,10 +107,11 @@ class ModelUsers
     }
 
     /**
-     * Creates an user
+     * Creates a user
+     * @return array user created
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function createUser()
+    public function createUser(): array
     {
         $data = array(
             'email' => "test@gmail.com",
@@ -132,10 +134,12 @@ class ModelUsers
     }
 
     /**
-     * Shows an user
+     * Shows a user
+     * @param $idUser
+     * @return array
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function readUser($idUser)
+    public function readUser($idUser): array
     {
         try {
             $statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idUser = $idUser");
@@ -159,10 +163,13 @@ class ModelUsers
     }
 
     /**
-     * updates an user
+     * updates a user
+     * @param $idUser
+     * @return array
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function updateUser($idUser)
+
+    public function updateUser($idUser): array
     {
         try {
             $this->db->update($this->tableName, ['lastName' => ""], "idUser = $idUser");
@@ -180,9 +187,11 @@ class ModelUsers
 
     /**
      * deletes an user
+     * @param $idUser
+     * @return array
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function deleteUser($idUser)
+    public function deleteUser($idUser): array
     {
         try {
             return [

@@ -15,13 +15,18 @@ class ModelNotes
         $this->tableName = "notes";
     }
 
-    public function createNote()
+    /**
+     * Create a note
+     * @return array
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function createNote($note, $semester, $idUser, $idSubject): array
     {
         $data = array(
-            'note' => 4,
-            'semester' => 1,
-            'idUser' => 6,
-            'idSubject' => 2
+            'note' => $note,
+            'semester' => $semester,
+            'idUser' => $idUser,
+            'idSubject' => $idSubject
         );
         try {
             $this->db->insert("$this->tableName", $data);
@@ -39,7 +44,13 @@ class ModelNotes
         }
     }
 
-    public function readNote($idNote)
+    /**
+     * Read a note
+     * @param $idNote
+     * @return array
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function readNote($idNote): array
     {
         try {
             $statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idNote = $idNote");
@@ -62,13 +73,20 @@ class ModelNotes
         }
     }
 
-    public function updateNote($idNote)
+    /**
+     * Update a note
+     * @param $idNote
+     * @param $note
+     * @return array
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function updateNote($idNote, $note): array
     {
         try {
-            $this->db->update($this->tableName, ['note' => 1], "idNote = $idNote");
+            $this->db->update($this->tableName, ['note' => $note], "idNote = $idNote");
             return [
                 'Update' => true,
-                'Updated note' => '{FIELD} = {VALUE} where idNote = {IDNOTE}'
+                'Updated note' => "note = $note where idNote = $idNote"
             ];
         } catch (\Exception $e) {
             return [
@@ -78,7 +96,13 @@ class ModelNotes
         }
     }
 
-    public function deleteNote($idNote)
+    /**
+     * Delete a note
+     * @param $idNote
+     * @return array
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
+    public function deleteNote($idNote): array
     {
         try {
             return [

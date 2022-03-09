@@ -29,7 +29,7 @@ class ApiValue
 	 *
 	 * @var string
 	 */
-	public $errorCode;
+	public string $errorCode;
 
 	/**
 	 * @param mixed $value result of the request encoded in json
