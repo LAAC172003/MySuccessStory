@@ -14,8 +14,11 @@ use Pecee\SimpleRouter\SimpleRouter;
 SimpleRouter::setDefaultNamespace("\MySuccessStory\Controller");
 
 // Launch of the router
-try {
+try
+{
     SimpleRouter::start();
-} catch (TokenMismatchException | NotFoundHttpException | HttpException | Exception $e) {
+}
+catch (TokenMismatchException | NotFoundHttpException | HttpException | Exception $e)
+{
     echo "Le chemin " . $_SERVER['PHP_SELF'] . " n'existe pas";
 }

@@ -17,8 +17,8 @@ SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']);//
 
 #region CRUD Notes
 // SimpleRouter::get('/api/notes', [ControllerNotes::class, 'read']); // read all notes
-SimpleRouter::post('/api/notes', [ControllerNotes::class, 'create']);// create a note
 SimpleRouter::get('/api/notes/{idNote}', [ControllerNotes::class, 'read']);// read a single note
+SimpleRouter::post('/api/notes/{note}/{semester}/{idUser}/{idSubject}', [ControllerNotes::class, 'create'], ["defaultParameterRegex" => "[\w\-\.]+"]);// create a note
 SimpleRouter::patch('/api/notes/{idNote}/{note}', [ControllerNotes::class, 'update']);// change the value of a note
 SimpleRouter::delete('/api/notes/{idNote}', [ControllerNotes::class, 'delete']);// delete a note
 #endregion

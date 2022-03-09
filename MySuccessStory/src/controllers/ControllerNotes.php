@@ -16,12 +16,12 @@ class ControllerNotes
 
     /**
      * Create a note
-     * @return bool|string
+     * @return string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function create(): bool|string
+    public function create($note, $semester, $idUser, $idSubject)
     {
-        return json_encode($this->modelNotes->createNote($note));
+        return json_encode($this->modelNotes->createNote($note, $semester, $idUser, $idSubject));
     }
 
     /**

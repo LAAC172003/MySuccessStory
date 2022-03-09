@@ -17,30 +17,27 @@ class ModelNotes
 
 	/**
 	 * Create a note
-	 * @return array
+	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function createNote($note, $semester, $idUser, $idSubject): array
+	public function createNote($note, $semester, $idUser, $idSubject)
 	{
-		$data = array(
-			'note' => $note,
-			'semester' => $semester,
-			'idUser' => $idUser,
-			'idSubject' => $idSubject
-		);
-		try {
-			$this->db->insert("$this->tableName", $data);
-			return [
-				'Success' => true,
-				"Note created" => $data
-			];
-			//return new ModelApiValue($data, "La note a bien été ajoutée");
-		} catch (\Exception $e) {
-			return [
-				'Error message' => $e->getMessage(),
-				'Error code' => $e->getCode()
-			];
-			//return new ModelApiValue("", $e->getMessage(), $e->getCode());
+		$data = array
+			(
+				'note' => $note,
+				'semester' => $semester,
+				'idUser' => $idUser,
+				'idSubject' => $idSubject
+			);
+
+		try
+		{
+			$this->db->insert($this->tableName, $data);
+			return new ApiValue($data, "La note a bien été ajoutée");
+		}
+		catch (\Exception $e)
+		{
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
 		}
 	}
 
