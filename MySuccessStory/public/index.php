@@ -22,5 +22,5 @@ try
 catch (TokenMismatchException | NotFoundHttpException | HttpException | Exception $e)
 {
 	http_response_code(404);
-	echo json_encode(new ApiValue(null, "Le chemin " . $_SERVER['PHP_SELF'] . " n'existe pas", 0));
+	echo json_encode(new ApiValue(null, "The path " . $_SERVER['PHP_SELF'] . " doesn't exist", 0));
 }

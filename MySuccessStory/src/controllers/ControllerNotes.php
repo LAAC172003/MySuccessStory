@@ -23,7 +23,7 @@ class ControllerNotes
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function read($idNote): bool|string
+    public static function read($idNote) : bool|string
     {
         return json_encode(ModelNotes::readNote($idNote));
     }
@@ -35,7 +35,7 @@ class ControllerNotes
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function update($idNote,$note): bool|string
+    public static function update($idNote, $note) : bool|string
     {
         return json_encode(ModelNotes::updateNote($idNote, $note));
     }

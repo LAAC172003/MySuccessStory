@@ -25,7 +25,7 @@ class ModelNotes
 		try
 		{
 			(new DataBase())->insert(self::TABLE_NAME, $data);
-			return new ApiValue($data, "La note a bien été ajoutée");
+			return new ApiValue($data, "The note has been added");
 		}
 		catch (\Exception $e)
 		{
@@ -66,68 +66,41 @@ class ModelNotes
 	 * Update a note
 	 * @param $idNote
 	 * @param $note
-	 * @return array
+	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function updateNote($idNote, $note): array
+	public static function updateNote($idNote, $note)
 	{
 		try
 		{
 			(new DataBase())->update(self::TABLE_NAME, ['note' => $note], "idNote = $idNote");
-			return
-			[
-				'Update' => true,
-				'Updated note' => "note = $note WHERE idNote = $idNote"
-			];
+
+			return new ApiValue(null, "The note has been edited");
 		}
 		catch (\Exception $e)
 		{
-			return
-			[
-				'Error message' => $e->getMessage(),
-				'Error code' => $e->getCode()
-			];
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
 		}
 	}
 
 	/**
 	 * Delete a note
 	 * @param $idNote
-	 * @return array
+	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function deleteNote($idNote): array
+	public static function deleteNote($idNote)
 	{
 		try
 		{
-			return
-			[
-				'Success' => (new DataBase())->delete(self::TABLE_NAME, "idNote = $idNote")->execute(),
-				'Deleted note' => "idNote = $idNote"
-			];
+			(new DataBase())->delete(self::TABLE_NAME, "idNote = $idNote")->execute();
+			return new ApiValue(null, "The note has been deleted");
 		}
 		catch (\Exception $e)
 		{
-			return
-			[
-				'Error message' => $e->getMessage(),
-				'Error code' => $e->getCode()
-			];
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
 		}
-		// $statement = (new DataBase())->prepare("SELECT * FROM $this->tableName JOIN subjects on subjects.idSubject=notes.idSubject WHERE subjects.name = '$subject'");
-		// $statement->execute();
-
-		// return json_encode
-		//     (
-		//         new ApiValue
-		//             (
-		//                 $statement->fetchAll(),
-		//                 $statement->errorInfo[2] ?? null,
-		//                 $statement->errorCode ?? null
-		//             )
-		//     );
 	}
-
 
 	/**
 	 * Calculates the pass mark to success the CFC

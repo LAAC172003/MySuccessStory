@@ -42,20 +42,29 @@ class DataBase
 	public function update($tableName, $data, $where = '')
 	{
 		$whereSql = "";
-		if (!empty($where)) {
-			if (!str_starts_with(strtoupper(trim($where)), 'WHERE')) {
+		if (!empty($where))
+		{
+			if (!str_starts_with(strtoupper(trim($where)), 'WHERE'))
+			{
 				$whereSql = " WHERE " . $where;
-			} else {
+			}
+			else
+			{
 				$whereSql = " " . strtoupper(trim($where));
 			}
 		}
+
 		$query = "UPDATE `" . $tableName . "` SET ";
 		$sets = array();
-		foreach ($data as $column => $value) {
+
+		foreach ($data as $column => $value)
+		{
 			$sets[] = "`" . $column . "` = '" . $value . "'";
 		}
+
 		$query .= implode(', ', $sets);
 		$query .= $whereSql;
+
 		return self::prepare($query)->execute();
 	}
 	public function delete($tableName, $where = "")

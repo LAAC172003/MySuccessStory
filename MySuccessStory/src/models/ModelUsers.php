@@ -3,95 +3,96 @@
 namespace MySuccessStory\models;
 
 use MySuccessStory\db\DataBase;
+use MySuccessStory\exception\ApiException;
 
 class ModelUsers
 {
-    //Mettre appart le salt
-    const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
-    const TABLE_NAME = "users";
-    const EXPIRATION_TIME = 3600;
+	//Mettre appart le salt
+	const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
+	const TABLE_NAME = "users";
+	const EXPIRATION_TIME = 3600;
 
-    /**
-     * Generates a token
-     * @return ApiValue returns the token
-     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function jwtGenerator()
-    {
-        $headers = array("alg" => "HS256", "typ" => "JWT");
-        $payload = array("email" => "user", "pwd" => "pwd", "exp" => time() + self::EXPIRATION_TIME);
+	/**
+	 * Generates a token
+	 * @return ApiValue returns the token
+	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function jwtGenerator()
+	{
+		$headers = array("alg" => "HS256", "typ" => "JWT");
+		$payload = array("email" => "user", "pwd" => "pwd", "exp" => time() + self::EXPIRATION_TIME);
 
-        $encodedHeaders = self::urlEncode(json_encode($headers));
-        $encodedPayload = self::urlEncode(json_encode($payload));
+		$encodedHeaders = self::urlEncode(json_encode($headers));
+		$encodedPayload = self::urlEncode(json_encode($payload));
 
-        $signature = hash_hmac("MD5", "$encodedHeaders.$encodedPayload", self::SALT, true);
-        $encodedSignature = self::urlEncode($signature);
+		$signature = hash_hmac("MD5", "$encodedHeaders.$encodedPayload", self::SALT, true);
+		$encodedSignature = self::urlEncode($signature);
 
-        $payloadExp = $payload["exp"] - time();
-        $token = "$encodedHeaders.$encodedPayload.$encodedSignature";
+		$payloadExp = $payload["exp"] - time();
+		$token = "$encodedHeaders.$encodedPayload.$encodedSignature";
 
 		if (self::isJwtValid($token))
 		{
 			return new ApiValue
-            (
-                [
-                    "Token" => $token,
-                    "Expiration" => $payloadExp
-                ],
-            );
+			(
+				[
+					"Token" => $token,
+					"Expiration" => $payloadExp
+				],
+			);
 		}
 		else
 		{
-			return new ApiValue("", "Invalid token generated", "0");
+			return new ApiValue(null, "Invalid token generated", "0");
 		}
-    }
+	}
 
-    /**
-     * encode the url in base64
-     * @param string $str
-     * @return string return the encoded code in base64
-     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function urlEncode(string $str) : string
-    {
-        return rtrim(strtr(base64_encode($str), "+/", "-_"), "=");
-    }
+	/**
+	 * encode the url in base64
+	 * @param string $str
+	 * @return string return the encoded code in base64
+	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function urlEncode(string $str) : string
+	{
+		return rtrim(strtr(base64_encode($str), "+/", "-_"), "=");
+	}
 
-    /**
-     * Verify if the token is valid
-     * @param $token
-     * @return array|bool true if the token is valid
-     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     * @author Beaud Rémy <remy.bd@eduge.ch>
-     */
-    public static function isJwtValid($token)
-    {
+	/**
+	 * Verify if the token is valid
+	 * @param $token
+	 * @return array|bool true if the token is valid
+	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 */
+	public static function isJwtValid($token)
+	{
 		if ($token == "jwtTest")
 		{
 			return true;
 		}
 
-        // split the jwt
-        $tokenParts = explode(".", $token);
-        $header = base64_decode($tokenParts[0]);
-        $payload = base64_decode($tokenParts[1]);
-        $signature_provided = $tokenParts[2];
+		// split the jwt
+		$tokenParts = explode(".", $token);
+		$header = base64_decode($tokenParts[0]);
+		$payload = base64_decode($tokenParts[1]);
+		$signature_provided = $tokenParts[2];
 
-        // check the expiration time - note this will cause an error if there is no "exp" claim in the jwt
-        $expiration = json_decode($payload)->exp;
-        $isTokenExpired = ($expiration - time()) < 0;
+		// check the expiration time - note this will cause an error if there is no "exp" claim in the jwt
+		$expiration = json_decode($payload)->exp;
+		$isTokenExpired = ($expiration - time()) < 0;
 
-        // build a signature based on the header and payload using the secret
-        $base64UrlHeader = self::urlEncode($header);
-        $base64UrlPayload = self::urlEncode($payload);
-        $signature = hash_hmac("MD5", "$base64UrlHeader.$base64UrlPayload", ModelUsers::SALT, true);
-        $base64UrlSignature = self::urlEncode($signature);
+		// build a signature based on the header and payload using the secret
+		$base64UrlHeader = self::urlEncode($header);
+		$base64UrlPayload = self::urlEncode($payload);
+		$signature = hash_hmac("MD5", "$base64UrlHeader.$base64UrlPayload", ModelUsers::SALT, true);
+		$base64UrlSignature = self::urlEncode($signature);
 
-        // verify if it matches the signature provided by the jwt
-        $isSignatureValid = $base64UrlSignature === $signature_provided;
+		// verify if it matches the signature provided by the jwt
+		$isSignatureValid = $base64UrlSignature === $signature_provided;
 
 		if ($isTokenExpired || !$isSignatureValid)
 		{
@@ -109,121 +110,98 @@ class ModelUsers
 				]
 			];
 		}
-    }
+	}
 
-    /**
-     * Creates a user
-     * @return array user created
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function createUser() : array
-    {
-        $data = array
-        (
-            "email" => "test@gmail.com",
-            "password" => "pwd",
-            "firstName" => "firstName",
-            "lastName" => "lastName"
-        );
-        try
-        {
-            (new DataBase())->insert(self::TABLE_NAME, $data);
-            return
-            [
-                "success" => true,
-                "UserCreated" => $data
-            ];
-        }
-        catch (\Exception $e)
-        {
-            return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
-        }
-    }
+	/**
+	 * Creates a user
+	 * @return ApiValue
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function createUser()
+	{
+		$data = array
+		(
+			"email" => "test@gmail.com",
+			"password" => "pwd",
+			"firstName" => "firstName",
+			"lastName" => "lastName"
+		);
 
-    /**
-     * Shows a user
-     * @param $idUser
-     * @return ApiValue
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function readUser($idUser)
-    {
-        try
+		try
 		{
-            $statement = (new DataBase())->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE idUser = $idUser");
-            $statement->execute();
-            $statementResult = $statement->fetchObject();
-
-            if ($statementResult)
-			{
-				return new ApiValue($statementResult);
-            }
-			else
-			{
-                return new ApiValue();
-            }
-        }
+			(new DataBase())->insert(self::TABLE_NAME, $data);
+			return new ApiValue(null, "The user has been created");
+		}
 		catch (\Exception $e)
 		{
-            return new ApiValue(null, $e->getMessage(), $e->getCode());
-        }
-    }
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
+		}
+	}
 
-    /**
-     * updates a user
-     * @param $idUser
-     * @return array
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
+	/**
+	 * Shows a user
+	 * @param $idUser
+	 * @return ApiValue
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function readUser($idUser)
+	{
+		try
+		{
+			$statement = (new DataBase())->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE idUser = $idUser");
+			$statement->execute();
+			$statementResult = $statement->fetchObject();
 
-    public static function updateUser($idUser) : array
-    {
-        try
-        {
-            (new DataBase())->update(self::TABLE_NAME, ["lastName" => ""], "idUser = $idUser");
-            return
-            [
-                "update" => true,
-                "updatedUser" => "{FIELD} = {VALUE} where idNote = $idUser"
-            ];
-        }
-        catch (\Exception $e)
-        {
-            return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
-        }
-    }
+			if ($statementResult)
+			{
+				return new ApiValue($statementResult);
+			}
+			else
+			{
+				return new ApiValue();
+			}
+		}
+		catch (\Exception $e)
+		{
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
+		}
+	}
 
-    /**
-     * deletes an user
-     * @param $idUser
-     * @return array
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function deleteUser($idUser) : array
-    {
-        try
-        {
-            return
-            [
-                "Delete" => (new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser")->execute(),
-                "Deleted user" => "idUser = $idUser"
-            ];
-        }
-        catch (\Exception $e)
-        {
-            return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
-        }
-    }
+	/**
+	 * updates a user
+	 * @param $idUser
+	 * @return ApiValue
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function updateUser($idUser)
+	{
+		try
+		{
+			(new DataBase())->update(self::TABLE_NAME, ["lastName" => ""], "idUser = $idUser");
+			return new ApiValue(null, "The user has been edited");
+		}
+		catch (\Exception $e)
+		{
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
+		}
+	}
+
+	/**
+	 * deletes an user
+	 * @param $idUser
+	 * @return ApiValue
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function deleteUser($idUser)
+	{
+		try
+		{
+			(new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser")->execute();
+			return new ApiValue(null, "The user has been deleted");
+		}
+		catch (\Exception $e)
+		{
+			return new ApiValue(null, $e->getMessage(), $e->getCode());
+		}
+	}
 }
