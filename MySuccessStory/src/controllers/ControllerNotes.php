@@ -9,10 +9,14 @@ class ControllerNotes
 {
     /**
      * Create a note
+     * @param $note
+     * @param $semester
+     * @param $idUser
+     * @param $idSubject
      * @return string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function create($note, $semester, $idUser, $idSubject)
+    public static function create($note, $semester, $idUser, $idSubject): string
     {
         return json_encode(ModelNotes::createNote($note, $semester, $idUser, $idSubject));
     }
@@ -35,7 +39,7 @@ class ControllerNotes
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function update($idNote,$note): bool|string
+    public static function update($idNote, $note): bool|string
     {
         return json_encode(ModelNotes::updateNote($idNote, $note));
     }

@@ -8,37 +8,37 @@ namespace MySuccessStory\models;
  */
 class ApiValue
 {
-	/**
-	 * Result of the request encoded in json
-	 *
-	 * @var string
-	 */
-	public $value;
+    /**
+     * Result of the request encoded in json
+     *
+     * @var string
+     */
+    public mixed $value;
 
-	/**
-	 * Information or error message
-	 *
-	 * @var string
-	 */
-	public string $message;
+    /**
+     * Information or error message
+     *
+     * @var string
+     */
+    public string $message;
 
-	/**
-	 * The received error code if there is one
-	 *
-	 * @var string
-	 */
-	public string $errorCode;
+    /**
+     * The received error code if there is one
+     *
+     * @var string
+     */
+    public string $errorCode;
 
-	/**
-	 * @param mixed $value result of the request encoded in json
-	 * @param string $message information or error message
-	 * @param string $errorCode the error code thrown by the script if there is one
-	 *
-	 */
-	public function __construct($value = null, $message = "", $errorCode = "")
-	{
-		$this->value = $value;
-		$this->message = $message;
-		$this->errorCode = $errorCode;
-	}
+    /**
+     * @param mixed|null $value result of the request encoded in json
+     * @param string $message information or error message
+     * @param string $errorCode the error code thrown by the script if there is one
+     *
+     */
+    public function __construct(mixed $value = null, string $message = "", string $errorCode = "")
+    {
+        $this->value = $value;
+        $this->message = $message;
+        $this->errorCode = $errorCode;
+    }
 }

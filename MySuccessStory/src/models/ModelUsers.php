@@ -11,13 +11,47 @@ class ModelUsers
     const TABLE_NAME = "users";
     const EXPIRATION_TIME = 3600;
 
+    public $id;
+    public $email;
+    public $password;
+    public $firstName;
+    public $lastName;
+
+
+    public function test(): bool
+    {
+
+
+        $query = 'INSERT INTO ' . self::TABLE_NAME . ' SET email = :email, password = :password, firstName = :firstName, lastName = :lastName';
+
+        // Prepare statement
+        $stmt = (new DataBase())->prepare($query);
+
+        // Clean data
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->password = htmlspecialchars(strip_tags($this->password));
+        $this->firstName = htmlspecialchars(strip_tags($this->firstName));
+        $this->lastName = htmlspecialchars(strip_tags($this->lastName));
+
+        // Bind data
+        $stmt->bindParam(':title', $this->email);
+        $stmt->bindParam(':body', $this->password);
+        $stmt->bindParam(':author', $this->lastName);
+        $stmt->bindParam(':category_id', $this->firstName);
+
+        // Execute query
+        if($stmt->execute()) {
+            return true;
+        }
+    }
+
     /**
      * Generates a token
      * @return ApiValue returns the token
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function jwtGenerator()
+    public static function jwtGenerator(): ApiValue
     {
         $headers = array("alg" => "HS256", "typ" => "JWT");
         $payload = array("email" => "user", "pwd" => "pwd", "exp" => time() + self::EXPIRATION_TIME);
@@ -31,20 +65,17 @@ class ModelUsers
         $payloadExp = $payload["exp"] - time();
         $token = "$encodedHeaders.$encodedPayload.$encodedSignature";
 
-		if (self::isJwtValid($token))
-		{
-			return new ApiValue
+        if (self::isJwtValid($token)) {
+            return new ApiValue
             (
                 [
                     "Token" => $token,
                     "Expiration" => $payloadExp
                 ],
             );
-		}
-		else
-		{
-			return new ApiValue("", "Invalid token generated", "0");
-		}
+        } else {
+            return new ApiValue("", "Invalid token generated", "0");
+        }
     }
 
     /**
@@ -54,7 +85,7 @@ class ModelUsers
      * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function urlEncode(string $str) : string
+    public static function urlEncode(string $str): string
     {
         return rtrim(strtr(base64_encode($str), "+/", "-_"), "=");
     }
@@ -67,12 +98,11 @@ class ModelUsers
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Beaud Rémy <remy.bd@eduge.ch>
      */
-    public static function isJwtValid($token)
+    public static function isJwtValid($token): bool|array
     {
-		if ($token == "jwtTest")
-		{
-			return true;
-		}
+        if ($token == "jwtTest") {
+            return true;
+        }
 
         // split the jwt
         $tokenParts = explode(".", $token);
@@ -93,22 +123,19 @@ class ModelUsers
         // verify if it matches the signature provided by the jwt
         $isSignatureValid = $base64UrlSignature === $signature_provided;
 
-		if ($isTokenExpired || !$isSignatureValid)
-		{
-			return false;
-		}
-		else
-		{
-			return
-			[
-				"Header" => json_decode($header),
-				"Payload" =>
-				[
-					"Email" => json_decode($payload)->email,
-					"Password" => json_decode($payload)->pwd
-				]
-			];
-		}
+        if ($isTokenExpired || !$isSignatureValid) {
+            return false;
+        } else {
+            return
+                [
+                    "Header" => json_decode($header),
+                    "Payload" =>
+                        [
+                            "Email" => json_decode($payload)->email,
+                            "Password" => json_decode($payload)->pwd
+                        ]
+                ];
+        }
     }
 
     /**
@@ -116,8 +143,9 @@ class ModelUsers
      * @return array user created
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function createUser() : array
+    public static function createUser(): array
     {
+
         $data = array
         (
             "email" => "test@gmail.com",
@@ -125,22 +153,19 @@ class ModelUsers
             "firstName" => "firstName",
             "lastName" => "lastName"
         );
-        try
-        {
+        try {
             (new DataBase())->insert(self::TABLE_NAME, $data);
             return
-            [
-                "success" => true,
-                "UserCreated" => $data
-            ];
-        }
-        catch (\Exception $e)
-        {
+                [
+                    "success" => true,
+                    "UserCreated" => $data
+                ];
+        } catch (\Exception $e) {
             return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
+                [
+                    "Error message" => $e->getMessage(),
+                    "Error code" => $e->getCode()
+                ];
         }
     }
 
@@ -150,25 +175,19 @@ class ModelUsers
      * @return ApiValue
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function readUser($idUser)
+    public static function readUser($idUser): ApiValue
     {
-        try
-		{
-            $statement = (new DataBase())->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE idUser = $idUser");
+        try {
+            $statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
             $statement->execute();
             $statementResult = $statement->fetchObject();
 
-            if ($statementResult)
-			{
-				return new ApiValue($statementResult);
-            }
-			else
-			{
+            if ($statementResult) {
+                return new ApiValue($statementResult);
+            } else {
                 return new ApiValue();
             }
-        }
-		catch (\Exception $e)
-		{
+        } catch (\Exception $e) {
             return new ApiValue(null, $e->getMessage(), $e->getCode());
         }
     }
@@ -180,24 +199,21 @@ class ModelUsers
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
 
-    public static function updateUser($idUser) : array
+    public static function updateUser($idUser): array
     {
-        try
-        {
+        try {
             (new DataBase())->update(self::TABLE_NAME, ["lastName" => ""], "idUser = $idUser");
             return
-            [
-                "update" => true,
-                "updatedUser" => "{FIELD} = {VALUE} where idNote = $idUser"
-            ];
-        }
-        catch (\Exception $e)
-        {
+                [
+                    "update" => true,
+                    "updatedUser" => "{FIELD} = {VALUE} where idNote = $idUser"
+                ];
+        } catch (\Exception $e) {
             return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
+                [
+                    "Error message" => $e->getMessage(),
+                    "Error code" => $e->getCode()
+                ];
         }
     }
 
@@ -207,23 +223,20 @@ class ModelUsers
      * @return array
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function deleteUser($idUser) : array
+    public static function deleteUser($idUser): array
     {
-        try
-        {
+        try {
             return
-            [
-                "Delete" => (new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser")->execute(),
-                "Deleted user" => "idUser = $idUser"
-            ];
-        }
-        catch (\Exception $e)
-        {
+                [
+                    "Delete" => (new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser")->execute(),
+                    "Deleted user" => "idUser = $idUser"
+                ];
+        } catch (\Exception $e) {
             return
-            [
-                "Error message" => $e->getMessage(),
-                "Error code" => $e->getCode()
-            ];
+                [
+                    "Error message" => $e->getMessage(),
+                    "Error code" => $e->getCode()
+                ];
         }
     }
 }
