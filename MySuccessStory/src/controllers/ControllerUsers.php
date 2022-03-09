@@ -6,18 +6,6 @@ use MySuccessStory\models\ModelUsers;
 
 class ControllerUsers
 {
-    public ModelUsers $modelUsers;
-
-    public function __construct()
-    {
-        $this->modelUsers = new ModelUsers();
-    }
-
-    public function test(): string
-    {
-        return "test";
-    }
-
     /**
      * Create a token
      * @return bool|string
@@ -33,9 +21,9 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function create(): bool|string
+    public static function create(): bool|string
     {
-        return json_encode($this->modelUsers->createUser());
+        return json_encode(ModelUsers::createUser());
     }
 
     /**
@@ -44,9 +32,9 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function read($idUser): bool|string
+    public static function read($idUser): bool|string
     {
-        return json_encode($this->modelUsers->readUser($idUser));
+        return json_encode(ModelUsers::readUser($idUser));
     }
 
     /**
@@ -55,9 +43,9 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function update($idUser): bool|string
+    public static function update($idUser): bool|string
     {
-        return json_encode($this->modelUsers->updateUser($idUser));
+        return json_encode(ModelUsers::updateUser($idUser));
     }
 
     /**
@@ -66,8 +54,8 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public function delete($idUser): bool|string
+    public static function delete($idUser): bool|string
     {
-        return json_encode($this->modelUsers->deleteUser($idUser));
+        return json_encode(ModelUsers::deleteUser($idUser));
     }
 }

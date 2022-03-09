@@ -6,21 +6,14 @@ use MySuccessStory\db\DataBase;
 
 class ModelNotes
 {
-	public Database $db;
-	public string $tableName;
-
-	public function __construct()
-	{
-		$this->db = new DataBase();
-		$this->tableName = "notes";
-	}
+	const TABLE_NAME = "notes";
 
 	/**
 	 * Create a note
 	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function createNote($note, $semester, $idUser, $idSubject)
+	public static function createNote($note, $semester, $idUser, $idSubject)
 	{
 		$data = array
 			(
@@ -32,7 +25,7 @@ class ModelNotes
 
 		try
 		{
-			$this->db->insert($this->tableName, $data);
+			(new DataBase())->insert(self::TABLE_NAME, $data);
 			return new ApiValue($data, "La note a bien été ajoutée");
 		}
 		catch (\Exception $e)
@@ -47,11 +40,11 @@ class ModelNotes
 	 * @return ApiValue
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function readNote($idNote)
+	public static function readNote($idNote)
 	{
 		try
 		{
-			$statement = $this->db->prepare("SELECT * FROM $this->tableName WHERE idNote = $idNote");
+			$statement = (new DataBase())->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE idNote = $idNote");
 			$statement->execute();
 			$statementResult = $statement->fetchObject();
 
@@ -77,16 +70,21 @@ class ModelNotes
 	 * @return array
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function updateNote($idNote, $note): array
+	public static function updateNote($idNote, $note): array
 	{
-		try {
-			$this->db->update($this->tableName, ['note' => $note], "idNote = $idNote");
-			return [
+		try
+		{
+			(new DataBase())->update(self::TABLE_NAME, ['note' => $note], "idNote = $idNote");
+			return
+			[
 				'Update' => true,
-				'Updated note' => "note = $note where idNote = $idNote"
+				'Updated note' => "note = $note WHERE idNote = $idNote"
 			];
-		} catch (\Exception $e) {
-			return [
+		}
+		catch (\Exception $e)
+		{
+			return
+			[
 				'Error message' => $e->getMessage(),
 				'Error code' => $e->getCode()
 			];
@@ -99,20 +97,25 @@ class ModelNotes
 	 * @return array
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function deleteNote($idNote): array
+	public static function deleteNote($idNote): array
 	{
-		try {
-			return [
-				'Success' => $this->db->delete($this->tableName, "idNote = $idNote")->execute(),
+		try
+		{
+			return
+			[
+				'Success' => (new DataBase())->delete(self::TABLE_NAME, "idNote = $idNote")->execute(),
 				'Deleted note' => "idNote = $idNote"
 			];
-		} catch (\Exception $e) {
-			return [
+		}
+		catch (\Exception $e)
+		{
+			return
+			[
 				'Error message' => $e->getMessage(),
 				'Error code' => $e->getCode()
 			];
 		}
-		// $statement = $this->db->prepare("SELECT * FROM $this->tableName JOIN subjects on subjects.idSubject=notes.idSubject WHERE subjects.name = '$subject'");
+		// $statement = (new DataBase())->prepare("SELECT * FROM $this->tableName JOIN subjects on subjects.idSubject=notes.idSubject WHERE subjects.name = '$subject'");
 		// $statement->execute();
 
 		// return json_encode
@@ -137,7 +140,7 @@ class ModelNotes
 	 * @return float returns result
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function cfcAverage(float $tpi, float $ci, float $cg, float $cbe): float
+	public static function cfcAverage(float $tpi, float $ci, float $cg, float $cbe): float
 	{
 		return 0.3 * $tpi + 0.2 * $cbe + 0.3 * $ci + 0.2 * $cg;
 	}
@@ -149,7 +152,7 @@ class ModelNotes
 	 * @return float|int returns the result of the average of all the notes
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function average(array $notes): float|int
+	public static function average(array $notes): float|int
 	{
 		if ($notes[0] == null) {
 			return $result = 4;
@@ -169,7 +172,7 @@ class ModelNotes
 	 * @return float|int result
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function calculate(array $notes): float|int
+	public static function calculate(array $notes): float|int
 	{
 		if ($notes[0] == null) {
 			return $result = 4;
@@ -189,7 +192,7 @@ class ModelNotes
 	 * @return float|int returns the rounded result
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function cbeNote(float $english, float $economy, float $maths, float $physics): float|int
+	public static function cbeNote(float $english, float $economy, float $maths, float $physics): float|int
 	{
 
 		$result = (round($english * 2) / 2 + round($economy * 2) / 2 + round($maths * 2) / 2 + round($physics * 2) / 2) / 4;
@@ -204,8 +207,8 @@ class ModelNotes
 	 * @return float return the result of the CI
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public function ciNote(float $cie, float $school): float
+	public static function ciNote(float $cie, float $school): float
 	{
-		return $result = 0.8 * $school + 0.2 * $cie;
+		return 0.8 * $school + 0.2 * $cie;
 	}
 }
