@@ -16,34 +16,6 @@ class ControllerUsers
         return json_encode(ModelUsers::jwtGenerator());
     }
 
-    public function test()
-    {
-        header('Access-Control-Allow-Origin: *');
-        header('Content-Type: application/json');
-        header('Access-Control-Allow-Methods: POST');
-        header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
-        // Instantiate DB & connect
-
-        // Get raw posted data
-        $data = json_decode(file_get_contents("php://input"));
-        $modelUsers = new ModelUsers();
-        $modelUsers->email = $data->email;
-        $modelUsers->password = $data->password;
-        $modelUsers->firstName = $data->firstName;
-        $modelUsers->lastName = $data->lastName;
-
-        // Create post
-        if ($modelUsers->test()) {
-            echo json_encode(
-                array('message' => ' Created')
-            );
-        } else {
-            echo json_encode(
-                array('message' => ' Not Created')
-            );
-        }
-    }
 
     /**
      * Create a user
@@ -61,30 +33,28 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function read($idUser): bool|string
+    public static function read(): bool|string
     {
-        return json_encode(ModelUsers::readUser($idUser));
+        return json_encode(ModelUsers::readUser());
     }
 
     /**
      * Update a note
-     * @param $idUser
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function update($idUser): bool|string
+    public static function update(): bool|string
     {
-        return json_encode(ModelUsers::updateUser($idUser));
+        return json_encode(ModelUsers::updateUser());
     }
 
     /**
      * Delete a note
-     * @param $idUser
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function delete($idUser): bool|string
+    public static function delete(): bool|string
     {
-        return json_encode(ModelUsers::deleteUser($idUser));
+        return json_encode(ModelUsers::deleteUser());
     }
 }

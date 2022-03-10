@@ -15,16 +15,16 @@ SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // cre
 #endregion
 
 #region CRUD Notes
-SimpleRouter::get('/api/notes/{idNote}', [ControllerNotes::class, 'read']); // read a single note
+SimpleRouter::get('/api/notes', [ControllerNotes::class, 'read']); // read a single note
 SimpleRouter::post('/api/notes', [ControllerNotes::class, 'create']); // add a new note to the database
 SimpleRouter::patch('/api/notes/{idNote}/{note}', [ControllerNotes::class, 'update'], ["defaultParameterRegex" => "[\w\-\.]+"]); // change the value of a note
 SimpleRouter::delete('/api/notes/{idNote}', [ControllerNotes::class, 'delete']); // delete a note
 #endregion
 
 SimpleRouter::post('/api/users', [ControllerUsers::class, 'create']); // create
-SimpleRouter::get('/api/users/{idUser}', [ControllerUsers::class, 'read']); // read
-SimpleRouter::patch('/api/users/{idUser}/', [ControllerUsers::class, 'update']); // update
-SimpleRouter::delete('/api/users/{idUser}', [ControllerUsers::class, 'delete']); // delete
+SimpleRouter::get('/api/users', [ControllerUsers::class, 'read']); // read
+SimpleRouter::patch('/api/users', [ControllerUsers::class, 'update']); // update
+SimpleRouter::delete('/api/users', [ControllerUsers::class, 'delete']); // delete
 
 #region Subjects
 SimpleRouter::get('/api/subjects', [ControllerUsers::class, 'token']); // shows all the subjects
