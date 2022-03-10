@@ -11,14 +11,14 @@ SimpleRouter::get('/api/token', [ControllerUsers::class, 'token']); // Create a 
 SimpleRouter::post('/api/test', [ControllerUsers::class, 'test']); // Create a token
 //SimpleRouter::get('/api/login', [ControllerUsers::class, 'token' /* "login" */]); // allow the user to log in to his account
 SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
-SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // crearte a new account
+SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // create a new account
 #endregion
 
 #region CRUD Notes
 SimpleRouter::get('/api/notes', [ControllerNotes::class, 'read']); // read a single note
 SimpleRouter::post('/api/notes', [ControllerNotes::class, 'create']); // add a new note to the database
-SimpleRouter::patch('/api/notes/{idNote}/{note}', [ControllerNotes::class, 'update'], ["defaultParameterRegex" => "[\w\-\.]+"]); // change the value of a note
-SimpleRouter::delete('/api/notes/{idNote}', [ControllerNotes::class, 'delete']); // delete a note
+SimpleRouter::patch('/api/notes', [ControllerNotes::class, 'update'], ["defaultParameterRegex" => "[\w\-\.]+"]); // change the value of a note
+SimpleRouter::delete('/api/notes', [ControllerNotes::class, 'delete']); // delete a note
 #endregion
 
 SimpleRouter::post('/api/users', [ControllerUsers::class, 'create']); // create
