@@ -26,7 +26,7 @@ class DataBase
 		}
 	}
 
-	public function prepare($sql): \PDOStatement
+	public function prepare($sql) : \PDOStatement
 	{
 		return $this->pdo->prepare($sql);
 	}
