@@ -7,11 +7,10 @@ use MySuccessStory\controllers\ControllerNotes;
 #endregion
 
 #region Connection
-SimpleRouter::get("/api/token", [ControllerUsers::class, "token"]); // Create a token
-SimpleRouter::post("/api/test", [ControllerUsers::class, "test"]); // Create a token
-SimpleRouter::get("/api/profile", [ControllerUsers::class, "profile"]); // Show the profile of a user
-SimpleRouter::put("/api/register", [ControllerUsers::class, "register"]); // Create a new account
-//SimpleRouter::get("/api/login", [ControllerUsers::class, "token" /* "login" */]); // Allow the user to log in to his account
+SimpleRouter::post('/api/test', [ControllerUsers::class, 'test']);
+SimpleRouter::post('/api/login', [ControllerUsers::class, 'login']); // Create a token
+SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
+SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // create a new account
 #endregion
 
 #region CRUD Notes

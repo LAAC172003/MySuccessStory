@@ -2,20 +2,30 @@
 
 namespace MySuccessStory\controllers;
 
+use MySuccessStory\db\DataBase;
+use MySuccessStory\models\ApiValue;
+use MySuccessStory\models\ModelMain;
 use MySuccessStory\models\ModelUsers;
 
 class ControllerUsers
 {
-    /**
-     * Create a token
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function token() : bool|string
+
+    public function test()
     {
-        return json_encode(ModelUsers::jwtGenerator());
+        $tokens = apache_request_headers();
+        return explode(" ", $tokens['Authorization'])[1];
     }
 
+    /**
+     * Create a user
+     * @return bool|string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @author Beaud Rémy <remy.bd@eduge.ch>
+     */
+    public function login(): bool|string
+    {
+        return json_encode(ModelUsers::getToken());
+    }
 
     /**
      * Create a user
@@ -29,7 +39,6 @@ class ControllerUsers
 
     /**
      * Read a note
-     * @param $idUser
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
