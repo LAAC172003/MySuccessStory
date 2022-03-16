@@ -7,11 +7,29 @@ class ModelMain
     const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
     const EXPIRATION_TIME = 3600;
 
+
+    /**
+     * returns the body
+     * @author Beaud Rémy <remy.bd@eduge.ch>
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     */
     public static function getBody()
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        if (!$data) return new ApiValue(null, "Syntax error : the sent body is not a valid JSON object", "0");
-        else return $data;
+        if ($data) return $data;
+        return null;
+    }
+
+    /**
+     * Returns the token
+     * @return string
+     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+     * @author Beaud Rémy <remy.bd@eduge.ch>
+     */
+    public static function getAuthorization(): string
+    {
+        $tokens = apache_request_headers();
+        return explode(" ", $tokens['Authorization'])[1];
     }
 
     /**
@@ -42,18 +60,16 @@ class ModelMain
      * decode the url in base64
      * @param string $token
      * @return array return the decoded jwt
-     * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      * @author Beaud Rémy <remy.bd@eduge.ch>
      */
     public static function decryptJwt(string $token): array
     {
-        $token = self::generateJwt("dsdsds", "dsdsdada");
-        $tokenParts = explode(".", $token->value['token']);
+        $tokenParts = explode(".", $token);
         return array(
             "headers" => json_decode(base64_decode($tokenParts[0])),
             "payload" => json_decode(base64_decode($tokenParts[1])),
-            "signature" => json_decode(base64_decode($tokenParts[2]))
+            "signature" => $tokenParts[2]
         );
     }
 

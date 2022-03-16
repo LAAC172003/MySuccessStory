@@ -12,8 +12,7 @@ class ControllerUsers
 
     public function test()
     {
-        $tokens = apache_request_headers();
-        return explode(" ", $tokens['Authorization'])[1];
+        var_dump(ModelMain::decryptJwt(ModelMain::getAuthorization()));
     }
 
     /**
