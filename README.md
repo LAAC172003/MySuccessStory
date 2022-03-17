@@ -31,6 +31,10 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 
 
 ### 5. API
+
+Les données a envoyer en json sont a mettre dans body->raw
+Le token est insérer dans Authorization
+
 ##### Création d'utilisateur
     Url : /api/users
     Méthode : POST
@@ -44,10 +48,6 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 }
 ```
 ##### Connexion 
-
-Les données a envoyer en json sont a mettre dans body->raw
-Le token est insérer dans Authorization
-
     Url : /api/login
     Méthode : GET
     Entrée de données : Informations de connection de l'utilisateur
