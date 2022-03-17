@@ -38,10 +38,8 @@ class ModelUsers
      */
     public static function isValidAccount($email, $password): bool
     {
-        $statement = (new DataBase())->prepare("SELECT password from " . self::TABLE_NAME . " where email = '$email'");
-        $statement->execute();
-        $result = $statement->fetchObject();
-        if (password_verify($password, $result->password)) return true;
+        $statement = (new DataBase())->select("SELECT password from " . self::TABLE_NAME . " where email = '$email'")[0];
+        if (password_verify($password, $statement->password)) return true;
         return false;
     }
 
@@ -90,8 +88,8 @@ class ModelUsers
      */
     public static function getEmailToken($token): ?string
     {
-        $parts = ModelMain::decryptJwt($token);
-        if (isset($parts['payload']->email)) return $parts['payload']->email;
+        $parts = ModelMain::decryptJwt($token)->value['payload'];
+        if (isset($parts->email)) return $parts->email;
         return "invalid token";
     }
 
@@ -104,8 +102,8 @@ class ModelUsers
      */
     public static function getPasswordToken($token): ?string
     {
-        $parts = ModelMain::decryptJwt($token);
-        if (isset($parts['payload']->password)) return $parts['payload']->password;
+        $parts = ModelMain::decryptJwt($token)->value['payload'];
+        if (isset($parts->password)) return $parts->password;
         return null;
     }
 
@@ -118,7 +116,7 @@ class ModelUsers
      */
     public static function readUser(): ApiValue
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (self::isValidTokenAccount($token)) {
             $email = self::getEmailToken($token);
             try {
@@ -146,7 +144,7 @@ class ModelUsers
      */
     public static function updateUser(): ApiValue
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (self::isValidTokenAccount($token)) {
             $email = self::getEmailToken($token);
             $data = ModelMain::getBody();
@@ -169,7 +167,7 @@ class ModelUsers
      */
     public static function deleteUser(): ApiValue
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (self::isValidTokenAccount($token)) {
             $email = self::getEmailToken($token);
             try {

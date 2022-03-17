@@ -16,7 +16,7 @@ class ModelNotes
      */
     public static function createNote()
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (ModelUsers::isValidTokenAccount($token)) {
             $data = ModelMain::getBody();
             $idUser = self::getIdUser($token);
@@ -24,7 +24,7 @@ class ModelNotes
 
             $subject = $data['idSubject'];
             $idSubject = (new DataBase())->select("SELECT idSubject from subjects where name = '$subject'");
-            $data['idSubject'] = $idSubject->idSubject;
+            $data['idSubject'] = $idSubject[0]->idSubject;
             if (!$idSubject) return "Le sujet n'est pas correct";
             if ($data['semester'] > 2) return "Il n'y a que 2 semestres";
             if ($data['note'] > 6) return "la note maximale est de 6";
@@ -42,9 +42,8 @@ class ModelNotes
     public static function getIdUser($token)
     {
         $email = ModelUsers::getEmailToken($token);
-
         $statementIdUser = (new DataBase())->select("SELECT idUser from users where email = '$email'");
-        return $statementIdUser->idUser;
+        return $statementIdUser[0]->idUser;
     }
 
     /**
@@ -54,7 +53,7 @@ class ModelNotes
     public
     static function readNote(): ApiValue|string
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (ModelUsers::isValidTokenAccount($token)) {
             $data = ModelMain::getBody();
             $idUser = self::getIdUser($token);
@@ -102,12 +101,19 @@ class ModelNotes
     public
     static function updateNote(): ApiValue|string
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (ModelUsers::isValidTokenAccount($token)) {
             $data = ModelMain::getBody();
             $idUser = self::getIdUser($token);
             $idNote = $data['idNote'];
             unset($data['idNote']);
+            $subject = "";
+            if (isset($data['idSubject'])) {
+                $subject = $data['idSubject'];
+                $idSubject = (new DataBase())->select("SELECT idSubject from subjects where name = '$subject'");
+                $data['idSubject'] = $idSubject[0]->idSubject;
+            }
+            var_dump($data);
             try {
                 (new DataBase())->update(self::TABLE_NAME, $data, "idUser = $idUser AND idNote = $idNote");
                 return new ApiValue(null, "The note has been edited");
@@ -126,7 +132,7 @@ class ModelNotes
     public
     static function deleteNote(): ApiValue|string
     {
-        $token = ModelMain::getAuthorization();
+        $token = ModelMain::getAuthorization()->value;
         if (ModelUsers::isValidTokenAccount($token)) {
             $data = ModelMain::getBody();
             $idNote = $data['idNote'];
