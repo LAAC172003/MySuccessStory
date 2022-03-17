@@ -8,7 +8,7 @@ use MySuccessStory\controllers\ControllerNotes;
 #endregion
 
 #region Connection
-SimpleRouter::post('/api/login', [ControllerUsers::class, 'login']); // Create a token
+SimpleRouter::get('/api/login', [ControllerUsers::class, 'login']); // Create a token
 SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
 SimpleRouter::post('/api/register', [ControllerUsers::class, 'register']); // create a new account
 #endregion
@@ -27,6 +27,6 @@ SimpleRouter::patch("/api/users", [ControllerUsers::class, "update"]); // Update
 SimpleRouter::delete("/api/users", [ControllerUsers::class, "delete"]); // Delete (idUser)
 #endregion
 
-#region Subjects
+#region CRUD Subjects
 SimpleRouter::get("/api/subjects", [ControllerSubject::class, "read"]); // Show all the subjects
 #endregion
