@@ -9,12 +9,6 @@ use MySuccessStory\models\ModelUsers;
 
 class ControllerUsers
 {
-
-    public function test()
-    {
-        var_dump(ModelMain::decryptJwt(ModelMain::getAuthorization()));
-    }
-
     /**
      * Create a user
      * @return bool|string
@@ -31,7 +25,7 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function create() : bool|string
+    public static function create(): bool|string
     {
         return json_encode(ModelUsers::createUser());
     }
@@ -41,7 +35,7 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function read() : bool|string
+    public static function read(): bool|string
     {
         return json_encode(ModelUsers::readUser());
     }
@@ -51,7 +45,7 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function update() : bool|string
+    public static function update(): bool|string
     {
         return json_encode(ModelUsers::updateUser());
     }
@@ -61,7 +55,7 @@ class ControllerUsers
      * @return bool|string
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function delete() : bool|string
+    public static function delete(): bool|string
     {
         return json_encode(ModelUsers::deleteUser());
     }

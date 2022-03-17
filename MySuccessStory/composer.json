@@ -1,27 +1,27 @@
 {
-    "name": "cfpt/mss",
-    "autoload": {
-        "psr-4": {
-            "MySuccessStory\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "LAAC172003",
-            "email": "lucasalexandre.almeidacosta@gmail.com"
-        },
-        {
-            "name": "Jordan Folly-Sodoga",
-            "email": "ekoue-jordan.fllsd@eduge.ch"
-        },
-        {
-        "name": "Zarkrey",
-        "email":"remy.bd@eduge.ch"
-        }
-    ],
-    "require": {
-        "pecee/simple-router": "4.3.7.2",
-        "ext-curl": "*",
-        "ext-pdo": "*"
+  "name": "cfpt/mss",
+  "autoload": {
+    "psr-4": {
+      "MySuccessStory\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "LAAC172003",
+      "email": "lucasalexandre.almeidacosta@gmail.com"
+    },
+    {
+      "name": "Jordan Folly-Sodoga",
+      "email": "ekoue-jordan.fllsd@eduge.ch"
+    },
+    {
+      "name": "Zarkrey",
+      "email": "remy.bd@eduge.ch"
+    }
+  ],
+  "require": {
+    "pecee/simple-router": "4.3.7.2",
+    "ext-curl": "*",
+    "ext-pdo": "*"
+  }
 }

@@ -4,10 +4,10 @@
 use Pecee\SimpleRouter\SimpleRouter;
 use MySuccessStory\Controllers\ControllerUsers;
 use MySuccessStory\controllers\ControllerNotes;
+
 #endregion
 
 #region Connection
-SimpleRouter::post('/api/test', [ControllerUsers::class, 'test']);
 SimpleRouter::post('/api/login', [ControllerUsers::class, 'login']); // Create a token
 SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
 SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // create a new account

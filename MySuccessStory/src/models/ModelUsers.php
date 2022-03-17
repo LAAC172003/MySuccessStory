@@ -40,7 +40,7 @@ class ModelUsers
         $statement = (new DataBase())->prepare("SELECT password from " . self::TABLE_NAME . " where email = '$email'");
         $statement->execute();
         $result = $statement->fetchObject();
-        if ($result && $password == $result->password) return true;
+        if (password_verify($password, $result->password)) return true;
         return false;
     }
 
@@ -66,18 +66,13 @@ class ModelUsers
 
     /**
      * Creates a user
-     * @return ApiValue
      * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
      */
-    public static function createUser(): ApiValue
+    public static function createUser()
     {
         $data = ModelMain::getBody();
-
-        if (!$data) {
-            return new ApiValue(null, "Syntax error : the sent body is not a valid JSON object", "0");
-        }
-
         try {
+            $data['password'] = password_hash($data['password'], CRYPT_SHA256);
             (new DataBase())->insert(self::TABLE_NAME, $data);
             return new ApiValue(null, "The user has been created");
         } catch (\Exception $e) {
@@ -127,10 +122,8 @@ class ModelUsers
             $email = self::getEmailToken($token);
             try {
                 $statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE email = '" . $email . "'");
-                var_dump($statement);
                 $statement->execute();
                 $statementResult = $statement->fetchObject();
-
                 if ($statementResult) {
                     return new ApiValue($statementResult);
                 } else {
@@ -156,11 +149,7 @@ class ModelUsers
         if (self::isValidTokenAccount($token)) {
             $email = self::getEmailToken($token);
             $data = ModelMain::getBody();
-
-            if (!$data) {
-                return new ApiValue(null, "Syntax error : the sent body is not a valid JSON object", "0");
-            }
-
+            if (isset($data['password'])) $data['password'] = password_hash($data['password'], CRYPT_SHA256);
             try {
                 (new DataBase())->update(self::TABLE_NAME, $data, "email = '$email'");
                 return new ApiValue(null, "The user has been edited");
