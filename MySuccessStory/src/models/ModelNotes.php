@@ -38,14 +38,12 @@ class ModelNotes
 		}
 		return "invalid token";
 	}
-
-	public static function getIdUser($token)
-	{
-		$email = ModelUsers::getEmailToken($token);
-
-		$statementIdUser = (new DataBase())->select("SELECT idUser from users where email = '$email'");
-		return $statementIdUser[0]->idUser;
-	}
+    public static function getIdUser($token)
+    {
+        $email = ModelUsers::getEmailToken($token);
+        $statementIdUser = (new DataBase())->select("SELECT idUser from users where email = '$email'");
+        return $statementIdUser[0]->idUser;
+    }
 
 	/**
 	 * Read a note

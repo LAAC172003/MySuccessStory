@@ -1,6 +1,7 @@
 <?php
 
 namespace MySuccessStory\models;
+
 use Exception;
 
 class ModelMain
