@@ -126,8 +126,11 @@ class ModelMain
 	 */
 	static function checkHttpCode(ApiValue $value) : ApiValue
 	{
+		header("Content-Type:application/json");
+
 		if ($value->errorCode == "")
 		{
+
 			if ($value->message == "")
 			{
 				http_response_code(200);
@@ -141,6 +144,11 @@ class ModelMain
 		{
 			if (str_starts_with($value->errorCode, "4") && strlen($value->errorCode) == 3)
 			{
+				if ($value->errorCode == "401")
+				{
+					header('WWW-Authenticate: Bearer Token');
+				}
+
 				http_response_code($value->errorCode);
 			}
 			else
