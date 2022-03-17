@@ -10,6 +10,7 @@ use Pecee\SimpleRouter\Exceptions\HttpException;
 use Pecee\SimpleRouter\Exceptions\NotFoundHttpException;
 use Pecee\SimpleRouter\SimpleRouter;
 use MySuccessStory\models\ApiValue;
+use MySuccessStory\models\ModelMain;
 
 // Registering the default namespace for controllers
 SimpleRouter::setDefaultNamespace("\MySuccessStory\Controller");
@@ -21,6 +22,5 @@ try
 }
 catch (TokenMismatchException | NotFoundHttpException | HttpException | Exception $e)
 {
-	http_response_code(404);
-	echo json_encode(new ApiValue(null, "The path " . $_SERVER['PHP_SELF'] . " doesn't exist", 0));
+	echo json_encode(ModelMain::checkHttpCode(new ApiValue(null, "The path " . $_SERVER['PHP_SELF'] . " doesn't exist", $e->getCode())));
 }

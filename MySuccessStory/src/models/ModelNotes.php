@@ -4,6 +4,7 @@ namespace MySuccessStory\models;
 
 use MySuccessStory\db\DataBase;
 use PDO;
+use Exception;
 
 class ModelNotes
 {

@@ -3,7 +3,8 @@
 namespace MySuccessStory\models;
 
 use MySuccessStory\db\DataBase;
-use MySuccessStory\exception\ApiException;
+use PDO;
+use Exception;
 
 class ModelUsers
 {

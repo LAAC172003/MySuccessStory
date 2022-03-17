@@ -2,8 +2,8 @@
 
 namespace MySuccessStory\controllers;
 
-
 use MySuccessStory\models\ModelNotes;
+use MySuccessStory\models\ModelMain;
 
 class ControllerNotes
 {
@@ -14,7 +14,7 @@ class ControllerNotes
      */
     public static function create()
     {
-        return json_encode(ModelNotes::createNote());
+        return ModelMain::printJsonValue(ModelNotes::createNote());
     }
 
     /**
@@ -24,7 +24,7 @@ class ControllerNotes
      */
     public static function read(): bool|string
     {
-        return json_encode(ModelNotes::readNote());
+        return ModelMain::printJsonValue(ModelNotes::readNote());
     }
 
     /**
@@ -34,7 +34,7 @@ class ControllerNotes
      */
     public static function update(): bool|string
     {
-        return json_encode(ModelNotes::updateNote());
+        return ModelMain::printJsonValue(ModelNotes::updateNote());
     }
 
     /**
@@ -44,6 +44,6 @@ class ControllerNotes
      */
     public static function delete(): bool|string
     {
-        return json_encode(ModelNotes::deleteNote());
+        return ModelMain::printJsonValue(ModelNotes::deleteNote());
     }
 }

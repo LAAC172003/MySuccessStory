@@ -10,13 +10,13 @@ use MySuccessStory\controllers\ControllerNotes;
 #region Connection
 SimpleRouter::post('/api/login', [ControllerUsers::class, 'login']); // Create a token
 SimpleRouter::get('/api/profile', [ControllerUsers::class, 'profile']); // shows the profile of a user
-SimpleRouter::put('/api/register', [ControllerUsers::class, 'register']); // create a new account
+SimpleRouter::post('/api/register', [ControllerUsers::class, 'register']); // create a new account
 #endregion
 
 #region CRUD Notes
-SimpleRouter::get("/api/notes", [ControllerNotes::class, "read"]); // Read a single note (idNote) Read every note if no parameter is given
-SimpleRouter::post("/api/notes", [ControllerNotes::class, "create"]); // Add a new note to the database (note, semester, idUser, idSubject)
-SimpleRouter::patch("/api/notes", [ControllerNotes::class, "update"]); // Change the value of a note (idNote, note, semester, idUser)
+SimpleRouter::get("/api/notes", [ControllerNotes::class, "read"]); // Read a single note (idNote, Sort?, Order?, Period?, Year?, Semester?) Read every note if no parameter is given
+SimpleRouter::post("/api/notes", [ControllerNotes::class, "create"]); // Add a new note to the database (note, semester, idUser, idSubject, idYear)
+SimpleRouter::patch("/api/notes", [ControllerNotes::class, "update"]); // Change the value of a note (idNote, note, semester, idUser, idYear)
 SimpleRouter::delete("/api/notes", [ControllerNotes::class, "delete"]); // Delete a note (idNote)
 #endregion
 
@@ -28,5 +28,5 @@ SimpleRouter::delete("/api/users", [ControllerUsers::class, "delete"]); // Delet
 #endregion
 
 #region Subjects
-SimpleRouter::get("/api/subjects", [ControllerUsers::class, "token"]); // Show all the subjects
+SimpleRouter::get("/api/subjects", [ControllerSubject::class, "read"]); // Show all the subjects
 #endregion
