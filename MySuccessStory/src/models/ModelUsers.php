@@ -127,7 +127,7 @@ class ModelUsers
 			try {
 				$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE email = '" . $email . "'");
 				$statement->execute();
-				$statementResult = $statement->fetchAll(PDO::FETCH_OBJECT);
+				$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
 				if ($statementResult) {
 					return new ApiValue($statementResult);
 				} else {
