@@ -4,14 +4,14 @@ namespace MySuccessStory\models;
 
 /**
  * Class describing the object sent by the API
- * @author Jordan Folly
+ * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
  */
 class ApiValue
 {
     /**
      * Result of the request encoded in json
      *
-     * @var string
+     * @var mixed
      */
     public mixed $value;
 
@@ -30,7 +30,7 @@ class ApiValue
     public string $errorCode;
 
     /**
-     * @param mixed|null $value result of the request encoded in json
+     * @param mixed $value result of the request encoded in json
      * @param string $message information or error message
      * @param string $errorCode the error code thrown by the script if there is one
      *
