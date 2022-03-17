@@ -43,7 +43,11 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
     "lastName": "example"
 }
 ```
-##### Connexion
+##### Connexion 
+
+Les données a envoyer en json sont a mettre dans body->raw
+Le token est insérer dans Authorization
+
     Url : /api/login
     Méthode : GET
     Entrée de données : Informations de connection de l'utilisateur
@@ -52,7 +56,6 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 {
     "email":"example@email.com",
     "password":"example"
-
 }
 ```
 ##### Obtention données utilisateur
@@ -67,7 +70,6 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 ```json
 {
     "firstName":"newName"
-
 }
 ```
 ##### Suppression utilisateur
