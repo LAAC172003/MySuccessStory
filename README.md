@@ -29,6 +29,90 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 
 ![Schéma Base de données](./doc/image/database.png)
 
+
+### 5. API
+##### Création d'utilisateur
+    Url : /api/users
+    Méthode : POST
+    Entrée de données : Informations de l'utilisateur
+```json
+{
+    "email":"example@email.com",
+    "password":"example",
+    "firstName": "example",
+    "lastName": "example"
+}
+```
+##### Connexion
+    Url : /api/login
+    Méthode : GET
+    Entrée de données : Informations de connection de l'utilisateur
+    Données recues : Le token de l'utilisateur
+```json
+{
+    "email":"example@email.com",
+    "password":"example"
+
+}
+```
+##### Obtention données utilisateur
+    Url : /api/users
+    Méthode : GET
+    Entrée de données : Token utilisateur
+    Données recues : Informations de l'utilisateur
+##### Modification utilisateur
+    Url : /api/users
+    Méthode : PATCH
+    Entrée de données : Token utilisateur & Données de l'utilisateur à modifier
+```json
+{
+    "firstName":"newName"
+
+}
+```
+##### Suppression utilisateur
+    Url : /api/users
+    Méthode : DELETE
+    Entrée de données : Token utilisateur
+
+##### Obtention notes
+    Url : /api/notes
+    Méthode : GET
+    Entrée de données : Token utilisateur
+    Données recues : Notes de l'utilisateur
+##### Ajout note
+    Url : /api/notes
+    Méthode : POST
+    Entrée de données : Token utilisateur & Note à ajouter
+    Données recues : Notes de l'utilisateur
+```json
+{
+    "note":6,
+    "semester":2,
+    "idSubject":"physique",
+    "idYear":3
+}
+```
+##### Modification note
+    Url : /api/notes
+    Méthode : PATCH
+    Entrée de données : Token utilisateur & Données de la note à modifier
+```json
+{
+    "idNote": 2,
+    "fields": "newValues"
+}
+```
+##### Suppression note
+    Url : /api/notes
+    Méthode : DELETE
+    Entrée de données : Token utilisateur & id de la note a supprimer
+```json
+{
+    "idNote":2
+}
+```
+
 ### 5. Liens
 - [Site Web](https://successstory.cfpti.ch)
 - [Mandat](https://docs.google.com/document/d/16Rj2KkcCFHPPHjjAMmvoyeppWsdiO9JN/edit?usp=sharing&ouid=106752474556925767372&rtpof=true&sd=true)
