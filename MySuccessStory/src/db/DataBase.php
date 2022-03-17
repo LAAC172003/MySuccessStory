@@ -50,6 +50,7 @@ class DataBase
 	public function update($tableName, $data, $where = '')
 	{
 		$whereSql = "";
+
 		if (!empty($where))
 		{
 			if (!str_starts_with(strtoupper(trim($where)), 'WHERE'))

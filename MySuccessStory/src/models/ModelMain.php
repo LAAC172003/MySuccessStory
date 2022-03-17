@@ -43,14 +43,14 @@ class ModelMain
 
 	/**
 	 * decode the url in base64
-	 * @param string|null $token
+	 * @param string|null iss$token
 	 * @return ApiValue the decoded jwt if there is one
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 */
 	public static function decryptJwt(?string $token) : ApiValue
 	{
-		if ($token == null)
+		if (!isset($token))
 		{
 			return ModelMain::checkHttpCode(new ApiValue(null, "Incorrect token", "401"));
 		}
@@ -78,7 +78,7 @@ class ModelMain
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 */
-	public static function generateJwt(string $email, string $password): ApiValue
+	public static function generateJwt(string $email, string $password) : ApiValue
 	{
 		$headers = array("alg" => "HS256", "typ" => "JWT");
 		$payload = array("email" => $email, "password" => $password, "expiration" => time() + self::EXPIRATION_TIME);
@@ -102,7 +102,7 @@ class ModelMain
 	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function urlEncode(string $str): string
+	public static function urlEncode(string $str) : string
 	{
 		return rtrim(strtr(base64_encode($str), "+/", "-_"), "=");
 	}
