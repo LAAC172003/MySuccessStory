@@ -134,8 +134,14 @@ class ModelNotes
 
 			try
 			{
-				(new DataBase())->update(self::TABLE_NAME, $data, "idUser = $idUser AND idNote = $idNote");
-				return new ApiValue(null, "The note has been edited");
+				$pdo = new DataBase();
+
+				$pdo->update(self::TABLE_NAME, $data, "idUser = $idUser AND idNote = $idNote");
+
+				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idNote = $idNote");
+				$statement->execute();
+
+				return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC), "The note has been edited");
 			}
 			catch (Exception $e)
 			{
@@ -143,7 +149,7 @@ class ModelNotes
 			}
 		}
 
-		return "invalid token";
+		return new ApiValue(null, "invalid token", "0");
 	}
 
 	/**
