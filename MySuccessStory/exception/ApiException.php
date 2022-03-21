@@ -3,8 +3,9 @@
 namespace MySuccessStory\exception;
 
 use MySuccessStory\models\ApiValue;
+use Exception;
 
-class ApiException extends \Exception
+class ApiException extends Exception
 {
     protected $message = "";
     protected $code = 0;

@@ -88,7 +88,8 @@ class ModelMain
 		$signature = hash_hmac("MD5", "$encodedHeaders.$encodedPayload", self::SALT, true);
 		$encodedSignature = self::urlEncode($signature);
 		$token = "$encodedHeaders.$encodedPayload.$encodedSignature";
-		return new ApiValue(
+		return new ApiValue
+		(
 			[
 				"token" => $token,
 				"expiration" => self::EXPIRATION_TIME
@@ -131,15 +132,7 @@ class ModelMain
 
 		if ($value->errorCode == "")
 		{
-
-			if ($value->message == "")
-			{
-				http_response_code(200);
-			}
-			else
-			{
-				http_response_code(204);
-			}
+			http_response_code(200);
 		}
 		else
 		{

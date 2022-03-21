@@ -4,6 +4,7 @@ namespace MySuccessStory\models;
 
 use MySuccessStory\db\DataBase;
 use PDO;
+use Exception;
 
 class ModelNotes
 {
@@ -16,6 +17,7 @@ class ModelNotes
 	public static function createNote()
 	{
 		$token = ModelMain::getAuthorization();
+
 		if (ModelUsers::isValidTokenAccount($token))
 		{
 			$data = ModelMain::getBody();
@@ -25,17 +27,22 @@ class ModelNotes
 			$subject = $data['idSubject'];
 			$idSubject = (new DataBase())->select("SELECT idSubject FROM subjects WHERE name = '$subject'");
 			$data['idSubject'] = $idSubject[0]->idSubject;
-			if (!$idSubject) return "Le sujet n'est pas correct";
-			if ($data['semester'] > 2) return "Il n'y a que 2 semestres";
-			if ($data['note'] > 6) return "la note maximale est de 6";
 
-			try {
+			if (!$idSubject) return "The subject is incorrect";
+			if ($data['semester'] > 2) return "The semester can't be over 2";
+			if ($data['note'] > 6) return "The note can't be over 6";
+
+			try
+			{
 				(new DataBase())->insert(self::TABLE_NAME, $data);
 				return new ApiValue($data, "The note has been added");
-			} catch (\Exception $e) {
+			}
+			catch (Exception $e)
+			{
 				return new ApiValue(null, $e->getMessage(), $e->getCode());
 			}
 		}
+
 		return "invalid token";
 	}
     public static function getIdUser($token)
@@ -52,10 +59,12 @@ class ModelNotes
 	public static function readNote() : ApiValue
 	{
 		$token = ModelMain::getAuthorization();
+
 		if (ModelUsers::isValidTokenAccount($token))
 		{
 			$data = ModelMain::getBody();
 			$idUser = self::getIdUser($token);
+
 			try
 			{
 				$orderBy = "ASC";
@@ -87,15 +96,17 @@ class ModelNotes
 					$statement->execute();
 					$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
 				}
+
 				if ($statementResult)
 				{
 					return new ApiValue($statementResult);
-				} else
+				}
+				else
 				{
 					return new ApiValue();
 				}
 			}
-			catch (\Exception $exists)
+			catch (Exception $exists)
 			{
 				return new ApiValue(null, $exists->getMessage(), $exists->getCode());
 			}
@@ -109,21 +120,28 @@ class ModelNotes
 	 * @return ApiValue|string
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function updateNote(): ApiValue|string
+	public static function updateNote() : ApiValue|string
 	{
 		$token = ModelMain::getAuthorization();
-		if (ModelUsers::isValidTokenAccount($token)) {
+
+		if (ModelUsers::isValidTokenAccount($token))
+		{
 			$data = ModelMain::getBody();
 			$idUser = self::getIdUser($token);
 			$idNote = $data['idNote'];
 			unset($data['idNote']);
-			try {
+
+			try
+			{
 				(new DataBase())->update(self::TABLE_NAME, $data, "idUser = $idUser AND idNote = $idNote");
 				return new ApiValue(null, "The note has been edited");
-			} catch (\Exception $e) {
+			}
+			catch (Exception $e)
+			{
 				return new ApiValue(null, $e->getMessage(), $e->getCode());
 			}
 		}
+
 		return "invalid token";
 	}
 
@@ -132,22 +150,29 @@ class ModelNotes
 	 * @return ApiValue|string
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
-	public static function deleteNote(): ApiValue|string
+	public static function deleteNote() : ApiValue|string
 	{
 		$token = ModelMain::getAuthorization();
-		if (ModelUsers::isValidTokenAccount($token)) {
+
+		if (ModelUsers::isValidTokenAccount($token))
+		{
 			$data = ModelMain::getBody();
 			$idNote = $data['idNote'];
 			unset($data['idNote']);
 
 			$idUser = self::getIdUser($token);
-			try {
+
+			try
+			{
 				(new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser AND idNote = $idNote")->execute();
 				return new ApiValue(null, "The note has been deleted");
-			} catch (\Exception $e) {
+			}
+			catch (Exception $e)
+			{
 				return new ApiValue(null, $e->getMessage(), $e->getCode());
 			}
 		}
+
 		return "invalid token";
 	}
 }

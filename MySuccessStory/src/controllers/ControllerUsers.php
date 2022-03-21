@@ -2,61 +2,59 @@
 
 namespace MySuccessStory\controllers;
 
-use MySuccessStory\db\DataBase;
-use MySuccessStory\models\ApiValue;
 use MySuccessStory\models\ModelMain;
 use MySuccessStory\models\ModelUsers;
 
 class ControllerUsers
 {
-    /**
-     * Create a user
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     * @author Beaud Rémy <remy.bd@eduge.ch>
-     */
-    public function login() : bool|string
-    {
-        return ModelMain::printJsonValue(ModelUsers::getToken());
-    }
+	/**
+	 * Create a user
+	 * @return bool|string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 */
+	public function login() : bool|string
+	{
+		return ModelMain::printJsonValue(ModelUsers::getToken());
+	}
 
-    /**
-     * Create a user
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function create(): bool|string
-    {
-        return ModelMain::printJsonValue(ModelUsers::createUser());
-    }
+	/**
+	 * Create a user
+	 * @return bool|string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function create() : bool|string
+	{
+		return ModelMain::printJsonValue(ModelUsers::createUser());
+	}
 
-    /**
-     * Read a user
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function read(): bool|string
-    {
-        return ModelMain::printJsonValue(ModelUsers::readUser());
-    }
+	// /**
+	//  * Read a user
+	//  * @return bool|string
+	//  * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	//  */
+	// public static function read() : bool|string
+	// {
+	// 	return ModelMain::printJsonValue(ModelUsers::readUser());
+	// }
 
-    /**
-     * Update a user
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function update(): bool|string
-    {
-        return ModelMain::printJsonValue(ModelUsers::updateUser());
-    }
+	/**
+	 * Update a user
+	 * @return bool|string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function update() : bool|string
+	{
+		return ModelMain::printJsonValue(ModelUsers::updateUser());
+	}
 
-    /**
-     * Delete a user
-     * @return bool|string
-     * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-     */
-    public static function delete(): bool|string
-    {
-        return ModelMain::printJsonValue(ModelUsers::deleteUser());
-    }
+	/**
+	 * Delete a user
+	 * @return bool|string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function delete() : bool|string
+	{
+		return ModelMain::printJsonValue(ModelUsers::deleteUser());
+	}
 }

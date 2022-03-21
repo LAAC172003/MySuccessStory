@@ -4,6 +4,7 @@ namespace MySuccessStory\db;
 
 use PDO;
 use PDOStatement;
+use Throwable;
 
 /**
  * Class used to connect to the db
@@ -44,7 +45,14 @@ class DataBase
 	{
 		$fields = array_keys($data);
 		$query = "INSERT INTO `" . $tableName . "` (`" . implode('`,`', $fields) . "`) VALUES('" . implode("','", $data) . "')";
-		return self::prepare($query)->execute();
+		try
+		{
+			return self::prepare($query)->execute();
+		}
+		catch (Throwable $th)
+		{
+			return false;
+		}
 	}
 
 	public function update($tableName, $data, $where = '')
