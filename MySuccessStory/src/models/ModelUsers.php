@@ -44,14 +44,7 @@ class ModelUsers
 		$statement = (new DataBase())->prepare("SELECT password FROM " . self::TABLE_NAME . " WHERE email = '$email'");
 		$statement->execute();
 		$result = $statement->fetchAll(PDO::FETCH_OBJ);
-
-		if (count($result) == 0)
-		{
-			return false;
-		}
-
-		if (password_verify($password, $result[0]->password)) return true;
-		return false;
+		return (isset($result[0]->password) && password_verify($password, $result[0]->password));
 	}
 
 

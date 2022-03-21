@@ -43,8 +43,7 @@ class ModelNotes
 				return new ApiValue(null, $e->getMessage(), $e->getCode());
 			}
 		}
-
-		return "invalid token";
+		return new ApiValue(null, "invalid token", "0");
 	}
     public static function getIdUser($token)
     {
