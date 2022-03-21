@@ -8,9 +8,6 @@ use MySuccessStory\controllers\ControllerSubject;
 
 #endregion
 
-#region Connection
-#endregion
-
 #region CRUD Notes
 SimpleRouter::get("/api/notes", [ControllerNotes::class, "read"]); // Read
 SimpleRouter::post("/api/notes", [ControllerNotes::class, "create"]); // Create

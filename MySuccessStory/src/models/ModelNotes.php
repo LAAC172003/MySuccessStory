@@ -35,6 +35,7 @@ class ModelNotes
 			try
 			{
 				(new DataBase())->insert(self::TABLE_NAME, $data);
+
 				return new ApiValue($data, "The note has been added");
 			}
 			catch (Exception $e)
