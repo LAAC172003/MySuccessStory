@@ -22,7 +22,7 @@ class ModelSubjects
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelUsers::isValidTokenAccount($token))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			try
 			{
@@ -46,7 +46,7 @@ class ModelSubjects
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token", "403");
+			return new ApiValue(null, "invalid token", "401");
 		}
 	}
 }

@@ -13,7 +13,7 @@ class ModelUsers
 
 	/**
 	 * Return a token
-	 * @param $token
+	 * @param string $token
 	 * @return bool
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
@@ -106,71 +106,65 @@ class ModelUsers
 
 	/**
 	 * Returns the email
-	 * @param $token
+	 * @param string $token
 	 * @return string|null
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
 	public static function getEmailToken($token) : ?string
 	{
-		$parts = ModelMain::decryptJwt($token->value);
+		$parts = ModelMain::decryptJwt($token);
 		if (isset($parts->value['payload']->email)) return $parts->value['payload']->email;
-		return "invalid token";
+		return null;
 	}
 
 	/**
 	 * Returns the password
-	 * @param $token
+	 * @param string $token
 	 * @return string|null
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
 	public static function getPasswordToken($token) : ?string
 	{
-		$parts = ModelMain::decryptJwt($token->value);
+		$parts = ModelMain::decryptJwt($token);
 		if (isset($parts->value['payload']->password)) return $parts->value['payload']->password;
 		return null;
 	}
 
-	// /**
-	//  * Shows a user
-	//  * @return ApiValue
-	//  * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-	//  * @author Beaud Rémy <remy.bd@eduge.ch>
-	//  *
-	//  */
-	// public static function readUser() : ApiValue
-	// {
-	// 	$token = ModelMain::getAuthorization();
+	/**
+	 * Shows a user
+	 * @return ApiValue
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 *
+	 */
+	public static function readUser() : ApiValue
+	{
+		$token = ModelMain::getAuthorization();
 
-	// 	if (self::isValidTokenAccount($token))
-	// 	{
-	// 		$email = self::getEmailToken($token);
-	// 		try
-	// 		{
-	// 			$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE email = '" . $email . "'");
-	// 			$statement->execute();
-	// 			$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
+		if (self::isValidTokenAccount($token->value))
+		{
+			$email = self::getEmailToken($token->value);
 
-	// 			if ($statementResult)
-	// 			{
-	// 				return new ApiValue($statementResult);
-	// 			}
-	// 			else
-	// 			{
-	// 				return new ApiValue();
-	// 			}
-	// 		}
-	// 		catch (Exception $e)
-	// 		{
-	// 			return new ApiValue(null, $e->getMessage(), $e->getCode());
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		return new ApiValue(null, "invalid token");
-	// 	}
-	// }
+			try
+			{
+				$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE email = '" . $email . "'");
+				$statement->execute();
+				$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
+
+				return new ApiValue($statementResult);
+			}
+			catch (Exception $e)
+			{
+				return new ApiValue(null, $e->getMessage(), $e->getCode());
+			}
+		}
+		else
+		{
+			return new ApiValue(null, "invalid token", "401");
+		}
+	}
 
 	/**
 	 * Update a user
@@ -182,10 +176,10 @@ class ModelUsers
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (self::isValidTokenAccount($token))
+		if (self::isValidTokenAccount($token->value))
 		{
 			$pdo = new DataBase();
-			$email = self::getEmailToken($token);
+			$email = self::getEmailToken($token->value);
 
 			$data = ModelMain::getBody();
 
@@ -233,7 +227,7 @@ class ModelUsers
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token");
+			return new ApiValue(null, "invalid token", "401");
 		}
 	}
 
@@ -246,9 +240,9 @@ class ModelUsers
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (self::isValidTokenAccount($token))
+		if (self::isValidTokenAccount($token->value))
 		{
-			$email = self::getEmailToken($token);
+			$email = self::getEmailToken($token->value);
 
 			try
 			{
@@ -262,7 +256,7 @@ class ModelUsers
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token");
+			return new ApiValue(null, "invalid token", "401");
 		}
 	}
 }

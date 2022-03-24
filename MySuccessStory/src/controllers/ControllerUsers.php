@@ -28,15 +28,15 @@ class ControllerUsers
 		return ModelMain::printJsonValue(ModelUsers::createUser());
 	}
 
-	// /**
-	//  * Read a user
-	//  * @return bool|string
-	//  * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-	//  */
-	// public static function read() : bool|string
-	// {
-	// 	return ModelMain::printJsonValue(ModelUsers::readUser());
-	// }
+	/**
+	 * Read a user
+	 * @return bool|string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function read() : bool|string
+	{
+		return ModelMain::printJsonValue(ModelUsers::readUser());
+	}
 
 	/**
 	 * Update a user

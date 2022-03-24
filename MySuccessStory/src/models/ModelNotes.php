@@ -18,10 +18,10 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelUsers::isValidTokenAccount($token))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = self::getIdUser($token);
+			$idUser = self::getIdUser($token->value);
 			$data['idUser'] = $idUser;
 
 			$subject = $data['idSubject'];
@@ -43,12 +43,18 @@ class ModelNotes
 				return new ApiValue(null, $e->getMessage(), $e->getCode());
 			}
 		}
-		return new ApiValue(null, "invalid token", "0");
+		return new ApiValue(null, "invalid token", "401");
 	}
-    public static function getIdUser($token)
+
+	/**
+	 * Get the id of the user from the token
+	 * @param string $token
+	 * @return int
+	 */
+    public static function getIdUser(string $token) : int
     {
         $email = ModelUsers::getEmailToken($token);
-        $statementIdUser = (new DataBase())->select("SELECT idUser from users where email = '$email'");
+        $statementIdUser = (new DataBase())->select("SELECT idUser FROM users WHERE email = '$email'");
         return $statementIdUser[0]->idUser;
     }
 
@@ -60,10 +66,10 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelUsers::isValidTokenAccount($token))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = self::getIdUser($token);
+			$idUser = self::getIdUser($token->value);
 
 			try
 			{
@@ -124,10 +130,10 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelUsers::isValidTokenAccount($token))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = self::getIdUser($token);
+			$idUser = self::getIdUser($token->value);
 			$idNote = $data['idNote'];
 			unset($data['idNote']);
 
@@ -148,7 +154,7 @@ class ModelNotes
 			}
 		}
 
-		return new ApiValue(null, "invalid token", "0");
+		return new ApiValue(null, "invalid token", "401");
 	}
 
 	/**
@@ -160,13 +166,13 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelUsers::isValidTokenAccount($token))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idNote = $data['idNote'];
-			unset($data['idNote']);
+			$idNote = $data["idNote"];
+			unset($data["idNote"]);
 
-			$idUser = self::getIdUser($token);
+			$idUser = self::getIdUser($token->value);
 
 			try
 			{
@@ -179,6 +185,6 @@ class ModelNotes
 			}
 		}
 
-		return "invalid token";
+		return new ApiValue(null, "invalid token", "401");
 	}
 }

@@ -17,7 +17,8 @@ SimpleRouter::delete("/api/notes", [ControllerNotes::class, "delete"]); // Delet
 
 #region CRUD Users
 SimpleRouter::get('/api/login', [ControllerUsers::class, 'login']); // Create a token
-// SimpleRouter::get("/api/users", [ControllerUsers::class, "read"]); // Read
+
+SimpleRouter::get("/api/users", [ControllerUsers::class, "read"]); // Read
 SimpleRouter::post("/api/users", [ControllerUsers::class, "create"]); // Create
 SimpleRouter::patch("/api/users", [ControllerUsers::class, "update"]); // Update
 SimpleRouter::delete("/api/users", [ControllerUsers::class, "delete"]); // Delete

@@ -3,6 +3,7 @@
 namespace MySuccessStory\models;
 
 use Exception;
+use Throwable;
 
 class ModelMain
 {
@@ -23,10 +24,10 @@ class ModelMain
 
 		if (!isset($tokens['Authorization']))
 		{
-			return ModelMain::checkHttpCode(new ApiValue(null, "Authentification error : You need a bearer token to send a request", "401"));
+			return new ApiValue(null, "Authentification error : You need a bearer token to send a request", "401");
 		}
 
-		return ModelMain::checkHttpCode(new ApiValue(explode(" ", $tokens['Authorization'])[1]));
+		return new ApiValue(explode(" ", $tokens['Authorization'])[1]);
 	}
 
 	/**
@@ -53,14 +54,14 @@ class ModelMain
 	{
 		if (!isset($token))
 		{
-			return ModelMain::checkHttpCode(new ApiValue(null, "Incorrect token", "401"));
+			return new ApiValue(null, "Incorrect token", "401");
 		}
 
 		$tokenParts = explode(".", $token);
 
-		return ModelMain::checkHttpCode
-			(
-				new ApiValue
+		if (isset($tokenParts[0]) && isset($tokenParts[1]) && isset($tokenParts[2]))
+		{
+			return new ApiValue
 				(
 					array
 					(
@@ -68,8 +69,10 @@ class ModelMain
 						"payload" => json_decode(base64_decode($tokenParts[1])),
 						"signature" => $tokenParts[2]
 					)
-				)
-			);
+				);
+		}
+
+		return new ApiValue(null, "invalid token", "401");
 	}
 
 	/**
@@ -88,13 +91,12 @@ class ModelMain
 		$signature = hash_hmac("MD5", "$encodedHeaders.$encodedPayload", self::SALT, true);
 		$encodedSignature = self::urlEncode($signature);
 		$token = "$encodedHeaders.$encodedPayload.$encodedSignature";
-		return new ApiValue
-		(
-			[
-				"token" => $token,
-				"expiration" => self::EXPIRATION_TIME
-			]
-		);
+		return new ApiValue(
+				[
+					"token" => $token,
+					"expiration" => self::EXPIRATION_TIME
+				]
+			);
 	}
 
 	/**
