@@ -36,82 +36,155 @@ Les données a envoyer en json sont a mettre dans body->raw
 Le token est insérer dans Authorization
 
 ##### Création d'utilisateur
-    Url : /api/users
-    Méthode : POST
-    Entrée de données : Informations de l'utilisateur
+Url : /api/users
+Méthode : POST
+
+Paramètres : Informations de l'utilisateur
 ```json
 {
-    "email":"example@email.com",
-    "password":"example",
-    "firstName": "example",
-    "lastName": "example"
+	"email": "example@example.com",
+	"password": "this is a password",
+	"firstName": "myFirstName",
+	"lastName": "myLastName"
 }
 ```
-##### Connexion 
-    Url : /api/login
-    Méthode : GET
-    Entrée de données : Informations de connection de l'utilisateur
-    Données recues : Le token de l'utilisateur
+
+Valeurs de retour : Informations de l'utilisateur
 ```json
 {
-    "email":"example@email.com",
-    "password":"example"
+	"value": [
+		{
+			"idUser": 1,
+			"email": "example@example.com",
+			"firstName": "myFirstName",
+			"lastName": "myLastName",
+			"isTeacher": 0
+		}
+	],
+	"message": "",
+	"errorCode": ""
 }
 ```
-##### Obtention données utilisateur
-    Url : /api/users
-    Méthode : GET
-    Entrée de données : Token utilisateur
-    Données recues : Informations de l'utilisateur
+
+##### Connexion
+Url : /api/login
+Méthode : GET
+
+Paramètres : Informations de connexion
+```json
+{
+	"email": "example@example.com",
+	"password": "this is a password"
+}
+```
+
+Valeurs de retour : Token de l'utilisateur
+```json
+{
+	"value": {
+		"token": "someRandomLetters",
+		"expiration": 3600
+	},
+	"message": "",
+	"errorCode": ""
+}
+```
+
+##### Obtention des données d'utilisateur
+Url : /api/users
+Méthode : GET
+
+Paramètres : Authentification par token
+
+Valeurs de retour : Informations de l'utilisateur
+```json
+{
+	"value": [
+		{
+			"idUser": 1,
+			"email": "example@example.com",
+			"firstName": "MyFirstName",
+			"lastName": "MyLastName",
+			"isTeacher": 0
+		}
+	],
+	"message": "",
+	"errorCode": ""
+}
+```
+
 ##### Modification utilisateur
-    Url : /api/users
-    Méthode : PATCH
-    Entrée de données : Token utilisateur & Données de l'utilisateur à modifier
+Url : /api/users
+Méthode : PATCH
+
+Remarques : Seules les données renseignées seront modifiées dans la base de données. L'id, l'email et la profession ne peuvent pas être modifiés.
+
+Paramètres : Authentification par token et nouvelles données de l'utilisateur
 ```json
 {
-    "firstName":"newName"
+	"password": "this is my new password",
+	"firstName": "MyNewFirstName",
+	"lastName": "MyNewLastName"
 }
 ```
+
+Valeurs de retour : Informations de l'utilisateur
+```json
+{
+	"value": [
+		{
+			"idUser": 1,
+			"email": "example@example.com",
+			"firstName": "MyNewFirstName",
+			"lastName": "MyNewLastName",
+			"isTeacher": 0
+		}
+	],
+	"message": "The user has been edited",
+	"errorCode": ""
+}
+```
+
 ##### Suppression utilisateur
-    Url : /api/users
-    Méthode : DELETE
-    Entrée de données : Token utilisateur
+	Url : /api/users
+	Méthode : DELETE
+	Entrée de données : Token utilisateur
 
 ##### Obtention notes
-    Url : /api/notes
-    Méthode : GET
-    Entrée de données : Token utilisateur
-    Données recues : Notes de l'utilisateur
+	Url : /api/notes
+	Méthode : GET
+	Entrée de données : Token utilisateur
+	Données recues : Notes de l'utilisateur
 ##### Ajout note
-    Url : /api/notes
-    Méthode : POST
-    Entrée de données : Token utilisateur & Note à ajouter
-    Données recues : Notes de l'utilisateur
+	Url : /api/notes
+	Méthode : POST
+	Entrée de données : Token utilisateur & Note à ajouter
+	Données recues : Notes de l'utilisateur
 ```json
 {
-    "note":6,
-    "semester":2,
-    "idSubject":"physique",
-    "idYear":3
+	"note":6,
+	"semester":2,
+	"idSubject":"physique",
+	"idYear":3
 }
 ```
 ##### Modification note
-    Url : /api/notes
-    Méthode : PATCH
-    Entrée de données : Token utilisateur & Données de la note à modifier
+	Url : /api/notes
+	Méthode : PATCH
+	Entrée de données : Token utilisateur & Données de la note à modifier
 ```json
 {
-    "idNote": 2,
-    "fields": "newValues"
+	"idNote": 2,
+	"fields": "newValues"
 }
 ```
 ##### Suppression note
-    Url : /api/notes
-    Méthode : DELETE
-    Entrée de données : Token utilisateur & id de la note a supprimer
+	Url : /api/notes
+	Méthode : DELETE
+	Entrée de données : Token utilisateur & id de la note a supprimer
 ```json
 {
-    "idNote":2
+	"idNote":2
 }
 ```
 

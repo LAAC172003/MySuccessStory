@@ -9,10 +9,10 @@ class ControllerSubject
 {
 	/**
 	 * Read all subjects
-	 * @return bool|string
+	 * @return string
 	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
 	 */
-	public static function read()
+	public static function read() : string
 	{
 		return ModelMain::printJsonValue(ModelSubjects::readSubjects());
 	}
