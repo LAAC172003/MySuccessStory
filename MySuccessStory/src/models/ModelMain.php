@@ -2,8 +2,9 @@
 
 namespace MySuccessStory\models;
 
+use MySuccessStory\db\DataBase;
 use Exception;
-use Throwable;
+use PDO;
 
 class ModelMain
 {
@@ -38,66 +39,98 @@ class ModelMain
 	 */
 	public static function getBody() : object|array|null
 	{
-		$data = json_decode(file_get_contents('php://input'), true);
-
-		return $data;
-	}
-
-	/**
-	 * decode the url in base64
-	 * @param string|null iss$token
-	 * @return ApiValue the decoded jwt if there is one
-	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
-	 * @author Beaud Rémy <remy.bd@eduge.ch>
-	 */
-	public static function decryptJwt(?string $token) : ApiValue
-	{
-		if (!isset($token))
-		{
-			return new ApiValue(null, "Incorrect token", "401");
-		}
-
-		$tokenParts = explode(".", $token);
-
-		if (isset($tokenParts[0]) && isset($tokenParts[1]) && isset($tokenParts[2]))
-		{
-			return new ApiValue
-				(
-					array
-					(
-						"headers" => json_decode(base64_decode($tokenParts[0])),
-						"payload" => json_decode(base64_decode($tokenParts[1])),
-						"signature" => $tokenParts[2]
-					)
-				);
-		}
-
-		return new ApiValue(null, "invalid token", "401");
+		return json_decode(file_get_contents('php://input'), true);
 	}
 
 	/**
 	 * Generates a token
 	 * @return ApiValue returns the token
 	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
+	 * @author Jordan Folly-Sodoga <ekoue-jordan.fllsd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 */
-	public static function generateJwt(string $email, string $password) : ApiValue
+	public static function generateJwt(string $email, string $firstName, string $lastName) : ApiValue
 	{
+		$expiration = time() + self::EXPIRATION_TIME;
 		$headers = array("alg" => "HS256", "typ" => "JWT");
-		$payload = array("email" => $email, "password" => $password, "expiration" => time() + self::EXPIRATION_TIME);
+		$payload = array("email" => $email, "name" => "$firstName $lastName", "expiration" => $expiration);
+
 		$encodedHeaders = self::urlEncode(json_encode($headers));
 		$encodedPayload = self::urlEncode(json_encode($payload));
-		$signature = hash_hmac("MD5", "$encodedHeaders.$encodedPayload", self::SALT, true);
-		$encodedSignature = self::urlEncode($signature);
-		$token = "$encodedHeaders.$encodedPayload.$encodedSignature";
-		return new ApiValue(
+
+		$token = hash_hmac("MD5", hash_hmac("SHA256", "$encodedHeaders.$encodedPayload", self::SALT, true), self::SALT, true);
+		$encodedToken = self::urlEncode($token);
+
+		$pdo = new DataBase();
+
+		$selectUserId = $pdo->prepare(("SELECT idUser FROM users WHERE email = '$email'"));
+		$selectUserId->execute();
+		$idUser = $selectUserId->fetchAll(PDO::FETCH_ASSOC)[0]["idUser"];
+
+		$selectToken = $pdo->prepare(("SELECT idUser FROM token WHERE idUser = $idUser"));
+		$selectToken->execute();
+
+		$idUserCheck = $selectToken->fetchAll(PDO::FETCH_ASSOC);
+		if (isset($idUserCheck[0]))
+		{
+			if (!is_null($idUserCheck[0]))
+			{
+				$updateToken = $pdo->prepare("UPDATE token SET token = '$encodedToken', expiration = $expiration WHERE idUser = $idUser");
+				$updateToken->execute();
+			}
+			else
+			{
+				$insertToken = $pdo->prepare("INSERT INTO token (idUser, token, expiration) VALUES ($idUser, '$encodedToken', $expiration)");
+				$insertToken->execute();
+			}
+		}
+		else
+		{
+			$insertToken = $pdo->prepare("INSERT INTO token (idUser, token, expiration) VALUES ($idUser, '$encodedToken', $expiration)");
+			$insertToken->execute();
+		}
+
+		return new ApiValue
+			(
 				[
-					"token" => $token,
+					"token" => $encodedToken,
 					"expiration" => self::EXPIRATION_TIME
 				]
 			);
 	}
+
+	// /**
+	//  * decode the url in base64
+	//  * @param string|null $token
+	//  * @return ApiValue the decoded jwt if there is one
+	//  * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	//  * @author Beaud Rémy <remy.bd@eduge.ch>
+	//  */
+	// public static function decryptJwt(?string $token) : ApiValue
+	// {
+	// 	if (!isset($token))
+	// 	{
+	// 		return new ApiValue(null, "no token provided", "401");
+	// 	}
+
+	// 	$tokenParts = explode(".", $token);
+
+	// 	if (isset($tokenParts[0]) && isset($tokenParts[1]) && isset($tokenParts[2]))
+	// 	{
+	// 		return new ApiValue
+	// 			(
+	// 				array
+	// 				(
+	// 					"headers" => json_decode(base64_decode($tokenParts[0])),
+	// 					"payload" => json_decode(base64_decode($tokenParts[1])),
+	// 					"signature" => $tokenParts[2]
+	// 				)
+	// 			);
+	// 	}
+
+	// 	return new ApiValue(null, "invalid token", "401");
+	// }
 
 	/**
 	 * encode the url in base64
@@ -109,6 +142,100 @@ class ModelMain
 	public static function urlEncode(string $str) : string
 	{
 		return rtrim(strtr(base64_encode($str), "+/", "-_"), "=");
+	}
+
+	/**
+	 * Return a token
+	 * @param string $token
+	 * @return bool
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function checkToken($token) : bool
+	{
+		$pdo = new DataBase();
+
+		$statement = $pdo->prepare("SELECT token, expiration FROM token WHERE token = '$token'");
+		$statement->execute();
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		if (isset($result[0]["token"]))
+		{
+			if ($result[0]["expiration"] < time())
+			{
+				$statement = $pdo->prepare("DELETE FROM token WHERE token = '" . $result[0]["token"] . "'");
+				$statement->execute();
+				return false;
+			}
+
+			return $token == $result[0]["token"];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return a token
+	 * @param string $email
+	 * @param string $password
+	 * @return bool
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function authenticate(string $email, string $password) : bool
+	{
+		$statement = (new DataBase())->prepare("SELECT password FROM users WHERE email = '$email'");
+		$statement->execute();
+		$result = $statement->fetchAll(PDO::FETCH_OBJ);
+		return (isset($result[0]->password) && password_verify($password, $result[0]->password));
+	}
+
+	/**
+	 * Return a token
+	 * @return ApiValue
+	 *
+	 * @author Beaud Rémy <remy.bd@eduge.ch>
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function getToken() : ApiValue
+	{
+		$data = ModelMain::getBody();
+
+		if (isset($data['email']) && isset($data['password']))
+		{
+			if (self::authenticate($data["email"], $data["password"]))
+			{
+				$statement = (new DataBase())->prepare("SELECT firstName, lastName FROM users WHERE email = '" . $data["email"] . "'");
+				$statement->execute();
+				$result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+				return ModelMain::generateJwt($data['email'], $result[0]->firstName, $result[0]->lastName);
+			}
+
+			return new ApiValue(null, "invalid user or password", "400");
+		}
+
+		return new ApiValue(null, "the sent body doesn't contain email and password", "400");
+	}
+
+	/**
+	 * Find the id of the user in the database
+	 * @param string $token the autentication token
+	 * @return int the found user id or -1 if it has not been found
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function getIdUser($token) : int
+	{
+		if (self::checkToken($token))
+		{
+			$statement = (new DataBase())->prepare("SELECT * FROM token WHERE token = '$token'");
+			$statement->execute();
+			return $statement->fetchAll(PDO::FETCH_OBJ)[0]->idUser;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 
 	/**
@@ -154,17 +281,6 @@ class ModelMain
 		}
 
 		return $value;
-	}
-
-	/**
-	 * Check what http code to use based on the passed value
-	 * @param string $errorCode Code to check
-	 * @return bool True if the error code is not recognized
-	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
-	 */
-	public static function checkSqlError(string $errorCode) : bool
-	{
-		return !($errorCode == "42S22" || $errorCode == "01000");
 	}
 
 	/**

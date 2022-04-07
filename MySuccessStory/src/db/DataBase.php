@@ -45,14 +45,8 @@ class DataBase
 	{
 		$fields = array_keys($data);
 		$query = "INSERT INTO `" . $tableName . "` (`" . implode('`,`', $fields) . "`) VALUES('" . implode("','", $data) . "')";
-		try
-		{
-			return self::prepare($query)->execute();
-		}
-		catch (Throwable $th)
-		{
-			return false;
-		}
+
+		return self::prepare($query)->execute();
 	}
 
 	public function update($tableName, $data, $where = '')

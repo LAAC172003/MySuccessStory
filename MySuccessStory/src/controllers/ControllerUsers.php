@@ -15,7 +15,7 @@ class ControllerUsers
 	 */
 	public function login() : string
 	{
-		return ModelMain::printJsonValue(ModelUsers::getToken());
+		return ModelMain::printJsonValue(ModelMain::getToken());
 	}
 
 	/**
