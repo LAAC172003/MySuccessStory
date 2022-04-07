@@ -22,7 +22,7 @@ class ModelSubjects
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			try
 			{

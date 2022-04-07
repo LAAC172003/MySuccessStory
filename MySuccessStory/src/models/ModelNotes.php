@@ -18,19 +18,19 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = ModelMain::getIdUser($token->value);
-			$data["idUser"] = $idUser;
+			$idUser = self::getIdUser($token->value);
+			$data['idUser'] = $idUser;
 
-			$subject = $data["idSubject"];
+			$subject = $data['idSubject'];
 			$idSubject = (new DataBase())->select("SELECT idSubject FROM subjects WHERE name = '$subject'");
-			$data["idSubject"] = $idSubject[0]->idSubject;
+			$data['idSubject'] = $idSubject[0]->idSubject;
 
 			if (!$idSubject) return "The subject is incorrect";
-			if ($data["semester"] > 2) return "The semester can't be over 2";
-			if ($data["note"] > 6) return "The note can't be over 6";
+			if ($data['semester'] > 2) return "The semester can't be over 2";
+			if ($data['note'] > 6) return "The note can't be over 6";
 
 			try
 			{
@@ -47,6 +47,18 @@ class ModelNotes
 	}
 
 	/**
+	 * Get the id of the user from the token
+	 * @param string $token
+	 * @return int
+	 */
+    public static function getIdUser(string $token) : int
+    {
+        $email = ModelUsers::getEmailToken($token);
+        $statementIdUser = (new DataBase())->select("SELECT idUser FROM users WHERE email = '$email'");
+        return $statementIdUser[0]->idUser;
+    }
+
+	/**
 	 * Read a note
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
@@ -54,10 +66,10 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = ModelMain::getIdUser($token->value);
+			$idUser = self::getIdUser($token->value);
 
 			try
 			{
@@ -118,10 +130,10 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
-			$idUser = ModelMain::getIdUser($token->value);
+			$idUser = self::getIdUser($token->value);
 			$idNote = $data['idNote'];
 			unset($data['idNote']);
 
@@ -154,13 +166,13 @@ class ModelNotes
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if (ModelUsers::isValidTokenAccount($token->value))
 		{
 			$data = ModelMain::getBody();
 			$idNote = $data["idNote"];
 			unset($data["idNote"]);
 
-			$idUser = ModelMain::getIdUser($token->value);
+			$idUser = self::getIdUser($token->value);
 
 			try
 			{
