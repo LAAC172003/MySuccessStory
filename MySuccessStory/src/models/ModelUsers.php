@@ -5,6 +5,7 @@ namespace MySuccessStory\models;
 use MySuccessStory\db\DataBase;
 use PDO;
 use Exception;
+use MySuccessStory\controllers\ControllerUsers;
 
 class ModelUsers
 {
@@ -28,10 +29,7 @@ class ModelUsers
 				$statement = $db->prepare('SELECT * FROM users WHERE email = "' . $data["email"] . '"');
 				$statement->execute();
 
-				$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-				$result[0]["password"] = "********";
-
-				return new ApiValue($result);
+				return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC));
 			}
 			else
 			{
@@ -92,7 +90,6 @@ class ModelUsers
 				$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = '" . $idUser . "'");
 				$statement->execute();
 				$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
-				$statementResult[0]->password = "********";
 
 				return new ApiValue($statementResult);
 			}
@@ -154,10 +151,8 @@ class ModelUsers
 
 				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
 				$statement->execute();
-				$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-				$statementResult[0]["password"] = "********";
-				return new ApiValue($statementResult, "The user has been edited");
+				return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC), "The user has been edited");
 			}
 			catch (Exception $e)
 			{
