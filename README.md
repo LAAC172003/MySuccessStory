@@ -33,9 +33,9 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 ### 5. API
 
 Les données a envoyer en json sont a mettre dans body->raw
-Le token est insérer dans Authorization
+Le token est insérer dans Authorization avec le type Bearer Token.
 
-##### Création d'utilisateur
+##### Création utilisateur
 Url : /api/users
 Méthode : POST
 
@@ -90,7 +90,7 @@ Valeurs de retour : Token de l'utilisateur
 }
 ```
 
-##### Obtention des données d'utilisateur
+##### Obtention données d'utilisateur
 Url : /api/users
 Méthode : GET
 
@@ -116,8 +116,6 @@ Valeurs de retour : Informations de l'utilisateur
 ##### Modification utilisateur
 Url : /api/users
 Méthode : PATCH
-
-Remarques : Seules les données renseignées seront modifiées dans la base de données. L'id, l'email et la profession ne peuvent pas être modifiés.
 
 Paramètres : Authentification par token et nouvelles données de l'utilisateur
 ```json
@@ -145,46 +143,183 @@ Valeurs de retour : Informations de l'utilisateur
 }
 ```
 
+Remarques : Seules les données renseignées seront modifiées dans la base de données. L'id, l'email et la profession ne peuvent pas être modifiés.
+
 ##### Suppression utilisateur
-	Url : /api/users
-	Méthode : DELETE
-	Entrée de données : Token utilisateur
+Url : /api/users
+Méthode : DELETE
+
+Paramètres : Authentification par token
+
+Valeurs de retour : Message de confirmation
+```json
+{
+	"value": null,
+	"message": "The user has been deleted",
+	"errorCode": ""
+}
+```
 
 ##### Obtention notes
-	Url : /api/notes
-	Méthode : GET
-	Entrée de données : Token utilisateur
-	Données recues : Notes de l'utilisateur
+Url : /api/notes
+Méthode : GET
+
+Entrée de données : Authentification par token, id de la note et paramètres facultatifs
+```json
+{
+	"idNote": 1,
+	"Sort": "Note",
+	"Order": "ASC",
+	"Period": "Semester"
+}
+```
+
+Valeurs de retour : Liste des notes de l'utilisateur
+```json
+{
+	"value": [
+		{
+			"idNote": 1,
+			"note": 6,
+			"semester": 1,
+			"year": 1,
+			"idUser": 1,
+			"idSubject": 1
+		},
+		{
+			"idNote": 2,
+			"note": 4,
+			"semester": 1,
+			"year": 1,
+			"idUser": 1,
+			"idSubject": 1
+		}
+	],
+	"message": "",
+	"errorCode": ""
+}
+```
+
 ##### Ajout note
-	Url : /api/notes
-	Méthode : POST
-	Entrée de données : Token utilisateur & Note à ajouter
-	Données recues : Notes de l'utilisateur
+Url : /api/notes
+Méthode : POST
+
+Paramètres : Authentification par token et nouvelle note à ajouter
 ```json
 {
-	"note":6,
-	"semester":2,
-	"idSubject":"physique",
-	"idYear":3
+	"note" : 6,
+	"semester" : 1,
+	"idSubject" : "M100",
+	"year": 1
 }
 ```
+
+Valeurs de retour : Note de l'utilisateur
+```json
+{
+	"value": {
+		"note": 6,
+		"semester": 1,
+		"idSubject": 1,
+		"year": 1,
+		"idUser": 1
+	},
+	"message": "The note has been added",
+	"errorCode": ""
+}
+```
+
 ##### Modification note
-	Url : /api/notes
-	Méthode : PATCH
-	Entrée de données : Token utilisateur & Données de la note à modifier
+Url : /api/notes
+Méthode : PATCH
+
+Paramètres : Authentification par token et nouvelles données de la note à modifier
 ```json
 {
-	"idNote": 2,
-	"fields": "newValues"
+	"idNote": 1,
+	"note": 5,
+	"semester": 2,
+	"year": 2,
+	"idSubject": 3
 }
 ```
-##### Suppression note
-	Url : /api/notes
-	Méthode : DELETE
-	Entrée de données : Token utilisateur & id de la note a supprimer
+
+Valeurs de retour :
 ```json
 {
-	"idNote":2
+	"value": [
+		{
+			"idNote": 135,
+			"note": 5,
+			"semester": 2,
+			"year": 2,
+			"idUser": 1,
+			"idSubject": 3
+		}
+	],
+	"message": "The note has been edited",
+	"errorCode": ""
+}
+```
+
+##### Suppression note
+Url : /api/notes
+Méthode : DELETE
+
+Paramètres : Authentification par token et id de la note à supprimer
+```json
+{
+	"idNote": 1
+}
+```
+
+Valeurs de retour : Message de confirmation
+```json
+{
+	"value": null,
+	"message": "The note has been deleted",
+	"errorCode": ""
+}
+```
+
+#### Obtention matières
+Url : /api/subject
+Méthode : READ
+
+Paramètres : Authentification par token
+
+Valeurs de retour : Liste des Matières
+```json
+{
+	"value": [
+		{
+			"idSubject": 1,
+			"name": "M100",
+			"description": "Distinguer, préparer et évaluer des données",
+			"isCIE": 0,
+			"category": "CFC",
+			"year": 1
+		},
+		{
+			"idSubject": 2,
+			"name": "M114",
+			"description": "Mettre en oeuvre des systèmes de codification, de compression et d'encryptage",
+			"isCIE": 0,
+			"category": "CG",
+			"year": 1
+		},
+		...
+		{
+			"idSubject": 39,
+			"name": "Education Physique",
+			"description": "",
+			"isCIE": 0,
+			"category": "CG",
+			"year": 0
+		}
+	],
+	"message": "",
+	"errorCode": ""
 }
 ```
 

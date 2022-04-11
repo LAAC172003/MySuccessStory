@@ -57,27 +57,34 @@ class ModelUsers
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if ($token->value != null)
 		{
-			$idUser = ModelMain::getIdUser($token->value);
-
-			try
+			if (ModelMain::checkToken($token->value))
 			{
-				$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = '" . $idUser . "'");
-				$statement->execute();
-				$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
-				unset($statementResult[0]->password);
+				$idUser = ModelMain::getIdUser($token->value);
 
-				return new ApiValue($statementResult);
+				try
+				{
+					$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = '" . $idUser . "'");
+					$statement->execute();
+					$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
+					unset($statementResult[0]->password);
+
+					return new ApiValue($statementResult);
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
+				}
 			}
-			catch (Exception $e)
+			else
 			{
-				return new ApiValue(null, $e->getMessage(), $e->getCode());
+				return new ApiValue(null, "invalid token", "401");
 			}
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token", "401");
+			return new ApiValue(null, "no authentication token", "401");
 		}
 	}
 
@@ -93,56 +100,63 @@ class ModelUsers
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if ($token->value != null)
 		{
-			$pdo = new DataBase();
-			$idUser = ModelMain::getIdUser($token->value);
-
-			$data = ModelMain::getBody();
-
-			$statement = $pdo->prepare("SELECT idUser FROM users WHERE idUser = '$idUser'");
-			$statement->execute();
-
-			$idUser = $statement->fetchAll(PDO::FETCH_ASSOC)[0]["idUser"];
-
-			if (isset($data["password"]))
+			if (ModelMain::checkToken($token->value))
 			{
-				$data["password"] = password_hash($data["password"], CRYPT_SHA256);
-			}
+				$pdo = new DataBase();
+				$idUser = ModelMain::getIdUser($token->value);
 
-			$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " LIMIT 1");
-			$statement->execute();
+				$data = ModelMain::getBody();
 
-			foreach (array_keys($statement->fetchAll(PDO::FETCH_ASSOC)[0]) as $key)
-			{
-				$exceptedFields = array("idUser", "email", "isTeacher");
-				if (!isset($data[$key]) || in_array($key, $exceptedFields))
+				$statement = $pdo->prepare("SELECT idUser FROM users WHERE idUser = '$idUser'");
+				$statement->execute();
+
+				$idUser = $statement->fetchAll(PDO::FETCH_ASSOC)[0]["idUser"];
+
+				if (isset($data["password"]))
 				{
-					$statement = $pdo->prepare("SELECT $key FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
+					$data["password"] = password_hash($data["password"], CRYPT_SHA256);
+				}
+
+				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " LIMIT 1");
+				$statement->execute();
+
+				foreach (array_keys($statement->fetchAll(PDO::FETCH_ASSOC)[0]) as $key)
+				{
+					$exceptedFields = array("idUser", "email", "isTeacher");
+					if (!isset($data[$key]) || in_array($key, $exceptedFields))
+					{
+						$statement = $pdo->prepare("SELECT $key FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
+						$statement->execute();
+						$data[$key] = $statement->fetchAll(PDO::FETCH_ASSOC)[0][$key];
+					}
+				}
+
+				try
+				{
+					$pdo->update(self::TABLE_NAME, $data, "idUser = $idUser");
+
+					$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
 					$statement->execute();
-					$data[$key] = $statement->fetchAll(PDO::FETCH_ASSOC)[0][$key];
+					$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+					unset($statementResult[0]["password"]);
+					return new ApiValue($statementResult, "The user has been edited");
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
 				}
 			}
-
-			try
+			else
 			{
-				$pdo->update(self::TABLE_NAME, $data, "idUser = $idUser");
-
-				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser");
-				$statement->execute();
-				$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-				unset($statementResult[0]["password"]);
-				return new ApiValue($statementResult, "The user has been edited");
-			}
-			catch (Exception $e)
-			{
-				return new ApiValue(null, $e->getMessage(), $e->getCode());
+				return new ApiValue(null, "invalid token", "401");
 			}
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token", "401");
+			return new ApiValue(null, "no authentication token", "401");
 		}
 	}
 
@@ -155,23 +169,30 @@ class ModelUsers
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if ($token->value != null)
 		{
-			$idUser = ModelMain::getIdUser($token->value);
+			if (ModelMain::checkToken($token->value))
+			{
+				$idUser = ModelMain::getIdUser($token->value);
 
-			try
-			{
-				(new DataBase)->delete(self::TABLE_NAME, "idUser = '$idUser'")->execute();
-				return new ApiValue(null, "The user has been deleted");
+				try
+				{
+					(new DataBase)->delete(self::TABLE_NAME, "idUser = '$idUser'")->execute();
+					return new ApiValue(null, "The user has been deleted");
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
+				}
 			}
-			catch (Exception $e)
+			else
 			{
-				return new ApiValue(null, $e->getMessage(), $e->getCode());
+				return new ApiValue(null, "invalid token", "401");
 			}
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token", "401");
+			return new ApiValue(null, "no authentication token", "401");
 		}
 	}
 }

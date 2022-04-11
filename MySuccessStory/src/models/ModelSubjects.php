@@ -22,31 +22,38 @@ class ModelSubjects
 	{
 		$token = ModelMain::getAuthorization();
 
-		if (ModelMain::checkToken($token->value))
+		if ($token->value != null)
 		{
-			try
+			if (ModelMain::checkToken($token->value))
 			{
-				$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME);
-				$statement->execute();
-				$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
+				try
+				{
+					$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME);
+					$statement->execute();
+					$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
 
-				if ($statementResult)
-				{
-					return new ApiValue($statementResult);
+					if ($statementResult)
+					{
+						return new ApiValue($statementResult);
+					}
+					else
+					{
+						return new ApiValue();
+					}
 				}
-				else
+				catch (Exception $e)
 				{
-					return new ApiValue();
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
 				}
 			}
-			catch (Exception $e)
+			else
 			{
-				return new ApiValue(null, $e->getMessage(), $e->getCode());
+				return new ApiValue(null, "invalid token", "401");
 			}
 		}
 		else
 		{
-			return new ApiValue(null, "invalid token", "401");
+			return new ApiValue(null, "no authentication token", "401");
 		}
 	}
 }
