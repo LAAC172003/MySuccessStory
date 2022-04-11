@@ -9,7 +9,7 @@ use PDO;
 class ModelMain
 {
 	const SALT = "1441caa2afec313f8fd620d9ed6492258b61fca73bb3f3ed6bc8691637bf96ef";
-	const EXPIRATION_TIME = 3600;
+	const EXPIRATION_TIME = 7200; // 2 hours
 
 	/**
 	 * Return the token
@@ -47,7 +47,7 @@ class ModelMain
 	 * @return ApiValue returns the token
 	 * @link https://developer.okta.com/blog/2019/02/04/create-and-verify-jwts-in-php
 	 *
-	 * @author Jordan Folly-Sodoga <ekoue-jordan.fllsd@eduge.ch>
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 */

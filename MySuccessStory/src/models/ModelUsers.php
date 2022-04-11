@@ -92,7 +92,7 @@ class ModelUsers
 	 * Update a user
 	 * @return ApiValue
 	 *
-	 * @author Jordan Folly-Sodoga <ekoue-jordan.fllsd@eduge.ch>
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
 	 */

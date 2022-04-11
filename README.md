@@ -167,10 +167,14 @@ Méthode : GET
 Entrée de données : Authentification par token, id de la note et paramètres facultatifs
 ```json
 {
-	"idNote": 1,
-	"Sort": "Note",
-	"Order": "ASC",
-	"Period": "Semester"
+	"Id": 1, // Valeurs possibles : Nombre (Par défaut : affiche toutes les notes)
+	"Sort": "Note", // Valeurs possibles : Note, Subject (Par défaut : tri par id)
+	"Order": "ASC", // Valeurs possibles : ASC, DESC (Par défaut : ASC)
+
+	// Filtres
+	"Note": 6, // Valeurs possibles : multiple de 0.5 de 1 à 6
+	"Semester": 1, // Valeurs possibles : 1 ou 2
+	"Subject": "M100" // Valeurs possibles : nom d'une matière
 }
 ```
 
