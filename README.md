@@ -68,7 +68,7 @@ Valeurs de retour : Informations de l'utilisateur
 
 ##### Connexion
 Url : /api/login
-Méthode : GET
+Méthode : PUT
 
 Paramètres : Informations de connexion
 ```json
@@ -282,6 +282,39 @@ Valeurs de retour : Message de confirmation
 {
 	"value": null,
 	"message": "The note has been deleted",
+	"errorCode": ""
+}
+```
+
+#### Création matière
+Url : /api/subject
+Méthode : POST
+
+Paramètres : Authentification par token avec un compte de professeur
+```json
+{
+	"name": "M100",
+	"description": "Distinguer, préparer et évaluer des données",
+	"isCIE": false,
+	"category": "CFC",
+	"year": 1
+}
+```
+
+Valeurs de retour : Matière créée
+```json
+{
+	"value": [
+		{
+			"idSubject": 1,
+			"name": "M100",
+			"description": "Distinguer, préparer et évaluer des données",
+			"isCIE": false,
+			"category": "CFC",
+			"year": 1
+		}
+	],
+	"message": "The subject has been added",
 	"errorCode": ""
 }
 ```

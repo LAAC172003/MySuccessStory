@@ -13,6 +13,7 @@ class ModelUsers
 	/**
 	 * Create a user
 	 * @return ApiValue
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 */
 	public static function createUser() : ApiValue
@@ -21,9 +22,13 @@ class ModelUsers
 
 		try
 		{
+			if (!isset($data["email"])) return new ApiValue(null, "The email is missing", "400");
+			if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) return new ApiValue(null, "The syntax of the email is incorrect", "400");
+
 			$data["password"] = password_hash($data["password"], CRYPT_SHA256);
 
 			$db = new DataBase();
+
 			if ($db->insert(self::TABLE_NAME, $data))
 			{
 				$statement = $db->prepare('SELECT * FROM users WHERE email = "' . $data["email"] . '"');
