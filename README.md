@@ -310,9 +310,6 @@ Valeurs de retour : Message de confirmation
 }
 ```
 
-
-
-
 #### Matières
 
 ##### Création matière
@@ -388,6 +385,26 @@ Valeurs de retour : Liste des matières
 		}
 	],
 	"message": "",
+	"errorCode": ""
+}
+```
+
+##### Suppression matière
+URL : /api/subject
+Méthode : DELETE
+
+Paramètres : Authentification par token avec un compte de professeur et nom de la matière
+```json
+{
+	"name": "M100"
+}
+```
+
+Valeurs de retour : Message de confirmation
+```json
+{
+	"value": null,
+	"message": "The subject has been deleted",
 	"errorCode": ""
 }
 ```

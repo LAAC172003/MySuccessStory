@@ -26,4 +26,24 @@ class ControllerSubject
 	{
 		return ModelMain::printJsonValue(ModelSubjects::readSubjects());
 	}
+
+	/**
+	 * Update a subject
+	 * @return string
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function update() : string
+	{
+		return ModelMain::printJsonValue(ModelSubjects::updateSubject());
+	}
+
+	/**
+	 * Delete a subject
+	 * @return string
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function delete() : string
+	{
+		return ModelMain::printJsonValue(ModelSubjects::deleteSubject());
+	}
 }

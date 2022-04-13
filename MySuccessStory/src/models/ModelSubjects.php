@@ -104,7 +104,7 @@ class ModelSubjects
 
 				try
 				{
-					$statement = $pdo->prepare("INSERT INTO " . self::TABLE_NAME . "(`name`, `description`, `isCIE`, `category`, `year`) VALUES ('$name', '$description', $isCIE, '$category', $year)");
+					$statement = $pdo->prepare("INSERT INTO " . self::TABLE_NAME . "(`name`, `description`, `isCIE`, `category`, `year`) VALUES ('$name', '$description', " . json_encode($isCIE) . ", '$category', $year)");
 					$statement->execute();
 
 					$statement = $pdo->prepare("SELECT * FROM subjects WHERE `name` = '$name'");
@@ -215,6 +215,73 @@ class ModelSubjects
 					{
 						return new ApiValue();
 					}
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
+				}
+			}
+			else
+			{
+				return new ApiValue(null, "invalid token", "401");
+			}
+		}
+		else
+		{
+			return new ApiValue(null, "no authentication token", "401");
+		}
+	}
+
+	/**
+	 * Update a subject
+	 *
+	 * @return ApiValue
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function updateSubject() : ApiValue
+	{
+		return new ApiValue();
+	}
+
+	/**
+	 * Delete a subject
+	 *
+	 * @return ApiValue
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function deleteSubject() : ApiValue
+	{
+		$token = ModelMain::getAuthorization();
+
+		if ($token->value != null)
+		{
+			if (ModelMain::checkToken($token->value))
+			{
+				$data = ModelMain::getBody();
+
+				if (!isset($data["name"])) return new ApiValue(null, "The name has not been filled in", "400");
+
+				$name = $data["name"];
+
+				$pdo = new DataBase();
+
+				$statement = $pdo->prepare("SELECT idSubject FROM subjects WHERE name = '$name'");
+				$statement->execute();
+				$idSubject = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				if (isset($idSubject[0]))
+				{
+					$idSubject = $idSubject[0]["idSubject"];
+				}
+				else
+				{
+					return new ApiValue(null, "The subject doesn't exist", "400");
+				}
+
+				try
+				{
+					$pdo->delete(self::TABLE_NAME, "idSubject = '$idSubject'")->execute();
+					return new ApiValue(null, "The subject has been deleted");
 				}
 				catch (Exception $e)
 				{

@@ -30,4 +30,5 @@ SimpleRouter::patch("/api/promote", [ControllerUsers::class, "promote"]); // Pro
 SimpleRouter::post("/api/subject", [ControllerSubject::class, "create"]); // Create
 SimpleRouter::get("/api/subject", [ControllerSubject::class, "read"]); // Read
 SimpleRouter::patch("/api/subject", [ControllerSubject::class, "update"]); // Update
+SimpleRouter::delete("/api/subject", [ControllerSubject::class, "delete"]); // Delete
 #endregion
