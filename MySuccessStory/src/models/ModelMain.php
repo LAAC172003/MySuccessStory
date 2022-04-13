@@ -185,8 +185,14 @@ class ModelMain
 
 			return new ApiValue(null, "invalid user or password", "400");
 		}
-
-		return new ApiValue(null, "the sent body doesn't contain email and password", "400");
+		else if (!isset($data["email"]))
+		{
+			return new ApiValue(null, "the sent body doesn't contain email", "400");
+		}
+		else
+		{
+			return new ApiValue(null, "the sent body doesn't contain password", "400");
+		}
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace Pecee\Http\Input;
 
+use MySuccessStory\models\ApiValue;
 use Pecee\Exceptions\InvalidArgumentException;
 use Pecee\Http\Request;
 
@@ -78,6 +79,13 @@ class InputHandler
             // Append any PHP-input json
             if (strpos(trim($contents), '{') === 0) {
                 $post = json_decode($contents, true);
+
+                if ($post == null)
+                {
+                    http_response_code(400);
+                    echo json_encode(new ApiValue(null, "Invalid syntax", "400"));
+                    die();
+                }
 
                 if ($post !== false) {
                     $this->originalPost += $post;

@@ -35,6 +35,136 @@ Les utilisateurs ont les informations de leurs profils stockées dans la table *
 Les données a envoyer en json sont a mettre dans body->raw
 Le token est insérer dans Authorization avec le type Bearer Token.
 
+#### Notes
+
+##### Ajout note
+URL : /api/notes
+Méthode : POST
+
+Paramètres : Authentification par token et nouvelle note à ajouter
+```json
+{
+	"note" : 6,
+	"semester" : 1,
+	"subject" : "M100",
+	"year": 1
+}
+```
+
+Valeurs de retour : Note de l'utilisateur
+```json
+{
+	"value": {
+		"note": 6,
+		"semester": 1,
+		"idSubject": 1,
+		"year": 1,
+		"idUser": 1
+	},
+	"message": "The note has been added",
+	"errorCode": ""
+}
+```
+
+##### Obtention notes
+URL : /api/notes
+Méthode : GET
+
+Entrée de données : Authentification par token, id de la note et paramètres facultatifs
+```json
+{
+	"id": 1, // Valeurs possibles : Nombre (Par défaut : affiche toutes les notes)
+	"sort": "Note", // Valeurs possibles : Note, Subject (Par défaut : tri par id)
+	"order": "ASC", // Valeurs possibles : ASC, DESC (Par défaut : ASC)
+
+	// Filtres
+	"note": 6, // Valeurs possibles : multiple de 0.5 de 1 à 6
+	"semester": 1, // Valeurs possibles : 1 ou 2
+	"subject": "M100" // Valeurs possibles : nom d'une matière
+}
+```
+
+Valeurs de retour : Liste des notes de l'utilisateur
+```json
+{
+	"value": [
+		{
+			"idNote": 1,
+			"note": 6,
+			"semester": 1,
+			"year": 1,
+			"idUser": 1,
+			"idSubject": 1
+		},
+		{
+			"idNote": 2,
+			"note": 4,
+			"semester": 1,
+			"year": 1,
+			"idUser": 1,
+			"idSubject": 1
+		}
+	],
+	"message": "",
+	"errorCode": ""
+}
+```
+
+##### Modification note
+URL : /api/notes
+Méthode : PATCH
+
+Paramètres : Authentification par token et nouvelles données de la note à modifier
+```json
+{
+	"idNote": 1,
+	"note": 5,
+	"semester": 2,
+	"year": 2,
+	"idSubject": 3
+}
+```
+
+Valeurs de retour :
+```json
+{
+	"value": [
+		{
+			"idNote": 135,
+			"note": 5,
+			"semester": 2,
+			"year": 2,
+			"idUser": 1,
+			"idSubject": 3
+		}
+	],
+	"message": "The note has been edited",
+	"errorCode": ""
+}
+```
+
+##### Suppression note
+URL : /api/notes
+Méthode : DELETE
+
+Paramètres : Authentification par token et id de la note à supprimer
+```json
+{
+	"idNote": 1
+}
+```
+
+Valeurs de retour : Message de confirmation
+```json
+{
+	"value": null,
+	"message": "The note has been deleted",
+	"errorCode": ""
+}
+```
+
+#### Utilisateurs
+
 ##### Création utilisateur
 URL : /api/users
 Méthode : POST
@@ -61,30 +191,6 @@ Valeurs de retour : Informations de l'utilisateur
 			"isTeacher": 0
 		}
 	],
-	"message": "",
-	"errorCode": ""
-}
-```
-
-##### Connexion
-URL : /api/login
-Méthode : PUT
-
-Paramètres : Informations de connexion
-```json
-{
-	"email": "example@example.com",
-	"password": "this is a password"
-}
-```
-
-Valeurs de retour : Token de l'utilisateur
-```json
-{
-	"value": {
-		"token": "someRandomLetters",
-		"expiration": 3600
-	},
 	"message": "",
 	"errorCode": ""
 }
@@ -160,120 +266,38 @@ Valeurs de retour : Message de confirmation
 }
 ```
 
-##### Obtention notes
-URL : /api/notes
-Méthode : GET
+##### Connexion
+URL : /api/login
+Méthode : PUT
 
-Entrée de données : Authentification par token, id de la note et paramètres facultatifs
+Paramètres : Informations de connexion
 ```json
 {
-	"Id": 1, // Valeurs possibles : Nombre (Par défaut : affiche toutes les notes)
-	"Sort": "Note", // Valeurs possibles : Note, Subject (Par défaut : tri par id)
-	"Order": "ASC", // Valeurs possibles : ASC, DESC (Par défaut : ASC)
-
-	// Filtres
-	"Note": 6, // Valeurs possibles : multiple de 0.5 de 1 à 6
-	"Semester": 1, // Valeurs possibles : 1 ou 2
-	"Subject": "M100" // Valeurs possibles : nom d'une matière
+	"email": "example@example.com",
+	"password": "this is a password"
 }
 ```
 
-Valeurs de retour : Liste des notes de l'utilisateur
+Valeurs de retour : Token de l'utilisateur
 ```json
 {
-	"value": [
-		{
-			"idNote": 1,
-			"note": 6,
-			"semester": 1,
-			"year": 1,
-			"idUser": 1,
-			"idSubject": 1
-		},
-		{
-			"idNote": 2,
-			"note": 4,
-			"semester": 1,
-			"year": 1,
-			"idUser": 1,
-			"idSubject": 1
-		}
-	],
+	"value": {
+		"token": "someRandomLetters",
+		"expiration": 3600
+	},
 	"message": "",
 	"errorCode": ""
 }
 ```
 
-##### Ajout note
-URL : /api/notes
+##### Promotion
+URL : /api/promote
 Méthode : POST
 
-Paramètres : Authentification par token et nouvelle note à ajouter
+Paramètres : Authentification par token avec un compte de professeur et adresse email du compte à promouvoir
 ```json
 {
-	"note" : 6,
-	"semester" : 1,
-	"idSubject" : "M100",
-	"year": 1
-}
-```
-
-Valeurs de retour : Note de l'utilisateur
-```json
-{
-	"value": {
-		"note": 6,
-		"semester": 1,
-		"idSubject": 1,
-		"year": 1,
-		"idUser": 1
-	},
-	"message": "The note has been added",
-	"errorCode": ""
-}
-```
-
-##### Modification note
-URL : /api/notes
-Méthode : PATCH
-
-Paramètres : Authentification par token et nouvelles données de la note à modifier
-```json
-{
-	"idNote": 1,
-	"note": 5,
-	"semester": 2,
-	"year": 2,
-	"idSubject": 3
-}
-```
-
-Valeurs de retour :
-```json
-{
-	"value": [
-		{
-			"idNote": 135,
-			"note": 5,
-			"semester": 2,
-			"year": 2,
-			"idUser": 1,
-			"idSubject": 3
-		}
-	],
-	"message": "The note has been edited",
-	"errorCode": ""
-}
-```
-
-##### Suppression note
-URL : /api/notes
-Méthode : DELETE
-
-Paramètres : Authentification par token et id de la note à supprimer
-```json
-{
-	"idNote": 1
+	"email": "example@example.com"
 }
 ```
 
@@ -281,12 +305,17 @@ Valeurs de retour : Message de confirmation
 ```json
 {
 	"value": null,
-	"message": "The note has been deleted",
+	"message": "The user has been promoted",
 	"errorCode": ""
 }
 ```
 
-#### Création matière
+
+
+
+#### Matières
+
+##### Création matière
 URL : /api/subject
 Méthode : POST
 
@@ -319,13 +348,25 @@ Valeurs de retour : Matière créée
 }
 ```
 
-#### Obtention matières
+##### Obtention matières
 URL : /api/subject
 Méthode : READ
 
-Paramètres : Authentification par token
+Paramètres : Authentification par token et année
+```json
+{
+	"id": 1, // Valeurs possibles : Nombre (Par défaut : affiche toutes les notes)
+	"name": "M100", // Valeurs possibles : Texte (Par défaut : affiche toutes les notes)
 
-Valeurs de retour : Liste des Matières
+	// Filtres
+	"description": "données", // Valeurs possibles : Texte
+	"isCIE": false, // Valeurs possibles : booléen
+	"category": "CFC", // Valeurs possibles : Nombre de 1 à 4
+	"year": 1 // Valeurs possibles : Nombre de 1 à 4
+}
+```
+
+Valeurs de retour : Liste des matières
 ```json
 {
 	"value": [
@@ -344,38 +385,9 @@ Valeurs de retour : Liste des Matières
 			"isCIE": 0,
 			"category": "CG",
 			"year": 1
-		},
-		...
-		{
-			"idSubject": 39,
-			"name": "Education Physique",
-			"description": "",
-			"isCIE": 0,
-			"category": "CG",
-			"year": 0
 		}
 	],
 	"message": "",
-	"errorCode": ""
-}
-```
-
-#### Ajout de professeur
-URL : /api/teacher
-Méthode : POST
-
-Paramètres : Authentification par token avec un compte de professeur et adresse email du compte à promouvoir
-```json
-{
-	"email": "example@example.com"
-}
-```
-
-Valeurs de retour : Message de confirmation
-```json
-{
-	"value": null,
-	"message": "The user has been promoted",
 	"errorCode": ""
 }
 ```

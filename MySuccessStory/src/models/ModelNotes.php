@@ -27,7 +27,16 @@ class ModelNotes
 				$idUser = ModelMain::getIdUser($token->value);
 				$data["idUser"] = $idUser;
 
-				$subject = $data["idSubject"];
+				if (isset($data["subject"]))
+				{
+					$subject = $data["subject"];
+					unset($data["subject"]);
+				}
+				else
+				{
+					return new ApiValue(null, "The subject is missing", "400");
+				}
+
 				$idSubject = (new DataBase())->select("SELECT idSubject FROM subjects WHERE name = '$subject'");
 
 				if (!$idSubject) return new ApiValue(null, "The subject is incorrect", "400");
@@ -79,9 +88,9 @@ class ModelNotes
 				{
 					$orderBy = "ASC";
 
-					if (isset($data["Id"]))
+					if (isset($data["id"]))
 					{
-						$idNote = $data["Id"];
+						$idNote = $data["id"];
 						$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser AND idNote = $idNote ORDER BY note " . $orderBy);
 						$statement->execute();
 						$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -90,9 +99,9 @@ class ModelNotes
 					{
 						$queryString = "SELECT * FROM " . self::TABLE_NAME . " WHERE idUser = $idUser";
 
-						if (isset($data["Note"]))
+						if (isset($data["note"]))
 						{
-							$note = $data["Note"];
+							$note = $data["note"];
 
 							if ($note < 1) return new ApiValue(null, "The note can't be below 1", "400");
 							if ($note > 6) return new ApiValue(null, "The note can't be over 6", "400");
@@ -101,18 +110,18 @@ class ModelNotes
 							$queryString .= " AND note = $note";
 						}
 
-						if (isset($data["Semester"]))
+						if (isset($data["semester"]))
 						{
-							$semester = $data["Semester"];
+							$semester = $data["semester"];
 
 							if ($semester != 1 && $semester != 2) return new ApiValue(null, "The semester has to be 1 or 2", "400");
 
 							$queryString .= " AND semester = $semester";
 						}
 
-						if (isset($data["Year"]))
+						if (isset($data["year"]))
 						{
-							$year = $data["Year"];
+							$year = $data["year"];
 
 							if (!is_int($year)) return new ApiValue(null, "The year has to be an integer number", "400");
 							if ($year < 1 || $year > 4) return new ApiValue(null, "The year has to be between 1 and 4", "400");
@@ -120,9 +129,9 @@ class ModelNotes
 							$queryString .= " AND year = $year";
 						}
 
-						if (isset($data["Subject"]))
+						if (isset($data["subject"]))
 						{
-							$subject = $data["Subject"];
+							$subject = $data["subject"];
 
 							if ($subject == "") return new ApiValue(null, "The subject can't be empty", "400");
 
@@ -142,9 +151,9 @@ class ModelNotes
 							$queryString .= " AND idSubject = $idSubject";
 						}
 
-						if (isset($data["Sort"]))
+						if (isset($data["sort"]))
 						{
-							switch ($data["Sort"])
+							switch ($data["sort"])
 							{
 								case "Note":
 									$queryString .= " ORDER BY note " ;
@@ -158,11 +167,11 @@ class ModelNotes
 							}
 						}
 
-						if (isset($data["Order"]))
+						if (isset($data["order"]))
 						{
-							if (strtoupper($data["Order"]) == "ASC" || strtoupper($data["Order"]) == "DESC")
+							if (strtoupper($data["order"]) == "ASC" || strtoupper($data["order"]) == "DESC")
 							{
-								$queryString .= " " . strtoupper($data["Order"]);
+								$queryString .= " " . strtoupper($data["order"]);
 							}
 						}
 
@@ -205,10 +214,25 @@ class ModelNotes
 				$idNote = $data['idNote'];
 				unset($data['idNote']);
 
+				$pdo = new DataBase();
+
+				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idNote = $idNote");
+				$statement->execute();
+				$note = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				if (isset($note[0]))
+				{
+					$note = $note[0];
+				}
+				else
+				{
+					return new ApiValue(null, "This note doesn't exist", "400");
+				}
+
+				if ($note["idUser"] != $idUser) return new ApiValue(null, "This note belongs to another user", "400");
+
 				try
 				{
-					$pdo = new DataBase();
-
 					$pdo->update(self::TABLE_NAME, $data, "idUser = $idUser AND idNote = $idNote");
 
 					$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idNote = $idNote");
@@ -249,9 +273,17 @@ class ModelNotes
 
 				$idUser = ModelMain::getIdUser($token->value);
 
+				$pdo = new DataBase();
+
+				$statement = $pdo->prepare("SELECT idUser FROM " . self::TABLE_NAME . " WHERE idNote = $idNote");
+				$statement->execute();
+				$statementResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+				if (!isset($statementResult[0])) return new ApiValue(null, "This note doesn't exist", "400");
+				if ($statementResult[0]["idUser"] != $idUser) return new ApiValue(null, "This note belongs to another user", "400");
+
 				try
 				{
-					(new DataBase())->delete(self::TABLE_NAME, "idUser = $idUser AND idNote = $idNote")->execute();
+					$pdo->delete(self::TABLE_NAME, "idUser = $idUser AND idNote = $idNote")->execute();
 					return new ApiValue(null, "The note has been deleted");
 				}
 				catch (Exception $e)

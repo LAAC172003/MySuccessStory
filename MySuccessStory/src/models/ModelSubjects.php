@@ -4,6 +4,7 @@ namespace MySuccessStory\models;
 use MySuccessStory\db\DataBase;
 use PDO;
 use Exception;
+use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
 class ModelSubjects
 {
@@ -138,9 +139,71 @@ class ModelSubjects
 		{
 			if (ModelMain::checkToken($token->value))
 			{
+				$data = ModelMain::getBody();
+
+				$query = "SELECT * FROM " . self::TABLE_NAME . " WHERE true";
+
+				if (isset($data["id"]))
+				{
+					$idSubject = $data["id"];
+
+					if (!is_int($idSubject)) return new ApiValue(null, "The id has to be an integer number", "400");
+
+					$query .= " AND idSubject = $idSubject";
+				}
+
+				if (isset($data["name"]))
+				{
+					$name = $data["name"];
+
+					$query .= " AND name = '$name'";
+				}
+
+				if (isset($data["description"]))
+				{
+					$description = $data["description"];
+
+					$query .= " AND description LIKE '%$description%'";
+				}
+
+				if (isset($data["isCIE"]))
+				{
+					$isCIE = $data["isCIE"];
+
+					if ($isCIE !== true && $isCIE !== false && $isCIE !== 0 && $isCIE !== 1)
+						return new ApiValue(null, "isCIE has to be true or false");
+
+					$query .= " AND isCIE = " . json_encode($isCIE);
+				}
+
+				if (isset($data["category"]))
+				{
+					$category = $data["category"];
+
+					$statement = (new DataBase())->prepare("SHOW COLUMNS FROM " . self::TABLE_NAME . " LIKE 'category'");
+					$statement->execute();
+
+					if (!in_array("'$category'", explode(",", substr(trim($statement->fetchAll(PDO::FETCH_ASSOC)[0]["Type"], ")"), 5))))
+					{
+						return new ApiValue(null, "The category doesn't exist", "400");
+					}
+
+					$query .= " AND category = '$category'";
+				}
+
+				if (isset($data["year"]))
+				{
+					$year = $data["year"];
+
+					if (!is_int($year)) return new ApiValue(null, "The year has to be an integer number", "400");
+					if ($year < 0 || $year > 4) return new ApiValue(null, "The year has to be between 0 and 4", "400");
+
+					$query .= " AND year = $year";
+				}
+
 				try
 				{
-					$statement = (new DataBase())->prepare("SELECT * FROM " . self::TABLE_NAME);
+					$statement = (new DataBase())->prepare($query);
 					$statement->execute();
 					$statementResult = $statement->fetchAll(PDO::FETCH_OBJ);
 

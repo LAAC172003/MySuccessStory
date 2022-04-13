@@ -29,4 +29,5 @@ SimpleRouter::patch("/api/promote", [ControllerUsers::class, "promote"]); // Pro
 #region CRUD Subject
 SimpleRouter::post("/api/subject", [ControllerSubject::class, "create"]); // Create
 SimpleRouter::get("/api/subject", [ControllerSubject::class, "read"]); // Read
+SimpleRouter::patch("/api/subject", [ControllerSubject::class, "update"]); // Update
 #endregion

@@ -24,10 +24,22 @@ class ModelUsers
 		{
 			if (!isset($data["email"])) return new ApiValue(null, "The email is missing", "400");
 			if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL)) return new ApiValue(null, "The syntax of the email is incorrect", "400");
+			if (!isset($data["password"])) return new ApiValue(null, "The password is missing", "400");
+			if (strlen($data["password"]) < 8) return new ApiValue(null, "The password has to be at least 8 characters long", "400");
+			if (!isset($data["firstName"])) return new ApiValue(null, "The firstName is missing", "400");
+			if ($data["firstName"] == "") return new ApiValue(null, "The firstName can't be empty", "400");
 
 			$data["password"] = password_hash($data["password"], CRYPT_SHA256);
 
 			$db = new DataBase();
+
+			$statement = $db->prepare('SELECT * FROM users WHERE email = "' . $data["email"] . '"');
+			$statement->execute();
+
+			if (isset($statement->fetchAll(PDO::FETCH_ASSOC)[0]))
+			{
+				return new ApiValue(null, "This email is already used by another account", "400");
+			}
 
 			if ($db->insert(self::TABLE_NAME, $data))
 			{
