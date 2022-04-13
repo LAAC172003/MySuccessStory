@@ -36,7 +36,7 @@ Les données a envoyer en json sont a mettre dans body->raw
 Le token est insérer dans Authorization avec le type Bearer Token.
 
 ##### Création utilisateur
-Url : /api/users
+URL : /api/users
 Méthode : POST
 
 Paramètres : Informations de l'utilisateur
@@ -67,7 +67,7 @@ Valeurs de retour : Informations de l'utilisateur
 ```
 
 ##### Connexion
-Url : /api/login
+URL : /api/login
 Méthode : PUT
 
 Paramètres : Informations de connexion
@@ -91,7 +91,7 @@ Valeurs de retour : Token de l'utilisateur
 ```
 
 ##### Obtention données d'utilisateur
-Url : /api/users
+URL : /api/users
 Méthode : GET
 
 Paramètres : Authentification par token
@@ -114,7 +114,7 @@ Valeurs de retour : Informations de l'utilisateur
 ```
 
 ##### Modification utilisateur
-Url : /api/users
+URL : /api/users
 Méthode : PATCH
 
 Paramètres : Authentification par token et nouvelles données de l'utilisateur
@@ -146,7 +146,7 @@ Valeurs de retour : Informations de l'utilisateur
 Remarques : Seules les données renseignées seront modifiées dans la base de données. L'id, l'email et la profession ne peuvent pas être modifiés.
 
 ##### Suppression utilisateur
-Url : /api/users
+URL : /api/users
 Méthode : DELETE
 
 Paramètres : Authentification par token
@@ -161,7 +161,7 @@ Valeurs de retour : Message de confirmation
 ```
 
 ##### Obtention notes
-Url : /api/notes
+URL : /api/notes
 Méthode : GET
 
 Entrée de données : Authentification par token, id de la note et paramètres facultatifs
@@ -205,7 +205,7 @@ Valeurs de retour : Liste des notes de l'utilisateur
 ```
 
 ##### Ajout note
-Url : /api/notes
+URL : /api/notes
 Méthode : POST
 
 Paramètres : Authentification par token et nouvelle note à ajouter
@@ -234,7 +234,7 @@ Valeurs de retour : Note de l'utilisateur
 ```
 
 ##### Modification note
-Url : /api/notes
+URL : /api/notes
 Méthode : PATCH
 
 Paramètres : Authentification par token et nouvelles données de la note à modifier
@@ -267,7 +267,7 @@ Valeurs de retour :
 ```
 
 ##### Suppression note
-Url : /api/notes
+URL : /api/notes
 Méthode : DELETE
 
 Paramètres : Authentification par token et id de la note à supprimer
@@ -287,7 +287,7 @@ Valeurs de retour : Message de confirmation
 ```
 
 #### Création matière
-Url : /api/subject
+URL : /api/subject
 Méthode : POST
 
 Paramètres : Authentification par token avec un compte de professeur
@@ -320,7 +320,7 @@ Valeurs de retour : Matière créée
 ```
 
 #### Obtention matières
-Url : /api/subject
+URL : /api/subject
 Méthode : READ
 
 Paramètres : Authentification par token
@@ -356,6 +356,26 @@ Valeurs de retour : Liste des Matières
 		}
 	],
 	"message": "",
+	"errorCode": ""
+}
+```
+
+#### Ajout de professeur
+URL : /api/teacher
+Méthode : POST
+
+Paramètres : Authentification par token avec un compte de professeur et adresse email du compte à promouvoir
+```json
+{
+	"email": "example@example.com"
+}
+```
+
+Valeurs de retour : Message de confirmation
+```json
+{
+	"value": null,
+	"message": "The user has been promoted",
 	"errorCode": ""
 }
 ```

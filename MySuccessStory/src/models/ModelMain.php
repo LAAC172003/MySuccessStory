@@ -276,4 +276,17 @@ class ModelMain
 			return true;
 		}
 	}
+
+	/**
+	 * Check if the user is a teacher
+	 * @param int $idUser
+	 * @return bool if it is a teacher or not
+	 * @author Jordan Folly <ekoue-jordan.fllsd>
+	 */
+	public static function checkIfTeacher(int $idUser) : bool
+	{
+		$statement = (new DataBase())->prepare("SELECT isTeacher FROM users WHERE idUser = $idUser");
+		$statement->execute();
+		return $statement->fetchAll(PDO::FETCH_ASSOC)[0]["isTeacher"];
+	}
 }

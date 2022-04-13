@@ -31,9 +31,7 @@ class ModelSubjects
 
 				$pdo = new DataBase();
 
-				$statement = $pdo->prepare("SELECT isTeacher FROM users WHERE idUser = $idUser");
-				$statement->execute();
-				if (!$statement->fetchAll(PDO::FETCH_ASSOC)[0]["isTeacher"]) return new ApiValue("You have to be a teacher to add a subject");
+				if (!ModelMain::checkIfTeacher($idUser)) return new ApiValue(null, "You have to be a teacher to add a subject", "403");
 
 				if (isset($data["name"]))
 				{

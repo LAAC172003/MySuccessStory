@@ -22,6 +22,8 @@ SimpleRouter::post("/api/users", [ControllerUsers::class, "create"]); // Create
 SimpleRouter::get("/api/users", [ControllerUsers::class, "read"]); // Read
 SimpleRouter::patch("/api/users", [ControllerUsers::class, "update"]); // Update
 SimpleRouter::delete("/api/users", [ControllerUsers::class, "delete"]); // Delete
+
+SimpleRouter::patch("/api/promote", [ControllerUsers::class, "promote"]); // Promote a user
 #endregion
 
 #region CRUD Subject

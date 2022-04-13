@@ -56,7 +56,6 @@ class ModelUsers
 	 *
 	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
 	 * @author Beaud Rémy <remy.bd@eduge.ch>
-	 *
 	 */
 	public static function readUser() : ApiValue
 	{
@@ -113,11 +112,6 @@ class ModelUsers
 				$idUser = ModelMain::getIdUser($token->value);
 
 				$data = ModelMain::getBody();
-
-				$statement = $pdo->prepare("SELECT idUser FROM users WHERE idUser = '$idUser'");
-				$statement->execute();
-
-				$idUser = $statement->fetchAll(PDO::FETCH_ASSOC)[0]["idUser"];
 
 				if (isset($data["password"]))
 				{
@@ -184,6 +178,77 @@ class ModelUsers
 				{
 					(new DataBase)->delete(self::TABLE_NAME, "idUser = '$idUser'")->execute();
 					return new ApiValue(null, "The user has been deleted");
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
+				}
+			}
+			else
+			{
+				return new ApiValue(null, "invalid token", "401");
+			}
+		}
+		else
+		{
+			return new ApiValue(null, "no authentication token", "401");
+		}
+	}
+
+	/**
+	 * Choose a user to become a teacher
+	 * @return ApiValue
+	 *
+	 * @author Jordan Folly <ekoue-jordan.fllsd@eduge.ch>
+	 */
+	public static function promote() : ApiValue
+	{
+		$token = ModelMain::getAuthorization();
+
+		if ($token->value != null)
+		{
+			if (ModelMain::checkToken($token->value))
+			{
+				$pdo = new DataBase();
+				$idUser = ModelMain::getIdUser($token->value);
+
+				$data = ModelMain::getBody();
+
+				if (!ModelMain::checkIfTeacher($idUser)) return new ApiValue(null, "You have to be a teacher to set promote other accounts", "403");
+
+				if (isset($data["email"]))
+				{
+					$email = $data["email"];
+				}
+				else
+				{
+					return new ApiValue(null, "The email of the targeted account has not been filled in", "400");
+				}
+
+				if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return new ApiValue(null, "The syntax of the email is incorrect", "400");
+
+				$statement = $pdo->prepare("SELECT isTeacher FROM " . self::TABLE_NAME . " WHERE email = '$email'");
+				$statement->execute();
+				$isTeacher = $statement->fetchAll(PDO::FETCH_ASSOC);
+				if (isset($isTeacher[0]))
+				{
+					$isTeacher = $isTeacher[0]["isTeacher"];
+				}
+				else
+				{
+					return new ApiValue(null, "This user doesn't exist", "400");
+				}
+
+				if ($isTeacher)
+				{
+					return new ApiValue(null, "This user is already a teacher", "400");
+				}
+
+				try
+				{
+					$pdo->prepare("UPDATE `users` SET `isTeacher` = true WHERE email = '$email'")->execute();
+
+					return new ApiValue(null, "The user has been promoted");
 				}
 				catch (Exception $e)
 				{

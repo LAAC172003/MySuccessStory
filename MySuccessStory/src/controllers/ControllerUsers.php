@@ -57,4 +57,14 @@ class ControllerUsers
 	{
 		return ModelMain::printJsonValue(ModelUsers::deleteUser());
 	}
+
+	/**
+	 * Delete a user
+	 * @return string
+	 * @author Almeida Costa Lucas <lucas.almdc@eduge.ch>
+	 */
+	public static function promote() : string
+	{
+		return ModelMain::printJsonValue(ModelUsers::promote());
+	}
 }
