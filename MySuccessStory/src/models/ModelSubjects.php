@@ -240,7 +240,87 @@ class ModelSubjects
 	 */
 	public static function updateSubject() : ApiValue
 	{
-		return new ApiValue();
+		$token = ModelMain::getAuthorization();
+
+		if ($token->value != null)
+		{
+			if (ModelMain::checkToken($token->value))
+			{
+				$data = ModelMain::getBody();
+				$idUser = ModelMain::getIdUser($token->value);
+
+				if (!ModelMain::checkIfTeacher($idUser)) return new ApiValue(null, "You have to be a teacher to edit a subject", "403");
+
+				if (isset($data["idSubject"]))
+				{
+					$idSubject = $data["idSubject"];
+					unset($data["idSubject"]);
+				}
+				else
+				{
+					return new ApiValue(null, "idSubject has not been filled in", "400");
+				}
+
+				if (isset($data["isCIE"]))
+				{
+					if ($data["isCIE"] !== true && $data["isCIE"] !== false && $data["isCIE"] !== 0 && $data["isCIE"] !== 1) return new ApiValue(null, "isCIE has to be true or false");
+
+					$data["isCIE"] = (int)$data["isCIE"];
+				}
+
+				$pdo = new DataBase();
+
+				if (isset($data["category"]))
+				{
+					$statement = $pdo->prepare("SHOW COLUMNS FROM " . self::TABLE_NAME . " LIKE 'category'");
+					$statement->execute();
+
+					if (!in_array("'" . $data["category"] . "'", explode(",", substr(trim($statement->fetchAll(PDO::FETCH_ASSOC)[0]["Type"], ")"), 5))))
+					{
+						return new ApiValue(null, "The category doesn't exist", "400");
+					}
+				}
+
+				if (isset($data["year"]))
+				{
+					$year = $data["year"];
+
+					if (!is_int($year)) return new ApiValue(null, "The year has to be a integer number");
+					if ($year < 0 || $year > 4) return new ApiValue(null, "The year has to be between 0 and 4");
+				}
+
+				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idSubject = $idSubject");
+				$statement->execute();
+				$subject = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				if (isset($subject[0]))
+				{
+					$subject = $subject[0];
+				}
+				else
+				{
+					return new ApiValue(null, "This subject doesn't exist", "400");
+				}
+
+				try
+				{
+					$pdo->update(self::TABLE_NAME, $data, "idSubject = $idSubject");
+					$statement->execute();
+
+					return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC), "The note has been edited");
+				}
+				catch (Exception $e)
+				{
+					return new ApiValue(null, $e->getMessage(), $e->getCode());
+				}
+			}
+		}
+		else
+		{
+			return new ApiValue(null, "no authentication token", "401");
+		}
+
+		return new ApiValue(null, "invalid token", "401");
 	}
 
 	/**

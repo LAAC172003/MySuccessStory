@@ -51,6 +51,31 @@ class DataBase
 
 	public function update($tableName, $data, $where = '')
 	{
+		if (count($data) == 0) return true;
+
+		$statement = self::prepare("DESCRIBE $tableName");
+		$statement->execute();
+		$temp = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		foreach ($data as $field => $value)
+		{
+			$inArray = false;
+
+			foreach ($temp as $infos)
+			{
+				if ($field == $infos["Field"])
+				{
+					$inArray = true;
+					break;
+				}
+			}
+
+			if (!$inArray)
+			{
+				unset($data[$field]);
+			}
+		}
+
 		$whereSql = "";
 
 		if (!empty($where))

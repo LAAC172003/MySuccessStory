@@ -125,7 +125,7 @@ Paramètres : Authentification par token et nouvelles données de la note à mod
 }
 ```
 
-Valeurs de retour :
+Valeurs de retour : Note modifiée
 ```json
 {
 	"value": [
@@ -142,6 +142,8 @@ Valeurs de retour :
 	"errorCode": ""
 }
 ```
+
+Remarques : Seules les données renseignées seront modifiées. L'id ne peut pas être modifié.
 
 ##### Suppression note
 URL : /api/notes
@@ -249,7 +251,7 @@ Valeurs de retour : Informations de l'utilisateur
 }
 ```
 
-Remarques : Seules les données renseignées seront modifiées dans la base de données. L'id, l'email et la profession ne peuvent pas être modifiés.
+Remarques : Seules les données renseignées seront modifiées. L'id, l'email et la profession ne peuvent pas être modifiés.
 
 ##### Suppression utilisateur
 URL : /api/users
@@ -388,6 +390,42 @@ Valeurs de retour : Liste des matières
 	"errorCode": ""
 }
 ```
+
+##### Modifier matière
+URL : /api/subject
+Méthode : PATCH
+
+Paramètres : Authentification par token avec un compte de professeur et nouvelles données de la matière
+```json
+{
+	"idSubject": 1,
+	"name": "M100",
+	"description": "Distinguer, préparer et évaluer des données",
+	"isCIE": 0,
+	"category": "CFC",
+	"year": 1
+}
+```
+
+Valeurs de retour : Matière modifiée
+```json
+{
+	"value": [
+		{
+			"idSubject": 1,
+			"name": "M100",
+			"description": "Distinguer, préparer et évaluer des données",
+			"isCIE": 0,
+			"category": "CFC",
+			"year": 1
+		}
+	],
+	"message": "The note has been edited",
+	"errorCode": ""
+}
+```
+
+Remarques : Seules les données renseignées seront modifiées. L'id ne peut pas être modifié.
 
 ##### Suppression matière
 URL : /api/subject
