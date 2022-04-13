@@ -59,20 +59,24 @@ class DataBase
 
 		foreach ($data as $field => $value)
 		{
-			$inArray = false;
-
-			foreach ($temp as $infos)
-			{
-				if ($field == $infos["Field"])
-				{
-					$inArray = true;
-					break;
-				}
-			}
-
-			if (!$inArray)
+			if (is_null($field))
 			{
 				unset($data[$field]);
+			}
+			else
+			{
+				$inArray = false;
+
+				foreach ($temp as $infos)
+				{
+					if ($field == $infos["Field"])
+					{
+						$inArray = true;
+						break;
+					}
+				}
+
+				if (!$inArray) unset($data[$field]);
 			}
 		}
 
