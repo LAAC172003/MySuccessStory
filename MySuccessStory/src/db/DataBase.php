@@ -59,7 +59,7 @@ class DataBase
 
 		foreach ($data as $field => $value)
 		{
-			if (is_null($field))
+			if (is_null($field) || $field == "")
 			{
 				unset($data[$field]);
 			}
