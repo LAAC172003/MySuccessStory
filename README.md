@@ -294,7 +294,7 @@ Valeurs de retour : Token de l'utilisateur
 
 ##### Promotion
 URL : /api/promote
-Méthode : POST
+Méthode : PATCH
 
 Paramètres : Authentification par token avec un compte de professeur et adresse email du compte à promouvoir
 ```json
@@ -349,7 +349,7 @@ Valeurs de retour : Matière créée
 
 ##### Obtention matières
 URL : /api/subject
-Méthode : READ
+Méthode : GET
 
 Paramètres : Authentification par token et année
 ```json
