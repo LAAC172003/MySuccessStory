@@ -324,8 +324,7 @@ Paramètres : Authentification par token avec un compte de professeur
 	"name": "M100",
 	"description": "Distinguer, préparer et évaluer des données",
 	"isCIE": false,
-	"category": "CFC",
-	"year": 1
+	"category": "CFC"
 }
 ```
 
@@ -338,8 +337,7 @@ Valeurs de retour : Matière créée
 			"name": "M100",
 			"description": "Distinguer, préparer et évaluer des données",
 			"isCIE": false,
-			"category": "CFC",
-			"year": 1
+			"category": "CFC"
 		}
 	],
 	"message": "The subject has been added",
@@ -360,8 +358,7 @@ Paramètres : Authentification par token et année
 	// Filtres
 	"description": "données", // Valeurs possibles : Texte
 	"isCIE": false, // Valeurs possibles : booléen
-	"category": "CFC", // Valeurs possibles : Nombre de 1 à 4
-	"year": 1 // Valeurs possibles : Nombre de 1 à 4
+	"category": "CFC" // Valeurs possibles : Nombre de 1 à 4
 }
 ```
 
@@ -374,16 +371,14 @@ Valeurs de retour : Liste des matières
 			"name": "M100",
 			"description": "Distinguer, préparer et évaluer des données",
 			"isCIE": 0,
-			"category": "CFC",
-			"year": 1
+			"category": "CFC"
 		},
 		{
 			"idSubject": 2,
 			"name": "M114",
 			"description": "Mettre en oeuvre des systèmes de codification, de compression et d'encryptage",
 			"isCIE": 0,
-			"category": "CG",
-			"year": 1
+			"category": "CG"
 		}
 	],
 	"message": "",
@@ -402,8 +397,7 @@ Paramètres : Authentification par token avec un compte de professeur et nouvell
 	"name": "M100",
 	"description": "Distinguer, préparer et évaluer des données",
 	"isCIE": 0,
-	"category": "CFC",
-	"year": 1
+	"category": "CFC"
 }
 ```
 
@@ -416,8 +410,7 @@ Valeurs de retour : Matière modifiée
 			"name": "M100",
 			"description": "Distinguer, préparer et évaluer des données",
 			"isCIE": 0,
-			"category": "CFC",
-			"year": 1
+			"category": "CFC"
 		}
 	],
 	"message": "The note has been edited",

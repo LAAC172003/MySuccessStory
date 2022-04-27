@@ -70,15 +70,6 @@ class ModelSubjects
 					return new ApiValue(null, "the category is missing", "400");
 				}
 
-				if (isset($data["year"]))
-				{
-					$year = $data["year"];
-				}
-				else
-				{
-					return new ApiValue(null, "the year is missing", "400");
-				}
-
 				$statement = $pdo->prepare("SELECT * FROM subjects WHERE `name` = '$name'");
 				$statement->execute();
 				if (isset($statement->fetchAll(PDO::FETCH_ASSOC)[0]))
@@ -99,12 +90,9 @@ class ModelSubjects
 					return new ApiValue(null, "The category doesn't exist", "400");
 				}
 
-				if (!is_int($year)) return new ApiValue(null, "The year has to be an integer number", "400");
-				if ($year < 0 || $year > 4) return new ApiValue(null, "The year has to be between 0 and 4", "400");
-
 				try
 				{
-					$statement = $pdo->prepare("INSERT INTO " . self::TABLE_NAME . "(`name`, `description`, `isCIE`, `category`, `year`) VALUES ('$name', '$description', " . json_encode($isCIE) . ", '$category', $year)");
+					$statement = $pdo->prepare("INSERT INTO " . self::TABLE_NAME . "(`name`, `description`, `isCIE`, `category`) VALUES ('$name', '$description', " . json_encode($isCIE) . ", '$category')");
 					$statement->execute();
 
 					$statement = $pdo->prepare("SELECT * FROM subjects WHERE `name` = '$name'");
@@ -191,16 +179,6 @@ class ModelSubjects
 					$query .= " AND category = '$category'";
 				}
 
-				if (isset($data["year"]))
-				{
-					$year = $data["year"];
-
-					if (!is_int($year)) return new ApiValue(null, "The year has to be an integer number", "400");
-					if ($year < 0 || $year > 4) return new ApiValue(null, "The year has to be between 0 and 4", "400");
-
-					$query .= " AND year = $year";
-				}
-
 				try
 				{
 					$statement = (new DataBase())->prepare($query);
@@ -279,14 +257,6 @@ class ModelSubjects
 					{
 						return new ApiValue(null, "The category doesn't exist", "400");
 					}
-				}
-
-				if (isset($data["year"]))
-				{
-					$year = $data["year"];
-
-					if (!is_int($year)) return new ApiValue(null, "The year has to be a integer number");
-					if ($year < 0 || $year > 4) return new ApiValue(null, "The year has to be between 0 and 4");
 				}
 
 				$statement = $pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE idSubject = $idSubject");
