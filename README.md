@@ -47,7 +47,8 @@ Paramètres : Authentification par token et nouvelle note à ajouter
 	"note" : 6,
 	"semester" : 1,
 	"subject" : "M100",
-	"year": 1
+	"year": 1,
+	"isFake": false
 }
 ```
 

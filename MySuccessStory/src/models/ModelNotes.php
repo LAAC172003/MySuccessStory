@@ -218,8 +218,8 @@ class ModelNotes
 			{
 				$data = ModelMain::getBody();
 				$idUser = ModelMain::getIdUser($token->value);
-				$idNote = $data['idNote'];
-				unset($data['idNote']);
+				$idNote = $data["idNote"];
+				unset($data["idNote"]);
 
 				$pdo = new DataBase();
 
