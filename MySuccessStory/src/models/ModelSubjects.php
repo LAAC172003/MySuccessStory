@@ -277,7 +277,7 @@ class ModelSubjects
 					$pdo->update(self::TABLE_NAME, $data, "idSubject = $idSubject");
 					$statement->execute();
 
-					return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC), "The note has been edited");
+					return new ApiValue($statement->fetchAll(PDO::FETCH_ASSOC), "The subject has been edited");
 				}
 				catch (Exception $e)
 				{
