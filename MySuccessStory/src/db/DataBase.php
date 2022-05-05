@@ -101,7 +101,7 @@ class DataBase
 
 		foreach ($data as $column => $value)
 		{
-			$sets[] = "`" . $column . "` = " . (gettype($value) === "boolean" ? json_encode($value) : $value);
+			$sets[] = "`" . $column . "` = " . (gettype($value) === "boolean" ? json_encode($value) : (gettype($value) === "string" ? "'$value'" : $value));
 		}
 
 		$query .= implode(', ', $sets);
