@@ -59,7 +59,7 @@ class DataBase
 
 		foreach ($data as $field => $value)
 		{
-			if (is_null($value) || $value == "")
+			if (is_null($value) || $value === "")
 			{
 				unset($data[$field]);
 			}
@@ -101,7 +101,7 @@ class DataBase
 
 		foreach ($data as $column => $value)
 		{
-			$sets[] = "`" . $column . "` = '" . $value . "'";
+			$sets[] = "`" . $column . "` = " . (gettype($value) === "boolean" ? json_encode($value) : $value);
 		}
 
 		$query .= implode(', ', $sets);
