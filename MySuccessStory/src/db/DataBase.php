@@ -59,7 +59,7 @@ class DataBase
 
 		foreach ($data as $field => $value)
 		{
-			if (is_null($field) || $field == "")
+			if (is_null($value) || $value == "")
 			{
 				unset($data[$field]);
 			}
@@ -79,6 +79,8 @@ class DataBase
 				if (!$inArray) unset($data[$field]);
 			}
 		}
+
+		if (count($data) == 0) return true;
 
 		$whereSql = "";
 

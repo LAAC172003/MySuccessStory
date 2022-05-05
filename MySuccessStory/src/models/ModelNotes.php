@@ -48,6 +48,13 @@ class ModelNotes
 				if (fmod($data["note"], 0.5) != 0) return new ApiValue(null, "The note has to be a multiple of 0.5", "400");
 				if ($data["semester"] != 1 && $data["semester"] != 2) return new ApiValue(null, "The semester has to be 1 or 2", "400");
 
+				if (isset($data["isFake"]))
+				{
+					if ($data["isFake"] !== true && $data["isFake"] !== false && $data["isFake"] !== 0 && $data["isFake"] !== 1) return new ApiValue(null, "isFake has to be true or false");
+
+					$data["isFake"] = (int)$data["isFake"];
+				}
+
 				try
 				{
 					(new DataBase())->insert(self::TABLE_NAME, $data);
